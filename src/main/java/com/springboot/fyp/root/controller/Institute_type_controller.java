@@ -1,9 +1,11 @@
 package com.springboot.fyp.root.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.fyp.root.models.Institute_type;
@@ -15,9 +17,10 @@ public class Institute_type_controller {
 	@Autowired
 	Institute_type_service institute_type_service;
 	
-	@PostMapping("/add_institute_type")
-	public ResponseEntity<String> addInstituteType(@RequestBody Institute_type institute_type) {
-		return institute_type_service.insert(institute_type);
+	@CrossOrigin(origins = "*")
+	@GetMapping("/get_institute_types")
+	public ResponseEntity<List<Institute_type>> getInstituteType() {
+		return institute_type_service.get();
 		
 	}
 	
