@@ -36,10 +36,9 @@ final String secretKey = "3t6w9y$B&E)H@McQ";
 	public ResponseEntity<String> get(String email, String password){
 		User checkUser = user_repository.findByEmail(email);
 		String encryptedPassword = AES.encrypt(password, secretKey);
-		if(checkUser.getPassword().equals(encryptedPassword)) {
+		if(checkUser != null && checkUser.getPassword().equals(encryptedPassword)) {
 			return ResponseEntity.ok("Operation performed successfully.");
 		}
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect credentials.");
 	}
-	
 }
