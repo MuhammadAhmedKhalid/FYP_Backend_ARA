@@ -13,11 +13,11 @@ public class Institute_service {
 	@Autowired
 	Institute_repository institute_repository;
 	
+	@Autowired
+	SequenceGeneratorService sequenceGeneratorService;
+	
 	public ResponseEntity<String> insert(Institute institute){
-		
-//		Optional<Institute_type> institute_type = institute_type_repository.findById(institute.getInstitute_type_id());
-//		Institute_type check_institute_type = institute_type.get();
-//		institute.setInstitute_type(check_institute_type);
+		institute.setInstitue_id(sequenceGeneratorService.getSequenceNumber(institute.SEQUENCE_NAME));
 		institute_repository.insert(institute);
 		return ResponseEntity.ok("Operation performed successfully.");
 	}
