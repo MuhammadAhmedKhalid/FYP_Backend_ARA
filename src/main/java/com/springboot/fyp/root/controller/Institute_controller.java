@@ -16,7 +16,7 @@ public class Institute_controller {
 	@Autowired
 	Institute_service institute_service;
 	
-	@CrossOrigin(origins = "*")
+	@CrossOrigin(origins = "http://localhost:3000/")
 	@PostMapping("/add_institute")
 	public ResponseEntity<String> addInstitute(@RequestBody Institute institute) {
 		return institute_service.insert(institute);
