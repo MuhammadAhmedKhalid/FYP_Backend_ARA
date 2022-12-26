@@ -17,7 +17,7 @@ public class Institute_type_controller {
 	@Autowired
 	Institute_type_service institute_type_service;
 	
-	@CrossOrigin(origins = "http://localhost:3000/")
+//	@CrossOrigin(origins = "http://localhost:3000/")
 	@GetMapping("/get_institute_types")
 	public ResponseEntity<List<Institute_type>> getInstituteType() {
 		return institute_type_service.get();

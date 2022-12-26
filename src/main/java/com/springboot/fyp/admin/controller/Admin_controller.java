@@ -23,7 +23,7 @@ public class Admin_controller {
 	}
 	
 	@SuppressWarnings("rawtypes")
-	@CrossOrigin(origins = "http://localhost:3000/")
+//	@CrossOrigin(origins = "http://localhost:3000/", allowedHeaders = {"Authorization", "Origin"})
 	@PostMapping("/login-admin")
 	public ResponseEntity loginAdmin(@RequestBody User user){
 		return admin_service.get(user.getEmail(), user.getPassword());

@@ -13,6 +13,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.springboot.fyp.root.filters.JWT_Filters;
 import com.springboot.fyp.root.service.MongoAuthUserDetailService;
@@ -38,12 +41,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception 
 	{
 		http
+		.cors()
+		.and()
 		.csrf()
 		.disable()
-		.cors()
-		.disable()
 		.authorizeRequests()
-		.antMatchers(HttpMethod.POST,"/login-admin")
+		.antMatchers("/login-admin", "/create-user", "/get_institute_types")
 		.permitAll()
 		.anyRequest()
 		.authenticated()
@@ -54,6 +57,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 		.addFilterBefore(jwt_Filters, UsernamePasswordAuthenticationFilter.class);
 	}
+	
+	@Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+        return source;
+    }
 	
 	@Bean
 	PasswordEncoder passwordEncoder()
