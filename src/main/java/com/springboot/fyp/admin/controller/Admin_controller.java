@@ -22,9 +22,10 @@ public class Admin_controller {
 		return admin_service.create(user);
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@CrossOrigin(origins = "http://localhost:3000/")
 	@PostMapping("/login-admin")
-	public ResponseEntity<String> loginAdmin(@RequestBody User user){
+	public ResponseEntity loginAdmin(@RequestBody User user){
 		return admin_service.get(user.getEmail(), user.getPassword());
 	}
 	
