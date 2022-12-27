@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,14 +18,12 @@ public class Department_controller {
 	@Autowired
 	Department_service department_service;
 	
-	@CrossOrigin(origins = "http://localhost:3000/")
 	@PostMapping("/add_department")
 	public ResponseEntity<String> addDepartment(@RequestBody Department department) {
 		return department_service.insert(department);
 		
 	}
 	
-	@CrossOrigin(origins = "http://localhost:3000/")
 	@GetMapping("/departments")
 	public ResponseEntity<List<Department>> getDepartments(){
 		return department_service.getAll();

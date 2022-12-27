@@ -2,7 +2,8 @@ package com.springboot.fyp.admin.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,17 +17,21 @@ public class Admin_controller {
 	@Autowired
 	Admin_service admin_service;
 	
-	@CrossOrigin(origins = "http://localhost:3000/")
 	@PostMapping("/create-user")
 	public ResponseEntity<String> createUser(@RequestBody User user){	
 		return admin_service.create(user);
 	}
 	
 	@SuppressWarnings("rawtypes")
-//	@CrossOrigin(origins = "http://localhost:3000/", allowedHeaders = {"Authorization", "Origin"})
 	@PostMapping("/login-admin")
 	public ResponseEntity loginAdmin(@RequestBody User user){
-		return admin_service.get(user.getEmail(), user.getPassword());
+		return admin_service.signin(user.getEmail(), user.getPassword());
+	}
+	
+	@SuppressWarnings("rawtypes")
+	@GetMapping("/get-admin/{id}")
+	public ResponseEntity getAdmin(@PathVariable("id") int id){
+		return admin_service.get(id);
 	}
 	
 }

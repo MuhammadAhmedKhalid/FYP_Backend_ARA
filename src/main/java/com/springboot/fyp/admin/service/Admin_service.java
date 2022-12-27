@@ -1,5 +1,7 @@
 package com.springboot.fyp.admin.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,7 +56,7 @@ final String secretKey = "3t6w9y$B&E)H@McQ";
 	}
 	
 	@SuppressWarnings("rawtypes")
-	public ResponseEntity get(String email, String password){
+	public ResponseEntity signin(String email, String password){
 		User checkUser = user_repository.findByEmail(email);
 		String encryptedPassword = AES.encrypt(password, secretKey);
 		if(checkUser != null && checkUser.getPassword().equals(encryptedPassword)) {
@@ -64,4 +66,14 @@ final String secretKey = "3t6w9y$B&E)H@McQ";
 		}
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect credentials.");
 	}
+	
+	@SuppressWarnings("rawtypes")
+	public ResponseEntity get(int id){
+		Optional<User> checkUser = user_repository.findById(id);
+		if(checkUser.isPresent()) {
+			return ResponseEntity.ok(checkUser.get());
+		}
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found with this id.");
+	}
+	
 }
