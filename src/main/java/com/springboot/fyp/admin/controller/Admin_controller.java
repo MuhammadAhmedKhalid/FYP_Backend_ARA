@@ -2,8 +2,6 @@ package com.springboot.fyp.admin.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,11 +25,4 @@ public class Admin_controller {
 	public ResponseEntity loginAdmin(@RequestBody User user){
 		return admin_service.signin(user.getEmail(), user.getPassword());
 	}
-	
-	@SuppressWarnings("rawtypes")
-	@GetMapping("/get-admin/{id}")
-	public ResponseEntity getAdmin(@PathVariable("id") int id){
-		return admin_service.get(id);
-	}
-	
 }

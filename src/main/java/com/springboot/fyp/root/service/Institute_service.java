@@ -21,7 +21,6 @@ public class Institute_service {
 	
 	public ResponseEntity<String> insert(Institute institute){
 		institute.setInstitue_id(sequenceGeneratorService.getSequenceNumber(institute.SEQUENCE_NAME));
-		institute.setAdded(true);
 		institute_repository.insert(institute);
 		return ResponseEntity.ok("Operation performed successfully.");
 	}

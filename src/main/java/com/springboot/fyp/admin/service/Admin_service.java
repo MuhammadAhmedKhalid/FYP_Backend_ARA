@@ -1,7 +1,5 @@
 package com.springboot.fyp.admin.service;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,19 +59,9 @@ final String secretKey = "3t6w9y$B&E)H@McQ";
 		String encryptedPassword = AES.encrypt(password, secretKey);
 		if(checkUser != null && checkUser.getPassword().equals(encryptedPassword)) {
 			 final String jwt = getToken(email);
-			 JWT_Response jwt_Response = new JWT_Response(checkUser.getUser_id(), email, jwt);
+			 JWT_Response jwt_Response = new JWT_Response(checkUser.getUser_id(), email, jwt, checkUser.getName());
 			return ResponseEntity.ok(jwt_Response);
 		}
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect credentials.");
 	}
-	
-	@SuppressWarnings("rawtypes")
-	public ResponseEntity get(int id){
-		Optional<User> checkUser = user_repository.findById(id);
-		if(checkUser.isPresent()) {
-			return ResponseEntity.ok(checkUser.get());
-		}
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found with this id.");
-	}
-	
 }
