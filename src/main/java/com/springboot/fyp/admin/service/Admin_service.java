@@ -18,7 +18,7 @@ import com.springboot.fyp.root.service.SequenceGeneratorService;
 @Service
 public class Admin_service {
 
-final String secretKey = "3t6w9y$B&E)H@McQ";
+	final String secretKey = "3t6w9y$B&E)H@McQ";
 	
 	@Autowired
 	User_repository user_repository;

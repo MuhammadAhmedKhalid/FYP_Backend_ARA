@@ -1,0 +1,30 @@
+package com.springboot.fyp.faculty.models;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.springboot.fyp.root.models.User;
+
+import lombok.Data;
+
+@Document(collection = "Faculty")
+@Data
+public class Faculty {
+	
+	@Transient
+	public final String SEQUENCE_NAME="Faculty_sequence";
+	
+	@Id
+	private int faculty_id;
+	private String first_name;
+	private String last_name;
+	private String phone_number;
+	private String officialEmailAddress;
+	private String department;
+	private String specialization;
+	private String designation;
+	private int institute_id;
+	User user;
+	
+}
