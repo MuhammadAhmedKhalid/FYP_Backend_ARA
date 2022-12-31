@@ -1,5 +1,6 @@
 package com.springboot.fyp.root.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,10 @@ public class Institute_controller {
 	
 	@GetMapping("/get_institutes")
 	public ResponseEntity<List<Institute>> getInstitutes(){
-		return institute_service.getAll();
+		if(institute_service.getAll().isEmpty()) {
+			return ResponseEntity.ok(new ArrayList<>());
+		}
+		return ResponseEntity.ok(institute_service.getAll());
 	}
 	
 }

@@ -7,9 +7,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.springboot.fyp.root.dao.User_repository;
+import com.springboot.fyp.root.models.Institute;
 import com.springboot.fyp.root.models.JWT_Response;
 import com.springboot.fyp.root.models.User;
 import com.springboot.fyp.root.security.AES;
+import com.springboot.fyp.root.service.Institute_service;
 import com.springboot.fyp.root.service.JWT_Utils;
 import com.springboot.fyp.root.service.MongoAuthUserDetailService;
 import com.springboot.fyp.root.service.SequenceGeneratorService;
@@ -30,6 +32,9 @@ public class Admin_service {
 	
 	@Autowired
 	MongoAuthUserDetailService userDetailService;
+	
+	@Autowired
+	Institute_service institute_service;
 	
 	public ResponseEntity<String> create(User user){
 		User checkUser = user_repository.findByEmail(user.getEmail());
@@ -55,7 +60,16 @@ public class Admin_service {
 		String encryptedPassword = AES.encrypt(password, secretKey);
 		if(checkUser != null && checkUser.getPassword().equals(encryptedPassword)) {
 			 final String jwt = getToken(email);
-			 JWT_Response jwt_Response = new JWT_Response(checkUser.getUser_id(), email, jwt, checkUser.getName());
+			 String institute_name = "";
+	
+			 for(Institute institute : institute_service.getAll()) {
+					
+					if(institute.getUser_id() == checkUser.getUser_id()) {
+						institute_name = institute.getInstitute_name();
+					}
+				}
+			 
+			 JWT_Response jwt_Response = new JWT_Response(checkUser.getUser_id(), email, jwt, checkUser.getName(), institute_name);
 			return ResponseEntity.ok(jwt_Response);
 		}
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect credentials.");

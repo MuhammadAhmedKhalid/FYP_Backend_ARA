@@ -25,10 +25,16 @@ public class Institute_service {
 		return ResponseEntity.ok(institute.getInstitute_name());
 	}
 	
-	public ResponseEntity<List<Institute>> getAll(){
+//	public ResponseEntity<List<Institute>> getAll(){
+//		if(institute_repository.findAll().isEmpty()) {
+//			return ResponseEntity.ok(new ArrayList<>());
+//		}
+//		return ResponseEntity.ok(institute_repository.findAll());
+//	}
+	public List<Institute> getAll(){
 		if(institute_repository.findAll().isEmpty()) {
-			return ResponseEntity.ok(new ArrayList<>());
+			return new ArrayList<>();
 		}
-		return ResponseEntity.ok(institute_repository.findAll());
+		return institute_repository.findAll();
 	}
 }

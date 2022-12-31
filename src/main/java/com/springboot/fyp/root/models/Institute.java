@@ -20,5 +20,5 @@ public class Institute {
 	private String branch;
 	private String address;
 	private String contact;
-	private int user_id;
+	public int user_id;
 }
