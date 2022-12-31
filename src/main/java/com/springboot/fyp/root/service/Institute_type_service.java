@@ -19,9 +19,12 @@ public class Institute_type_service {
 	@Autowired
 	RedisUtilityRoot redisUtilityRoot;
 	
+	public static final String HASH_KEY_INSTITUTE_TYPE_LISTS = "InstituteTypes";
+	
+	@SuppressWarnings("unchecked")
 	public List<Institute_type> get(){
-		if(redisUtilityRoot.getTypes().size() > 0) {
-			return redisUtilityRoot.getTypes();
+		if(redisUtilityRoot.getList(HASH_KEY_INSTITUTE_TYPE_LISTS).size() > 0) {
+			return redisUtilityRoot.getList(HASH_KEY_INSTITUTE_TYPE_LISTS);
 		}else {
 			if(institute_type_repository.findAll().size() == 0) {
 				HashMap<String, List<Institute_type>> instituteTypes = new HashMap<>();
@@ -45,8 +48,8 @@ public class Institute_type_service {
 				    }
 				}
 			}
-			redisUtilityRoot.saveTypes(institute_type_repository.findAll());
-			return redisUtilityRoot.getTypes();
+			redisUtilityRoot.saveList(institute_type_repository.findAll(), HASH_KEY_INSTITUTE_TYPE_LISTS);
+			return redisUtilityRoot.getList(HASH_KEY_INSTITUTE_TYPE_LISTS);
 		}
 	}
 	

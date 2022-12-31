@@ -14,24 +14,23 @@ import com.springboot.fyp.root.models.Institute_type;
 @Service
 public class RedisUtilityRoot {
 	
-	public static final String HASH_KEY_INSTITUTE_TYPE_LISTS = "InstituteTypes";
 	
 	@Qualifier("redisTemplate")
 	@Autowired
 	private RedisTemplate<String, Object> template;
 	
-	public void saveTypes(List<Institute_type> types){
-		template.opsForHash().put(HASH_KEY_INSTITUTE_TYPE_LISTS, HASH_KEY_INSTITUTE_TYPE_LISTS, types);
-		template.expire(HASH_KEY_INSTITUTE_TYPE_LISTS, 24, TimeUnit.HOURS);
+	public void saveList(List<Institute_type> types, String HASH_KEY_LISTS){
+		template.opsForHash().put(HASH_KEY_LISTS, HASH_KEY_LISTS, types);
+		template.expire(HASH_KEY_LISTS, 24, TimeUnit.HOURS);
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<Institute_type> getTypes(){
-		var list = template.opsForHash().get(HASH_KEY_INSTITUTE_TYPE_LISTS, HASH_KEY_INSTITUTE_TYPE_LISTS);
+	@SuppressWarnings({ "rawtypes" })
+	public List getList(String HASH_KEY_LISTS){
+		var list = template.opsForHash().get(HASH_KEY_LISTS, HASH_KEY_LISTS);
 		if(list != null) {
-			return (List<Institute_type>) list;
+			return (List) list;
 		}
-		return new ArrayList<Institute_type>();
+		return new ArrayList<>();
 	}
 	
 }
