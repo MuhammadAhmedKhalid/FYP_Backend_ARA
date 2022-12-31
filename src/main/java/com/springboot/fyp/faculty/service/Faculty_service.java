@@ -1,5 +1,8 @@
 package com.springboot.fyp.faculty.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +40,19 @@ public class Faculty_service {
 		faculty.setFaculty_id(sequenceGeneratorService.getSequenceNumber(faculty.SEQUENCE_NAME));
 		faculty_repositiory.insert(faculty);
 		return ResponseEntity.ok("Operation performed successfully.");
+	}
+
+	public ResponseEntity<List<Faculty>> getAll(int institute_id) {
+		if(faculty_repositiory.findAll().isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		}
+		List<Faculty> faculty_list = new ArrayList<>();
+		for(Faculty faculty : faculty_repositiory.findAll()) {
+			if( faculty.getInstitute_id() == institute_id) {
+				faculty_list.add(faculty);
+			}
+		}
+		return ResponseEntity.ok(faculty_list);
 	}
 	
 }
