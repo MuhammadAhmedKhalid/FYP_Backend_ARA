@@ -21,7 +21,7 @@ public class Institute_controller {
 	
 	@PostMapping("/add_institute")
 	public ResponseEntity<String> addInstitute(@RequestBody Institute institute) {
-		return institute_service.insert(institute);
+		return ResponseEntity.ok(institute_service.insert(institute));
 		
 	}
 	

@@ -1,8 +1,6 @@
 package com.springboot.fyp.admin.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -36,16 +34,17 @@ public class Admin_service {
 	@Autowired
 	Institute_service institute_service;
 	
-	public ResponseEntity<String> create(User user){
+	public String create(User user){
 		User checkUser = user_repository.findByEmail(user.getEmail());
 		if(checkUser != null) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User already exists with this email.");
+			return null;
 		}
 		user.setUser_id(sequenceGeneratorService.getSequenceNumber(user.SEQUENCE_NAME));
 		String encryptedPassword = AES.encrypt(user.getPassword(), secretKey);
 		user.setPassword(encryptedPassword);
 		user_repository.insert(user);
-		return ResponseEntity.ok("Operation performed successfully.");
+		return "Operation performed successfully.";
+
 	}
 	
 	public String getToken(String email)
@@ -54,8 +53,7 @@ public class Admin_service {
         return jwt_Utils.generateToken(userDetails);
 	}
 	
-	@SuppressWarnings("rawtypes")
-	public ResponseEntity signin(String email, String password){
+	public JWT_Response signin(String email, String password){
 		User checkUser = user_repository.findByEmail(email);
 		String encryptedPassword = AES.encrypt(password, secretKey);
 		if(checkUser != null && checkUser.getPassword().equals(encryptedPassword)) {
@@ -68,10 +66,10 @@ public class Admin_service {
 						institute_name = institute.getInstitute_name();
 					}
 				}
-			 
+			
 			 JWT_Response jwt_Response = new JWT_Response(checkUser.getUser_id(), email, jwt, checkUser.getName(), institute_name);
-			return ResponseEntity.ok(jwt_Response);
+			return jwt_Response;
 		}
-		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect credentials.");
+		return null;
 	}
 }

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.springboot.fyp.admin.service.Admin_service;
@@ -31,20 +29,20 @@ public class Faculty_service {
 	@Autowired
 	Admin_service admin_service;
 	
-	public ResponseEntity<String> create(Faculty faculty){
+	public String create(Faculty faculty){
 		Faculty checkFaculty = faculty_repositiory.findByOfficialEmailAddress(faculty.getOfficialEmailAddress()); 
 		if(checkFaculty != null) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Faculty already exists with this email.");
+			return null;
 		}
 		admin_service.create(faculty.getUser());
 		faculty.setFaculty_id(sequenceGeneratorService.getSequenceNumber(faculty.SEQUENCE_NAME));
 		faculty_repositiory.insert(faculty);
-		return ResponseEntity.ok("Operation performed successfully.");
+		return "Operation performed successfully.";
 	}
 
-	public ResponseEntity<List<Faculty>> getAll(int institute_id) {
+	public List<Faculty> getAll(int institute_id) {
 		if(faculty_repositiory.findAll().isEmpty()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+			return null;
 		}
 		List<Faculty> faculty_list = new ArrayList<>();
 		for(Faculty faculty : faculty_repositiory.findAll()) {
@@ -52,7 +50,6 @@ public class Faculty_service {
 				faculty_list.add(faculty);
 			}
 		}
-		return ResponseEntity.ok(faculty_list);
+		return faculty_list;
 	}
-	
 }

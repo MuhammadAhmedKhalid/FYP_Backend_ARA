@@ -20,13 +20,13 @@ public class Department_controller {
 	
 	@PostMapping("/add_department")
 	public ResponseEntity<String> addDepartment(@RequestBody Department department) {
-		return department_service.insert(department);
+		return ResponseEntity.ok(department_service.insert(department));
 		
 	}
 	
 	@GetMapping("/departments")
 	public ResponseEntity<List<Department>> getDepartments(){
-		return department_service.getAll();
+		return ResponseEntity.ok(department_service.getAll());
 	}
 	
 }

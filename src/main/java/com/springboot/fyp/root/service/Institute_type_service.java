@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.springboot.fyp.root.dao.Institute_type_repository;
@@ -20,9 +19,9 @@ public class Institute_type_service {
 	@Autowired
 	RedisUtilityRoot redisUtilityRoot;
 	
-	public ResponseEntity<List<Institute_type>> get(){
+	public List<Institute_type> get(){
 		if(redisUtilityRoot.getTypes().size() > 0) {
-			return ResponseEntity.ok(redisUtilityRoot.getTypes());
+			return redisUtilityRoot.getTypes();
 		}else {
 			if(institute_type_repository.findAll().size() == 0) {
 				HashMap<String, List<Institute_type>> instituteTypes = new HashMap<>();
@@ -47,7 +46,7 @@ public class Institute_type_service {
 				}
 			}
 			redisUtilityRoot.saveTypes(institute_type_repository.findAll());
-			return ResponseEntity.ok(redisUtilityRoot.getTypes());
+			return redisUtilityRoot.getTypes();
 		}
 	}
 	
