@@ -14,7 +14,7 @@ public class Institute {
 	public final String SEQUENCE_NAME="Institute_sequence";
 	
 	@Id
-	private int institue_id;
+	private int institute_id;
 	private String institute_name;
 	private int institute_type_id;
 	private String branch;
