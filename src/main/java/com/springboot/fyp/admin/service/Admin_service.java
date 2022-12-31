@@ -3,7 +3,6 @@ package com.springboot.fyp.admin.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -31,9 +30,6 @@ public class Admin_service {
 	
 	@Autowired
 	MongoAuthUserDetailService userDetailService;
-	
-	@Autowired
-	AuthenticationManager authenticationManager;
 	
 	public ResponseEntity<String> create(User user){
 		User checkUser = user_repository.findByEmail(user.getEmail());
