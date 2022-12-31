@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import com.springboot.fyp.root.models.Institute_type;
-
 @Service
 public class RedisUtilityRoot {
 	
@@ -19,7 +17,8 @@ public class RedisUtilityRoot {
 	@Autowired
 	private RedisTemplate<String, Object> template;
 	
-	public void saveList(List<Institute_type> types, String HASH_KEY_LISTS){
+	@SuppressWarnings("rawtypes")
+	public void saveList(List types, String HASH_KEY_LISTS){
 		template.opsForHash().put(HASH_KEY_LISTS, HASH_KEY_LISTS, types);
 		template.expire(HASH_KEY_LISTS, 24, TimeUnit.HOURS);
 	}
@@ -31,6 +30,11 @@ public class RedisUtilityRoot {
 			return (List) list;
 		}
 		return new ArrayList<>();
+	}
+	
+	public void deleteList(String HASH_KEY_LISTS) 
+	{
+		template.opsForHash().delete(HASH_KEY_LISTS, HASH_KEY_LISTS);
 	}
 	
 }

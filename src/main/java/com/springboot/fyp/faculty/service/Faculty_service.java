@@ -10,6 +10,7 @@ import com.springboot.fyp.admin.service.Admin_service;
 import com.springboot.fyp.faculty.dao.Faculty_repositiory;
 import com.springboot.fyp.faculty.models.Faculty;
 import com.springboot.fyp.root.dao.User_repository;
+import com.springboot.fyp.root.service.RedisUtilityRoot;
 import com.springboot.fyp.root.service.SequenceGeneratorService;
 
 @Service
@@ -29,6 +30,11 @@ public class Faculty_service {
 	@Autowired
 	Admin_service admin_service;
 	
+	public static final String HASH_KEY_FACULTY_LIST = "FacultyList";
+	
+	@Autowired
+	RedisUtilityRoot redisUtilityRoot;
+	
 	public String create(Faculty faculty){
 		Faculty checkFaculty = faculty_repositiory.findByOfficialEmailAddress(faculty.getOfficialEmailAddress()); 
 		if(checkFaculty != null) {
@@ -37,19 +43,27 @@ public class Faculty_service {
 		admin_service.create(faculty.getUser());
 		faculty.setFaculty_id(sequenceGeneratorService.getSequenceNumber(faculty.SEQUENCE_NAME));
 		faculty_repositiory.insert(faculty);
+		redisUtilityRoot.deleteList(HASH_KEY_FACULTY_LIST+faculty.getInstitute_id());
 		return "Operation performed successfully.";
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Faculty> getAll(int institute_id) {
-		if(faculty_repositiory.findAll().isEmpty()) {
-			return null;
-		}
-		List<Faculty> faculty_list = new ArrayList<>();
-		for(Faculty faculty : faculty_repositiory.findAll()) {
-			if( faculty.getInstitute_id() == institute_id) {
-				faculty_list.add(faculty);
+		if(redisUtilityRoot.getList(HASH_KEY_FACULTY_LIST+institute_id).size() > 0) {
+			return redisUtilityRoot.getList(HASH_KEY_FACULTY_LIST+institute_id);
+		}else {
+			if(faculty_repositiory.findAll().isEmpty()) {
+				return null;
 			}
+			List<Faculty> faculty_list = new ArrayList<>();
+			for(Faculty faculty : faculty_repositiory.findAll()) {
+				if( faculty.getInstitute_id() == institute_id) {
+					faculty_list.add(faculty);
+				}
+			}
+			redisUtilityRoot.saveList(faculty_list, HASH_KEY_FACULTY_LIST+institute_id);
+			return redisUtilityRoot.getList(HASH_KEY_FACULTY_LIST+institute_id);
 		}
-		return faculty_list;
+		
 	}
 }

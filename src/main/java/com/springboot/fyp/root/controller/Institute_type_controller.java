@@ -19,7 +19,5 @@ public class Institute_type_controller {
 	@GetMapping("/get_institute_types")
 	public ResponseEntity<List<Institute_type>> getInstituteType() {
 		return ResponseEntity.ok(institute_type_service.get());
-		
 	}
-	
 }
