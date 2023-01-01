@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.fyp.admin.service.Admin_service;
+import com.springboot.fyp.root.models.JWT_Response;
 import com.springboot.fyp.root.models.User;
 
 @RestController
@@ -27,9 +28,10 @@ public class Admin_controller {
 	@SuppressWarnings("rawtypes")
 	@PostMapping("/login-admin")
 	public ResponseEntity loginAdmin(@RequestBody User user){
-		if(admin_service.signin(user.getEmail(), user.getPassword()).equals(null)) {
+		JWT_Response response = admin_service.signin(user.getEmail(), user.getPassword());
+		if(response.equals(null)) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect credentials.");
 		}
-		return ResponseEntity.ok(admin_service.signin(user.getEmail(), user.getPassword()));
+		return ResponseEntity.ok(response);
 	}
 }

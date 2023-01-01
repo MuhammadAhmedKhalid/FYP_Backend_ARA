@@ -1,15 +1,17 @@
 package com.springboot.fyp.admin.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import com.springboot.fyp.root.dao.Institute_repository;
 import com.springboot.fyp.root.dao.User_repository;
 import com.springboot.fyp.root.models.Institute;
 import com.springboot.fyp.root.models.JWT_Response;
 import com.springboot.fyp.root.models.User;
 import com.springboot.fyp.root.security.AES;
-import com.springboot.fyp.root.service.Institute_service;
 import com.springboot.fyp.root.service.JWT_Utils;
 import com.springboot.fyp.root.service.MongoAuthUserDetailService;
 import com.springboot.fyp.root.service.SequenceGeneratorService;
@@ -32,7 +34,7 @@ public class Admin_service {
 	MongoAuthUserDetailService userDetailService;
 	
 	@Autowired
-	Institute_service institute_service;
+	Institute_repository institute_repository;
 	
 	public String create(User user){
 		User checkUser = user_repository.findByEmail(user.getEmail());
@@ -59,14 +61,14 @@ public class Admin_service {
 		if(checkUser != null && checkUser.getPassword().equals(encryptedPassword)) {
 			 final String jwt = getToken(email);
 			 String institute_name = "";
-	
-			 for(Institute institute : institute_service.getAll()) {
-					
-					if(institute.getUser_id() == checkUser.getUser_id()) {
-						institute_name = institute.getInstitute_name();
-					}
-				}
-			
+			 
+			 List<Institute> institutesList = institute_repository.findAll();
+			 for (int i=0; i < institutesList.size(); i++) {
+				 if(institutesList.get(i).getUser_id() == checkUser.getUser_id()) {
+					 institute_name = institutesList.get(i).getInstitute_name();
+				 }
+			 }
+
 			 JWT_Response jwt_Response = new JWT_Response(checkUser.getUser_id(), email, jwt, checkUser.getName(), institute_name);
 			return jwt_Response;
 		}
