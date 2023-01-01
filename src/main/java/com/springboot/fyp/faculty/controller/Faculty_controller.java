@@ -22,17 +22,19 @@ public class Faculty_controller {
 	
 	@PostMapping("/create-faculty")
 	public ResponseEntity<String> createFaculty(@RequestBody Faculty faculty){
-		if(faculty_service.create(faculty) == null) {
+		String response = faculty_service.create(faculty);
+		if(response == null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Faculty already exists with this email.");
 		}
-		return ResponseEntity.ok(faculty_service.create(faculty));
+		return ResponseEntity.ok(response);
 	}
 	
 	@GetMapping("/get-faculty/{institute_id}")
 	public ResponseEntity<List<Faculty>> getFaculty(@PathVariable("institute_id") int institute_id){
-		if(faculty_service.getAll(institute_id) == null) {
+		List<Faculty> facultyList = faculty_service.getAll(institute_id);
+		if(facultyList == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
-		return ResponseEntity.ok(faculty_service.getAll(institute_id));
+		return ResponseEntity.ok(facultyList);
 	}	
 }

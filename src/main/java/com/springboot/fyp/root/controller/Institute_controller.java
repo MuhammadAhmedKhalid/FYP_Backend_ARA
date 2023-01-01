@@ -27,10 +27,11 @@ public class Institute_controller {
 	
 	@GetMapping("/get_institutes")
 	public ResponseEntity<List<Institute>> getInstitutes(){
-		if(institute_service.getAll().isEmpty()) {
+		List<Institute> instituteList = institute_service.getAll();
+		if(instituteList.isEmpty()) {
 			return ResponseEntity.ok(new ArrayList<>());
 		}
-		return ResponseEntity.ok(institute_service.getAll());
+		return ResponseEntity.ok(instituteList);
 	}
 	
 }

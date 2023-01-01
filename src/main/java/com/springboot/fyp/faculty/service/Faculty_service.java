@@ -40,7 +40,7 @@ public class Faculty_service {
 		if(checkFaculty != null) {
 			return null;
 		}
-		admin_service.create(faculty.getUser());
+		admin_service.create(faculty.getUser(), true);
 		faculty.setFaculty_id(sequenceGeneratorService.getSequenceNumber(faculty.SEQUENCE_NAME));
 		faculty_repositiory.insert(faculty);
 		redisUtilityRoot.deleteList(HASH_KEY_FACULTY_LIST+faculty.getInstitute_id());

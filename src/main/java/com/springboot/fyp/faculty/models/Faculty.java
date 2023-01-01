@@ -25,7 +25,6 @@ public class Faculty {
 	private String specialization;
 	private String designation;
 	private int institute_id;
-	private boolean is_admin;
 	User user;
 	
 }

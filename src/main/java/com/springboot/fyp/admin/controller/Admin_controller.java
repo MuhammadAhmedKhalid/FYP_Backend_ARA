@@ -19,10 +19,11 @@ public class Admin_controller {
 	
 	@PostMapping("/create-user")
 	public ResponseEntity<String> createUser(@RequestBody User user){
-		if (admin_service.create(user) == null) {
+		String response = admin_service.create(user, false);
+		if (response == null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User already exists with this email.");
 		}
-		return ResponseEntity.ok(admin_service.create(user));
+		return ResponseEntity.ok(response);
 	}
 	
 	@SuppressWarnings("rawtypes")

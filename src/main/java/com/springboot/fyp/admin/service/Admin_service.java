@@ -36,7 +36,7 @@ public class Admin_service {
 	@Autowired
 	Institute_repository institute_repository;
 	
-	public String create(User user){
+	public String create(User user, boolean isFaculty){
 		User checkUser = user_repository.findByEmail(user.getEmail());
 		if(checkUser != null) {
 			return null;
@@ -44,6 +44,9 @@ public class Admin_service {
 		user.setUser_id(sequenceGeneratorService.getSequenceNumber(user.SEQUENCE_NAME));
 		String encryptedPassword = AES.encrypt(user.getPassword(), secretKey);
 		user.setPassword(encryptedPassword);
+		if(!isFaculty) {
+			user.set_admin(true);
+		}
 		user_repository.insert(user);
 		return "Operation performed successfully.";
 
