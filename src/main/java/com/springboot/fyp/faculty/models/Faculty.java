@@ -17,8 +17,7 @@ public class Faculty {
 	
 	@Id
 	private int faculty_id;
-	private String first_name;
-	private String last_name;
+	private String name;
 	private String phone_number;
 	private String officialEmailAddress;
 	private String department;
