@@ -10,13 +10,15 @@ public class JWT_Response {
 	String jwt;
 	String admin_name;
 	String institute_name;
+	boolean is_admin;
 	
-	public JWT_Response(int user_id, String email, String jwt, String admin_name, String institute_name) {
+	public JWT_Response(int user_id, String email, String jwt, String admin_name, String institute_name, boolean is_admin) {
 		this.user_id = user_id;
 		this.email = email;
 		this.jwt = jwt;
 		this.admin_name = admin_name;
 		this.institute_name = institute_name;
+		this.is_admin = is_admin;
 	}
 	
 }

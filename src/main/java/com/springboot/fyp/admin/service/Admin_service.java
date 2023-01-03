@@ -71,8 +71,8 @@ public class Admin_service {
 					 institute_name = institutesList.get(i).getInstitute_name();
 				 }
 			 }
-
-			 JWT_Response jwt_Response = new JWT_Response(checkUser.getUser_id(), email, jwt, checkUser.getName(), institute_name);
+			 
+			 JWT_Response jwt_Response = new JWT_Response(checkUser.getUser_id(), email, jwt, checkUser.getName(), institute_name, checkUser.is_admin());
 			return jwt_Response;
 		}
 		return null;
