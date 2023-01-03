@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.springboot.fyp.admin.dao.Department_repository;
+import com.springboot.fyp.root.dao.Department_repository;
 import com.springboot.fyp.root.models.Department;
 
 @Service
