@@ -32,7 +32,7 @@ public class Resource_type_controller {
 	}
 	
 	@GetMapping("/resourceTypes")
-	public ResponseEntity<List<Resource_type>> getResourceTypes(){
+	public ResponseEntity<List<Resource_type>> getResourcesTypes(){
 		return ResponseEntity.ok(resource_type_service.getAll());
 	}
 	
