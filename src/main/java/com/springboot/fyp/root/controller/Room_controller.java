@@ -22,11 +22,11 @@ public class Room_controller {
 	public ResponseEntity<String> addRoom(){
 		
 		List<Room> roomList = new ArrayList<>();
-		roomList.add(new Room(1, "Room-01", 1));
-		roomList.add(new Room(2, "Room-02", 1));
-		roomList.add(new Room(3, "Room-03", 1));
-		roomList.add(new Room(4, "Room-04", 1));
-		roomList.add(new Room(5, "Room-05", 1));
+		roomList.add(new Room(1, "101 (Room-01)", 1));
+		roomList.add(new Room(2, "102 (Room-02)", 1));
+		roomList.add(new Room(3, "103 (Room-03)", 3));
+		roomList.add(new Room(4, "201 (Room-04)", 4));
+		roomList.add(new Room(5, "202 (Room-05)", 4));
 		
 		return ResponseEntity.ok(room_service.insert(roomList));
 	}

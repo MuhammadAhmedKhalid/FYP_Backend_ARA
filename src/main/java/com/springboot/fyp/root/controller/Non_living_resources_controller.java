@@ -24,9 +24,9 @@ public class Non_living_resources_controller {
 		List<Non_Living_Resources> resourcesList = new ArrayList<>();
 		resourcesList.add(new Non_Living_Resources(1, "Description", 10, 1, 1));
 		resourcesList.add(new Non_Living_Resources(2, "Description", 10, 2, 1));
-		resourcesList.add(new Non_Living_Resources(3, "Description", 10, 3, 1));
-		resourcesList.add(new Non_Living_Resources(4, "Description", 10, 4, 1));
-		resourcesList.add(new Non_Living_Resources(5, "Description", 10, 5, 1));
+		resourcesList.add(new Non_Living_Resources(3, "Description", 10, 3, 2));
+		resourcesList.add(new Non_Living_Resources(4, "Description", 10, 4, 2));
+		resourcesList.add(new Non_Living_Resources(5, "Description", 10, 5, 5));
 		
 		return ResponseEntity.ok(non_living_resource_service.insert(resourcesList));
 	}
