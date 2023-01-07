@@ -51,7 +51,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				"/add_room", "/rooms", 
 				"/addResourceType", "/resourceTypes",
 				"/add_resources", "/resources",
-				"/addObjectRequest")
+				"/addObjectRequest",
+				"/addRoomRequest", "/getRoomRequests")
 		.permitAll()
 		.anyRequest()
 		.authenticated()
