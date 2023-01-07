@@ -23,8 +23,18 @@ public class Non_living_resource_service {
 		return "Operation performed successfully.";
 	}
 	
+	public void addQuantity(int resource_type_id, int quantity) {
+		for(Non_Living_Resources resources : getAll()) {
+			if(resources.getResource_type_id() == resource_type_id) {
+				Optional<Non_Living_Resources> non_Living_Resources = non_living_resources_repository.findById(resources.getResource_id());
+				Non_Living_Resources non_Living_Resource = non_Living_Resources.get();
+				non_Living_Resource.setQuantity(resources.getQuantity()+quantity);
+				non_living_resources_repository.save(non_Living_Resource);
+			}
+		}
+	}
+	
 	public List<Non_Living_Resources> getAll(){
-//		return non_living_resources_repository.findAll();
 		List<Non_Living_Resources> resources = new ArrayList<>();
  		for (Non_Living_Resources resource : non_living_resources_repository.findAll()) {
 			if(resource.getQuantity() != 0) {
