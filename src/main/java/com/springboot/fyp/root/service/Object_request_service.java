@@ -1,13 +1,13 @@
 package com.springboot.fyp.root.service;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.springboot.fyp.root.dao.Object_request_repository;
+import com.springboot.fyp.root.models.Non_Living_Resources;
 import com.springboot.fyp.root.models.Object_Request;
 
 @Service
@@ -21,54 +21,38 @@ public class Object_request_service {
 	
 	@Autowired
 	Non_living_resource_service non_living_resource_service;
-
-		public void update() {
-			List<Object_Request> request_list = object_request_repository.findAll();
-			for (Object_Request request : request_list) {
-
-				int endDateMonth = Integer.parseInt(request.getEndDate().substring(0, 2));
-				int endDateDay = Integer.parseInt(request.getEndDate().substring(3, 5));
-				int endDateYear = Integer.parseInt(request.getEndDate().substring(6));
-				
-				int endTimeHours = Integer.parseInt(request.getEndTime().substring(0, 2));
-				int endTimeMins = Integer.parseInt(request.getEndTime().substring(3));
-				
-				LocalDate currentDate = LocalDate.now(); 
-				LocalTime currentTime = LocalTime.now(); 
-				LocalDate endDate = LocalDate.of(endDateYear, endDateMonth, endDateDay); 
-				LocalTime endTime = LocalTime.of(endTimeHours, endTimeMins);
-				
-		    	if ((endDate.isEqual(currentDate) || endDate.isAfter(currentDate)) && 
-		    			(endTime.compareTo(currentTime) >= 0)) {
-				      System.out.println("The date is equal to or greater than today's date");
-				    } else {
-				      System.out.println("Resource is free");
-				      non_living_resource_service.addQuantity(request.getResource_type_id(), request.getQuantity());
-				      object_request_repository.deleteById(request.getObj_req_id());
-				    }
-			}
-		}
-
-		// where to call update(update function will add and subtract quantity according to date and time)
 		
 	public String add(Object_Request object_Request) {
-
-		object_Request.setObj_req_id(sequenceGeneratorService.getSequenceNumber(object_Request.SEQUENCE_NAME));
 		
+		object_Request.setObj_req_id(sequenceGeneratorService.getSequenceNumber(object_Request.SEQUENCE_NAME));
 		int available_quantity = non_living_resource_service.getQuantity(object_Request.getResource_type_id());
-		// first check if available according to date and then time
-		if(object_Request.getQuantity() > available_quantity) {
-			
+		if(object_Request.getQuantity() > available_quantity) {			
 			return null;
 		}
-		else {
-			// minus quantity according to date and time
-			int quantity = available_quantity - object_Request.getQuantity();
-			non_living_resource_service.updateQuantity(object_Request.getResource_type_id(), quantity);
-		}
-		object_request_repository.insert(object_Request);
 		
+		List<Object_Request> objectRequests = getAll();
+		if(objectRequests.size() != 0) {
+			Object_Request request = objectRequests.get(objectRequests.size()-1);
+			object_Request.setAvailableQuantity(object_Request.getQuantity()-request.getAvailableQuantity());
+		}else {
+			for(Non_Living_Resources resources : non_living_resource_service.getAll()) {
+				if(resources.getResource_type_id() == object_Request.getResource_type_id()) {
+					object_Request.setAvailableQuantity(resources.getQuantity()-object_Request.getQuantity());	
+				}
+				break;
+			}
+		}
+		
+		object_request_repository.insert(object_Request);
 		return "Operation performed successfully.";
+	}
+	
+	public List<Object_Request> getAll(){
+		List<Object_Request> objectRequests = object_request_repository.findAll();
+		if(objectRequests.size() != 0) {
+			return objectRequests;
+		}
+		return new ArrayList<>();
 	}
 	
 }

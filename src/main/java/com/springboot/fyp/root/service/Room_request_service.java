@@ -1,8 +1,6 @@
 package com.springboot.fyp.root.service;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,21 +29,9 @@ public class Room_request_service {
 	public List<Room_Request> getAll(){
 		List<Room_Request> roomRequests = room_request_repository.findAll();
 		if(roomRequests.size() != 0) {
-			List<Room_Request> requested_rooms = new ArrayList<>();
-			for(Room_Request room_Request: roomRequests) {	
-				SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");  
-			    Date date_time = new Date();  
-			    int result = room_Request.getDate().compareTo(formatter.format(date_time));
-			    if(result < 0) {
-			    	room_request_repository.deleteById(room_Request.getRoom_req_id());
-			    }else {
-			    	requested_rooms.add(room_Request);
-			    }
-			}
-			return requested_rooms;
+			return roomRequests;
 		}
 		return new ArrayList<>();
-		
 	}
 	
 }
