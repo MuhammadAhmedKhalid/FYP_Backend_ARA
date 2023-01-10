@@ -19,7 +19,6 @@ public class Object_Request {
 	private int room_id;
 	private int resource_type_id;
 	private int quantity;
-	private int availableQuantity;
 	private String startTime;
 	private String endTime;
 	private String date;
