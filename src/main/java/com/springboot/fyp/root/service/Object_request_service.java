@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.springboot.fyp.root.dao.Object_request_repository;
 import com.springboot.fyp.root.models.Object_Request;
-import com.springboot.fyp.root.models.Resource_occupied;
 
 @Service
 public class Object_request_service {
@@ -21,9 +20,6 @@ public class Object_request_service {
 	
 	@Autowired
 	Non_living_resource_service non_living_resource_service;
-	
-	@Autowired
-	Resource_occupied_service resource_occupied_service;
 		
 	public String add(Object_Request object_Request) {
 		
@@ -32,11 +28,6 @@ public class Object_request_service {
 		if(object_Request.getQuantity() > available_quantity) {			
 			return null;
 		}
-		
-		Resource_occupied resource_occupied = new Resource_occupied(object_Request.getResource_type_id(), 
-				object_Request.getRoom_id(), object_Request.getQuantity(), object_Request.getStartTime(), object_Request.getEndTime(), 
-				object_Request.getDate());
-		resource_occupied_service.add(resource_occupied);
 		
 		object_request_repository.insert(object_Request);
 		return "Operation performed successfully.";
