@@ -47,12 +47,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.disable()
 		.authorizeRequests()
 		.antMatchers("/login", "/create-user", "/get_institute_types", 
-				"/add_department", "/departments",
-				"/add_room", "/rooms", 
-				"/addResourceType", "/resourceTypes",
-				"/add_resources", "/resources",
-				"/addObjectRequest", "/getObjectRequests",
-				"/addRoomRequest", "/getRoomRequests")
+				"/add_department",
+				"/add_room",
+				"/addResourceType",
+				"/add_resources")
 		.permitAll()
 		.anyRequest()
 		.authenticated()
