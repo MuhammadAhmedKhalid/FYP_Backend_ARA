@@ -16,6 +16,8 @@ public class Room_Request {
 	@Id
 	private int room_req_id;
 	private int department_id;
+	private int institute_id;
+	private int user_id;
 	private int room_id;
 	private String startTime;
 	private String endTime;

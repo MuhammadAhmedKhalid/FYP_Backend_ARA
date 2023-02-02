@@ -16,6 +16,8 @@ public class Object_Request {
 	@Id
 	private int obj_req_id;
 	private int department_id;
+	private int institute_id;
+	private int user_id;
 	private int room_id;
 	private int resource_type_id;
 	private int quantity;
