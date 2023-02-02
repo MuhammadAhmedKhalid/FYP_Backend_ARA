@@ -1,6 +1,5 @@
 package com.springboot.fyp.root.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +19,11 @@ public class Object_request_service {
 	
 	@Autowired
 	Non_living_resource_service non_living_resource_service;
+	
+	@Autowired
+	RedisUtilityRoot redisUtilityRoot;
+	
+	public static final String HASH_KEY_OBJECT_REQUESTS = "ObjectRequests";
 		
 	public String add(Object_Request object_Request) {
 		
@@ -30,15 +34,19 @@ public class Object_request_service {
 		}
 		
 		object_request_repository.insert(object_Request);
+		redisUtilityRoot.deleteList(HASH_KEY_OBJECT_REQUESTS);
 		return "Operation performed successfully.";
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Object_Request> getAll(){
-		List<Object_Request> objectRequests = object_request_repository.findAll();
-		if(objectRequests.size() != 0) {
-			return objectRequests;
+		if(redisUtilityRoot.getList(HASH_KEY_OBJECT_REQUESTS).size()>0) {
+			return redisUtilityRoot.getList(HASH_KEY_OBJECT_REQUESTS);
+		}else {
+			List<Object_Request> objectRequests = object_request_repository.findAll();
+			redisUtilityRoot.saveList(objectRequests, HASH_KEY_OBJECT_REQUESTS);
+			return redisUtilityRoot.getList(HASH_KEY_OBJECT_REQUESTS);
 		}
-		return new ArrayList<>();
 	}
 	
 }

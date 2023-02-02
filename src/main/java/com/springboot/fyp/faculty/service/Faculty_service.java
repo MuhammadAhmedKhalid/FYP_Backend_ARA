@@ -64,6 +64,5 @@ public class Faculty_service {
 			redisUtilityRoot.saveList(faculty_list, HASH_KEY_FACULTY_LIST+institute_id);
 			return redisUtilityRoot.getList(HASH_KEY_FACULTY_LIST+institute_id);
 		}
-		
 	}
 }
