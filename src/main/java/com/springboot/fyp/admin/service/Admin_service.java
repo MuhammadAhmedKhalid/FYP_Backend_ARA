@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import com.springboot.fyp.faculty.dao.Faculty_repositiory;
+import com.springboot.fyp.faculty.models.Faculty;
 import com.springboot.fyp.root.dao.Institute_repository;
 import com.springboot.fyp.root.dao.User_repository;
 import com.springboot.fyp.root.models.Institute;
@@ -36,6 +38,9 @@ public class Admin_service {
 	@Autowired
 	Institute_repository institute_repository;
 	
+	@Autowired
+	Faculty_repositiory faculty_repositiory;
+	
 	public String create(User user, boolean isFaculty){
 		User checkUser = user_repository.findByEmail(user.getEmail());
 		if(checkUser != null) {
@@ -64,15 +69,25 @@ public class Admin_service {
 		if(checkUser != null && checkUser.getPassword().equals(encryptedPassword)) {
 			 final String jwt = getToken(email);
 			 String institute_name = "";
+			 int institute_id = 0;
 			 
 			 List<Institute> institutesList = institute_repository.findAll();
 			 for (int i=0; i < institutesList.size(); i++) {
 				 if(institutesList.get(i).getUser_id() == checkUser.getUser_id()) {
 					 institute_name = institutesList.get(i).getInstitute_name();
+					 institute_id = institutesList.get(i).getInstitute_id();
+				 }
+				 else if (!checkUser.is_admin()) {
+					 List<Faculty> faculty_lst = faculty_repositiory.findAll();
+					 for (Faculty checkFaculty : faculty_lst) {
+						 if(checkUser.getUser_id() == checkFaculty.getUser().getUser_id()) {
+							 institute_id = faculty_lst.get(i).getInstitute_id();
+						 }
+					 }
 				 }
 			 }
 			 
-			 JWT_Response jwt_Response = new JWT_Response(checkUser.getUser_id(), email, jwt, checkUser.getName(), institute_name, checkUser.is_admin());
+			 JWT_Response jwt_Response = new JWT_Response(checkUser.getUser_id(), email, jwt, checkUser.getName(), institute_name, institute_id, checkUser.is_admin());
 			return jwt_Response;
 		}
 		return null;
