@@ -1,6 +1,5 @@
 package com.springboot.fyp.root.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,20 +17,27 @@ public class Room_request_service {
 	@Autowired
 	SequenceGeneratorService sequenceGeneratorService;
 	
+	@Autowired
+	RedisUtilityRoot redisUtilityRoot;
+	
+	public static final String HASH_KEY_ROOM_REQUESTS = "RoomRequests";
+	
 	public String add(Room_Request room_Request) {
-		
 		room_Request.setRoom_req_id(sequenceGeneratorService.getSequenceNumber(room_Request.SEQUENCE_NAME));
 		room_request_repository.insert(room_Request);
+		redisUtilityRoot.deleteList(HASH_KEY_ROOM_REQUESTS);
 		return "Operation performed successfully.";
-		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Room_Request> getAll(){
-		List<Room_Request> roomRequests = room_request_repository.findAll();
-		if(roomRequests.size() != 0) {
-			return roomRequests;
+		if(redisUtilityRoot.getList(HASH_KEY_ROOM_REQUESTS).size()>0) {
+			return redisUtilityRoot.getList(HASH_KEY_ROOM_REQUESTS);
+		}else {
+			List<Room_Request> roomRequests = room_request_repository.findAll();
+			redisUtilityRoot.saveList(roomRequests, HASH_KEY_ROOM_REQUESTS);
+			return redisUtilityRoot.getList(HASH_KEY_ROOM_REQUESTS);
 		}
-		return new ArrayList<>();
 	}
 	
 }

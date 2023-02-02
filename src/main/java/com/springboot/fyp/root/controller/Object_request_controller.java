@@ -30,13 +30,6 @@ public class Object_request_controller {
 	
 	@GetMapping("/getObjectRequests")
 	public ResponseEntity<List<Object_Request>> getAllObjectRequests(){
-		
-//		List<Object_Request> object_requests = object_request_service.getAll(institute_id);
-//		if(object_requests == null) {
-//			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-//		}
-//		return ResponseEntity.ok(object_requests);
-		
 		return ResponseEntity.ok(object_request_service.getAll());
 	}
 	
