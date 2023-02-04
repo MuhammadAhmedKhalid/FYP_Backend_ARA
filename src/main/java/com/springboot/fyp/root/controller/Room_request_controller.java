@@ -29,18 +29,13 @@ public class Room_request_controller {
 		return ResponseEntity.ok(response);
 	}
 	
-	@GetMapping("/getRoomRequests")
-	public ResponseEntity<List<Room_Request>> getAllRequests(){
-		return ResponseEntity.ok(room_request_service.getAll());
+	@GetMapping("/getRoomRequests/{institute_id}")
+	public ResponseEntity<List<Room_Request>> getAllRequests(@PathVariable("institute_id") int institute_id){
+		List<Room_Request> roomRequests = room_request_service.getAll(institute_id);
+		if(roomRequests == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		}
+		return ResponseEntity.ok(roomRequests);
 	}
-	
-//	@GetMapping("/getRoomRequests/{institute_id}")
-//	public ResponseEntity<List<Room_Request>> getAllRequests(@PathVariable("institute_id") int institute_id){
-//		List<Room_Request> roomRequests = room_request_service.getAll(institute_id);
-//		if(roomRequests == null) {
-//			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-//		}
-//		return ResponseEntity.ok(roomRequests);
-//	}
 	
 }
