@@ -30,7 +30,7 @@ public class Admin_controller {
 	@PostMapping("/login")
 	public ResponseEntity loginAdmin(@RequestBody User user){
 		JWT_Response response = admin_service.signin(user.getEmail(), user.getPassword());
-		if(response.equals(null)) {
+		if(response == null) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect credentials.");
 		}
 		return ResponseEntity.ok(response);
