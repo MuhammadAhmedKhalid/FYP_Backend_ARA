@@ -81,7 +81,7 @@ public class Admin_service {
 					 List<Faculty> faculty_lst = faculty_repositiory.findAll();
 					 for (Faculty checkFaculty : faculty_lst) {
 						 if(checkUser.getUser_id() == checkFaculty.getUser().getUser_id()) {
-							 institute_id = faculty_lst.get(i).getInstitute_id();
+							 institute_id = checkFaculty.getInstitute_id();
 						 }
 					 }
 				 }

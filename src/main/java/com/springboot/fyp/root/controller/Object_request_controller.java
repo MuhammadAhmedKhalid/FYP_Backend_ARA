@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.fyp.root.models.Object_Request;
-import com.springboot.fyp.root.models.Room_Request;
 import com.springboot.fyp.root.service.Object_request_service;
 
 @RestController
