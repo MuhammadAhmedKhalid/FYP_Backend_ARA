@@ -1,5 +1,6 @@
 package com.springboot.fyp.root.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,18 +35,25 @@ public class Object_request_service {
 		}
 		
 		object_request_repository.insert(object_Request);
-		redisUtilityRoot.deleteList(HASH_KEY_OBJECT_REQUESTS);
+		redisUtilityRoot.deleteList(HASH_KEY_OBJECT_REQUESTS+object_Request.getInstitute_id());
 		return "Operation performed successfully.";
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Object_Request> getAll(){
-		if(redisUtilityRoot.getList(HASH_KEY_OBJECT_REQUESTS).size()>0) {
-			return redisUtilityRoot.getList(HASH_KEY_OBJECT_REQUESTS);
+	public List<Object_Request> getAll(int institute_id){
+		if(redisUtilityRoot.getList(HASH_KEY_OBJECT_REQUESTS+institute_id).size()>0) {
+			return redisUtilityRoot.getList(HASH_KEY_OBJECT_REQUESTS+institute_id);
 		}else {
-			List<Object_Request> objectRequests = object_request_repository.findAll();
-			redisUtilityRoot.saveList(objectRequests, HASH_KEY_OBJECT_REQUESTS);
-			return redisUtilityRoot.getList(HASH_KEY_OBJECT_REQUESTS);
+			
+			List<Object_Request> objectRequests = new ArrayList<>();
+			for(Object_Request requests : object_request_repository.findAll()) {
+				if(requests.getInstitute_id() == institute_id) {
+					objectRequests.add(requests);
+				}
+			}
+			
+			redisUtilityRoot.saveList(objectRequests, HASH_KEY_OBJECT_REQUESTS+institute_id);
+			return objectRequests;
 		}
 	}
 	
