@@ -22,6 +22,6 @@ public class Department {
 	@Id
 	private int department_id;
 	private String department_name;
-	private int institue_id;
+	private int institute_id;
 	
 }
