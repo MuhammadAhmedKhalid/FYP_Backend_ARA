@@ -14,10 +14,12 @@ public class Department_service {
 	@Autowired
 	Department_repository department_repository;
 	
-	public String insert(List<Department> departmentList){
-		for (Department department : departmentList) {
-			department_repository.insert(department);
-		}
+	@Autowired
+	SequenceGeneratorService sequenceGeneratorService;
+	
+	public String insert(Department department){
+		department.setDepartment_id(sequenceGeneratorService.getSequenceNumber(department.SEQUENCE_NAME));
+		department_repository.insert(department);
 		return "Operation performed successfully.";
 	}
 	
