@@ -19,7 +19,6 @@ public class Room_service {
 
 	public String insert(Room room) {
 		room.setRoom_id(sequenceGeneratorService.getSequenceNumber(room.SEQUENCE_NAME));
-		System.out.println(room);
 		room_repository.insert(room);
 		return "Operation performed successfully.";
 	}
