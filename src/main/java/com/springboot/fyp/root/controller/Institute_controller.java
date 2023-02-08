@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springboot.fyp.root.models.AddInstituteResponse;
 import com.springboot.fyp.root.models.Institute;
 import com.springboot.fyp.root.service.Institute_service;
 
@@ -20,7 +21,7 @@ public class Institute_controller {
 	Institute_service institute_service;
 	
 	@PostMapping("/add_institute")
-	public ResponseEntity<String> addInstitute(@RequestBody Institute institute) {
+	public ResponseEntity<AddInstituteResponse> addInstitute(@RequestBody Institute institute) {
 		return ResponseEntity.ok(institute_service.insert(institute));
 		
 	}

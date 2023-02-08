@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.springboot.fyp.root.dao.Institute_repository;
+import com.springboot.fyp.root.models.AddInstituteResponse;
 import com.springboot.fyp.root.models.Institute;
 
 @Service
@@ -23,11 +24,14 @@ public class Institute_service {
 	@Autowired
 	RedisUtilityRoot redisUtilityRoot;
 	
-	public String insert(Institute institute){
+	public AddInstituteResponse insert(Institute institute){
 		institute.setInstitute_id(sequenceGeneratorService.getSequenceNumber(institute.SEQUENCE_NAME));
 		institute_repository.insert(institute);
 		redisUtilityRoot.deleteList(HASH_KEY_INSTITUTES_LIST);
-		return institute.getInstitute_name();
+		AddInstituteResponse response = new AddInstituteResponse();
+		response.setInstitute_id(institute.getInstitute_id());
+		response.setInstitute_name(institute.getInstitute_name());
+		return response;
 	}
 	
 	@SuppressWarnings("unchecked")
