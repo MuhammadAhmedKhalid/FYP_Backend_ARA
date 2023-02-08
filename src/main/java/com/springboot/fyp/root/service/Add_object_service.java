@@ -26,6 +26,7 @@ public class Add_object_service {
 		Resource_type resourceType = new Resource_type();
 		resourceType.setResource_type_id(sequenceGeneratorService.getSequenceNumber(resourceType.SEQUENCE_NAME));
 		resourceType.setObject_name(object.getObject_name());
+		resourceType.setInstitute_id(object.getInstitute_id());
 		resource_type_repository.insert(resourceType);
 		
 		Non_Living_Resources non_Living_Resources = new Non_Living_Resources();
@@ -33,6 +34,7 @@ public class Add_object_service {
 		non_Living_Resources.setResource_type_id(resourceType.getResource_type_id());
 		non_Living_Resources.setQuantity(object.getQuantity());
 		non_Living_Resources.setRoom_id(object.getRoom_id());
+		non_Living_Resources.setInstitute_id(object.getInstitute_id());
 		non_living_resources_repository.insert(non_Living_Resources);
 		
 		return "Operation performed successfully.";

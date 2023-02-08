@@ -16,5 +16,6 @@ public class Resource_type {
 	@Id
 	private int resource_type_id;
 	private String object_name;
+	private int institute_id;
 	
 }

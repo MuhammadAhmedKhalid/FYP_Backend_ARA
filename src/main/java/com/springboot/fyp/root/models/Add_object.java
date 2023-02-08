@@ -9,5 +9,6 @@ public class Add_object {
 	private int quantity;
 	private int resource_type_id;
 	private int room_id;
+	private int institute_id;
 
 }

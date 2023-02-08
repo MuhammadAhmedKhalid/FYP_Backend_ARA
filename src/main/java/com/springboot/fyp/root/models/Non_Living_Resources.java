@@ -18,5 +18,6 @@ public class Non_Living_Resources {
 	private int quantity;
 	private int resource_type_id;
 	private int room_id;
+	private int institute_id;
 	
 }
