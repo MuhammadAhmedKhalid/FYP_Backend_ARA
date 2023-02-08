@@ -25,7 +25,7 @@ public class Get_objects_service {
 		for(Non_Living_Resources resource : non_living_resource_service.getAll()) {
 			for(Resource_type resource_type : resource_type_service.getAll()) {
 				if(resource.getResource_type_id() == resource_type.getResource_type_id()) {
-					objects.add(resource_type.getName());
+					objects.add(resource_type.getObject_name());
 				}
 			}
 		}

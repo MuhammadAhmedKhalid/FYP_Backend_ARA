@@ -1,6 +1,7 @@
 package com.springboot.fyp.root.models;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Data;
@@ -9,12 +10,11 @@ import lombok.Data;
 @Data
 public class Resource_type {
 	
-	public Resource_type(int resource_type_id, String name) {
-		this.resource_type_id = resource_type_id;
-		this.name = name;
-	}
+	@Transient
+	public final String SEQUENCE_NAME="ResourceType_sequence";
+	
 	@Id
 	private int resource_type_id;
-	private String name;
+	private String object_name;
 	
 }

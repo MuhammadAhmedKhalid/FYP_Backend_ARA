@@ -15,10 +15,12 @@ public class Non_living_resource_service {
 	@Autowired
 	Non_living_resources_repository non_living_resources_repository;
 	
-	public String insert(List<Non_Living_Resources> resourcesList){
-		for (Non_Living_Resources non_living_resource : resourcesList) {
-			non_living_resources_repository.insert(non_living_resource);
-		}
+	@Autowired
+	SequenceGeneratorService sequenceGeneratorService;
+	
+	public String insert(Non_Living_Resources resources){
+		resources.setResource_id(sequenceGeneratorService.getSequenceNumber(resources.SEQUENCE_NAME));
+		non_living_resources_repository.insert(resources);
 		return "Operation performed successfully.";
 	}
 	
