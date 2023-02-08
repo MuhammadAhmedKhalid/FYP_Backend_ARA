@@ -13,11 +13,14 @@ public class Room_service {
 	
 	@Autowired
 	Room_repository room_repository;
+	
+	@Autowired
+	SequenceGeneratorService sequenceGeneratorService;
 
-	public String insert(List<Room> roomList) {
-		for(Room room :roomList ) {
-			room_repository.insert(room);
-		}
+	public String insert(Room room) {
+		room.setRoom_id(sequenceGeneratorService.getSequenceNumber(room.SEQUENCE_NAME));
+		System.out.println(room);
+		room_repository.insert(room);
 		return "Operation performed successfully.";
 	}
 	
