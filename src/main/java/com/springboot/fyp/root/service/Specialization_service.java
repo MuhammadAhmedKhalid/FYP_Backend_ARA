@@ -1,5 +1,6 @@
 package com.springboot.fyp.root.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,18 +18,38 @@ public class Specialization_service {
 	@Autowired
 	SequenceGeneratorService sequenceGeneratorService;
 	
+	@Autowired
+	RedisUtilityRoot redisUtilityRoot;
+	
+	public static final String HASH_KEY_SPECIALIZATION_LIST = "SpecializationList";
+	
 	public String add(Specialization specialization) {
 		specialization.setSpecialization_id(sequenceGeneratorService.getSequenceNumber(specialization.SEQUENCE_NAME));
 		specialization_repository.insert(specialization);
+		redisUtilityRoot.deleteList(HASH_KEY_SPECIALIZATION_LIST+specialization.getInstitue_id());
 		return "Operation performed successfully.";
 	}
 	
-	public List<Specialization> getAll(){
-		List<Specialization> specializations = specialization_repository.findAll();
-		if(specializations.isEmpty()) {
-			return null;
+	@SuppressWarnings("unchecked")
+	public List<Specialization> getAll(int institute_id){
+		List<Specialization> specializations = redisUtilityRoot.getList(HASH_KEY_SPECIALIZATION_LIST+institute_id);
+		if(specializations.size() > 0) {
+			return specializations;
+		}else {
+			List<Specialization> specialization_lst = specialization_repository.findAll();
+			if(specialization_lst.isEmpty()) {
+				return null;
+			}else {
+				List<Specialization> specializations_lst = new ArrayList<>();
+				for(Specialization specialization : specialization_lst) {
+					if(specialization.getInstitue_id() == institute_id) {
+						specializations_lst.add(specialization);
+					}
+				}
+				redisUtilityRoot.saveList(specializations_lst, HASH_KEY_SPECIALIZATION_LIST+institute_id);
+				return specializations_lst;
+			}
 		}
-		return specializations;
 	}
 	
 }
