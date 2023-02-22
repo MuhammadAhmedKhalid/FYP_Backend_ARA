@@ -15,6 +15,6 @@ public class Specialization {
 	private int specialization_id;
 	private String specialization_name;
 	private int department_id;
-	private int institue_id;
+	private int institute_id;
 	
 }

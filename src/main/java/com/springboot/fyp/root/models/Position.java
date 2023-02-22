@@ -14,6 +14,6 @@ public class Position {
 	
 	private int position_id;
 	private String position_name;
-	private int institue_id;
+	private int institute_id;
 	
 }

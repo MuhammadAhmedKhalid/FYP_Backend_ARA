@@ -26,7 +26,7 @@ public class Specialization_service {
 	public String add(Specialization specialization) {
 		specialization.setSpecialization_id(sequenceGeneratorService.getSequenceNumber(specialization.SEQUENCE_NAME));
 		specialization_repository.insert(specialization);
-		redisUtilityRoot.deleteList(HASH_KEY_SPECIALIZATION_LIST+specialization.getInstitue_id());
+		redisUtilityRoot.deleteList(HASH_KEY_SPECIALIZATION_LIST+specialization.getInstitute_id());
 		return "Operation performed successfully.";
 	}
 	
@@ -42,7 +42,7 @@ public class Specialization_service {
 			}else {
 				List<Specialization> specializations_lst = new ArrayList<>();
 				for(Specialization specialization : specialization_lst) {
-					if(specialization.getInstitue_id() == institute_id) {
+					if(specialization.getInstitute_id() == institute_id) {
 						specializations_lst.add(specialization);
 					}
 				}

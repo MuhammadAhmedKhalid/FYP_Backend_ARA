@@ -26,13 +26,13 @@ public class Position_service {
 	public String add(Position position) {
 		position.setPosition_id(sequenceGeneratorService.getSequenceNumber(position.SEQUENCE_NAME));
 		position_repository.insert(position);
-		redisUtilityRoot.deleteList(HASH_KEY_POSITION_LIST+position.getInstitue_id());
+		redisUtilityRoot.deleteList(HASH_KEY_POSITION_LIST+position.getInstitute_id());
 		return "Operation performed successfully.";
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Position> getAll(int institute_id){
-		List<Position> positions = redisUtilityRoot.getList(HASH_KEY_POSITION_LIST+institute_id);;
+		List<Position> positions = redisUtilityRoot.getList(HASH_KEY_POSITION_LIST+institute_id);
 		if(positions.size() > 0) {
 			return positions;
 		}else {
@@ -42,7 +42,7 @@ public class Position_service {
 			} else {
 				List<Position> positions_lst = new ArrayList<>();
 				for(Position position : position_lst) {
-					if(position.getInstitue_id() == institute_id) {
+					if(position.getInstitute_id() == institute_id) {
 						positions_lst.add(position);
 					}
 				}
