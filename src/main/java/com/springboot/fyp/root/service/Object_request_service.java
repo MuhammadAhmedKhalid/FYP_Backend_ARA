@@ -44,7 +44,6 @@ public class Object_request_service {
 		if(redisUtilityRoot.getList(HASH_KEY_OBJECT_REQUESTS+institute_id).size()>0) {
 			return redisUtilityRoot.getList(HASH_KEY_OBJECT_REQUESTS+institute_id);
 		}else {
-			
 			List<Object_Request> objectRequests = new ArrayList<>();
 			for(Object_Request requests : object_request_repository.findAll()) {
 				if(requests.getInstitute_id() == institute_id) {
@@ -55,6 +54,21 @@ public class Object_request_service {
 			redisUtilityRoot.saveList(objectRequests, HASH_KEY_OBJECT_REQUESTS+institute_id);
 			return objectRequests;
 		}
+	}
+	
+	public String delete(int obj_req_id) {
+		List<Object_Request> objectRequests = object_request_repository.findAll();
+		int institute_id = 0;
+		for(Object_Request requests : objectRequests) {
+			if(requests.getObj_req_id() == obj_req_id) {
+				institute_id = requests.getInstitute_id();
+				object_request_repository.deleteById(obj_req_id);
+				redisUtilityRoot.deleteList(HASH_KEY_OBJECT_REQUESTS+institute_id);
+				redisUtilityRoot.saveList(object_request_repository.findAll(), HASH_KEY_OBJECT_REQUESTS+institute_id);
+				return "Requested object deleted.";
+			}
+		}
+		return null;
 	}
 	
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,6 +37,15 @@ public class Object_request_controller {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
 		return ResponseEntity.ok(objectRequests);
+	}
+	
+	@DeleteMapping("/deleteObjectRequest/{obj_req_id}")
+	public ResponseEntity<String> deleteObjectRequest(@PathVariable("obj_req_id") int obj_req_id){
+		String response = object_request_service.delete(obj_req_id);
+		if(response == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		}
+		return ResponseEntity.ok(response);
 	}
 	
 }
