@@ -35,6 +35,7 @@ public class Object_service {
 	
 	public static final String HASH_KEY_NonLivingResources_LIST = "NonLivingResourcesList";
 	public static final String HASH_KEY_ResourceTypes_LIST = "ResourceTypesList";
+	public static final String HASH_KEY_Objects_LIST = "ObjectsList";
 	
 	public String insert(Object object) {
 		
@@ -52,25 +53,29 @@ public class Object_service {
 		non_Living_Resources.setInstitute_id(object.getInstitute_id());
 		non_living_resources_repository.insert(non_Living_Resources);
 		
+		redisUtilityRoot.deleteList(HASH_KEY_Objects_LIST+object.getInstitute_id());
 		redisUtilityRoot.deleteList(HASH_KEY_NonLivingResources_LIST+object.getInstitute_id());
 		redisUtilityRoot.deleteList(HASH_KEY_ResourceTypes_LIST+object.getInstitute_id());
 		
 		return "Operation performed successfully.";
 	}
 	
-	public List<String> getAll(){
-		
-		List<String> objects = new ArrayList<>();
-		
-		for(Non_Living_Resources resource : non_living_resource_service.getAll()) {
-			for(Resource_type resource_type : resource_type_service.getAll()) {
-				if(resource.getResource_type_id() == resource_type.getResource_type_id()) {
-					objects.add(resource_type.getObject_name());
+	@SuppressWarnings("unchecked")
+	public List<String> getAll(int institute_id){
+		if(redisUtilityRoot.getList(HASH_KEY_Objects_LIST+institute_id).size() > 0) {
+			return redisUtilityRoot.getList(HASH_KEY_Objects_LIST+institute_id);
+		} else {
+			List<String> objects = new ArrayList<>();
+			for(Non_Living_Resources resource : non_living_resource_service.getAll()) {
+				for(Resource_type resource_type : resource_type_service.getAll()) {
+					if(resource.getResource_type_id() == resource_type.getResource_type_id()) {
+						objects.add(resource_type.getObject_name());
+					}
 				}
 			}
+			redisUtilityRoot.saveList(objects, HASH_KEY_Objects_LIST+institute_id);
+			return objects;
 		}
-		return objects;
-		
 	}
 	
 }
