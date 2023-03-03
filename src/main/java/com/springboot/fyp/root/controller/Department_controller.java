@@ -23,6 +23,9 @@ public class Department_controller {
 	@PostMapping("/add_department")
 	public ResponseEntity<String> addDepartment(@RequestBody Department department) {
 		String response = department_service.insert(department);
+		if(response == null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Department already exists with this name.");
+		}
 		return ResponseEntity.ok(response);
 		
 	}

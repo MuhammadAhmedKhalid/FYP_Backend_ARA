@@ -24,6 +24,14 @@ public class Department_service {
 	public static final String HASH_KEY_DEPARTMENTS_LIST = "DepartmentsList";
 	
 	public String insert(Department department){
+		
+		for(Department dep: department_repository.findAll()) {
+			if(dep.getDepartment_name().equals(department.getDepartment_name())) {
+//				return "Department already exists with this name.";
+				return null;
+			}
+		}
+		
 		department.setDepartment_id(sequenceGeneratorService.getSequenceNumber(department.SEQUENCE_NAME));
 		department_repository.insert(department);
 		redisUtilityRoot.deleteList(HASH_KEY_DEPARTMENTS_LIST+department.getInstitute_id());
