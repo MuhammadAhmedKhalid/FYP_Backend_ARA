@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.springboot.fyp.root.dao.Room_request_repository;
-import com.springboot.fyp.root.models.Object_Request;
 import com.springboot.fyp.root.models.Room_Request;
 
 @Service

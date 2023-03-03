@@ -47,4 +47,19 @@ public class Staff_request_service {
 		}
 	}
 	
+	public String delete(int staff_req_id) {
+		List<Staff_Request> staffRequests = staff_request_repository.findAll();
+		int institute_id = 0;
+		for(Staff_Request requests : staffRequests) {
+			if(requests.getStaff_req_id() == staff_req_id) {
+				institute_id = requests.getInstitute_id();
+				staff_request_repository.deleteById(staff_req_id);
+				redisUtilityRoot.deleteList(HASH_KEY_ROOM_REQUESTS+institute_id);
+				redisUtilityRoot.saveList(staff_request_repository.findAll(), HASH_KEY_ROOM_REQUESTS+institute_id);
+				return "Requested object deleted.";
+			}
+		}
+		return null;
+	}
+	
 }
