@@ -39,13 +39,52 @@ public class Object_service {
 	
 	public String insert(Object object) {
 		
-		for(Non_Living_Resources resource : non_living_resource_service.getAll()) {
-			for(Resource_type resource_type : resource_type_service.getAll()) {
-				if(object.getObject_name().equals(resource_type.getObject_name()) 
-						&& object.getRoom_id() == resource.getRoom_id()
-						&& object.getDepartment_id() == resource.getDepartment_id()) {
-					return null;
-				}}}
+		int resource_id = 0;
+		
+		List<Resource_type> allResources = resource_type_service.getAll();
+		for(Resource_type resource : allResources) {
+			if(resource.getObject_name().equals(object.getObject_name())) {
+				resource_id = resource.getResource_type_id();
+				System.out.println(resource_id);
+				break;
+			}
+		}
+		
+		if(resource_id != 0) {
+			for(Non_Living_Resources resource : non_living_resource_service.getAll()) {
+				if(resource.getResource_type_id() == resource_id) {
+					if(object.getRoom_id() == resource.getRoom_id()
+							&& object.getDepartment_id() == resource.getDepartment_id()) {
+						return null;
+					}
+				}
+			}
+		}
+		
+		if(resource_id != 0) {
+			for(Non_Living_Resources resource : non_living_resource_service.getAll()) {
+				if(resource.getResource_type_id() == resource_id) {
+					if(object.getRoom_id() != resource.getRoom_id()
+							|| object.getDepartment_id() != resource.getDepartment_id()) {
+						
+						Non_Living_Resources non_Living_Resources = new Non_Living_Resources();
+						non_Living_Resources.setResource_id(sequenceGeneratorService.getSequenceNumber(non_Living_Resources.SEQUENCE_NAME));
+						non_Living_Resources.setResource_type_id(resource_id);
+						non_Living_Resources.setQuantity(object.getQuantity());
+						non_Living_Resources.setRoom_id(object.getRoom_id());
+						non_Living_Resources.setInstitute_id(object.getInstitute_id());
+						non_Living_Resources.setDepartment_id(object.getDepartment_id());
+						non_living_resources_repository.insert(non_Living_Resources);
+						
+						redisUtilityRoot.deleteList(HASH_KEY_Objects_LIST+object.getInstitute_id());
+						redisUtilityRoot.deleteList(HASH_KEY_NonLivingResources_LIST+object.getInstitute_id());
+						redisUtilityRoot.deleteList(HASH_KEY_ResourceTypes_LIST+object.getInstitute_id());
+						
+						return "Operation performed successfully.";
+					}
+				}
+			}
+		}
 		
 		Resource_type resourceType = new Resource_type();
 		resourceType.setResource_type_id(sequenceGeneratorService.getSequenceNumber(resourceType.SEQUENCE_NAME));
