@@ -23,6 +23,9 @@ public class Specialization_controller {
 	@PostMapping("/addSpecialization")
 	public ResponseEntity<String> addSpecialization(@RequestBody Specialization specialization){
 		String response = specialization_service.add(specialization);
+		if(response == null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Specialization already exists with this name.");
+		}
 		return ResponseEntity.ok(response);
 	}
 	

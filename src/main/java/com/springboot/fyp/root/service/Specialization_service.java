@@ -24,6 +24,13 @@ public class Specialization_service {
 	public static final String HASH_KEY_SPECIALIZATION_LIST = "SpecializationList";
 	
 	public String add(Specialization specialization) {
+		
+		for(Specialization spec: specialization_repository.findAll()) {
+			if(spec.getSpecialization_name().equals(specialization.getSpecialization_name())) {
+				return null;
+			}
+		}
+		
 		specialization.setSpecialization_id(sequenceGeneratorService.getSequenceNumber(specialization.SEQUENCE_NAME));
 		specialization_repository.insert(specialization);
 		redisUtilityRoot.deleteList(HASH_KEY_SPECIALIZATION_LIST+specialization.getInstitute_id());
