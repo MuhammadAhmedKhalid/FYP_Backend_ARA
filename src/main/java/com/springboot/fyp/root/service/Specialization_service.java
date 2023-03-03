@@ -26,7 +26,8 @@ public class Specialization_service {
 	public String add(Specialization specialization) {
 		
 		for(Specialization spec: specialization_repository.findAll()) {
-			if(spec.getSpecialization_name().equals(specialization.getSpecialization_name())) {
+			if(spec.getSpecialization_name().equals(specialization.getSpecialization_name())
+					&& spec.getDepartment_id() == specialization.getDepartment_id()) {
 				return null;
 			}
 		}
