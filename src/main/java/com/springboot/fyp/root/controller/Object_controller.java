@@ -23,6 +23,9 @@ public class Object_controller {
 	@PostMapping("/addObject")
 	public ResponseEntity<String> addObject(@RequestBody Object object){
 		String response = object_service.insert(object);
+		if(response == null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Object already exists with this name in same room.");
+		}
 		return ResponseEntity.ok(response);
 	}
 	

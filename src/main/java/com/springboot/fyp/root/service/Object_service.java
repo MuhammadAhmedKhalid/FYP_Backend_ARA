@@ -39,6 +39,14 @@ public class Object_service {
 	
 	public String insert(Object object) {
 		
+		for(Non_Living_Resources resource : non_living_resource_service.getAll()) {
+			for(Resource_type resource_type : resource_type_service.getAll()) {
+				if(object.getObject_name().equals(resource_type.getObject_name()) 
+						&& object.getRoom_id() == resource.getRoom_id()
+						&& object.getDepartment_id() == resource.getDepartment_id()) {
+					return null;
+				}}}
+		
 		Resource_type resourceType = new Resource_type();
 		resourceType.setResource_type_id(sequenceGeneratorService.getSequenceNumber(resourceType.SEQUENCE_NAME));
 		resourceType.setObject_name(object.getObject_name());
@@ -51,6 +59,7 @@ public class Object_service {
 		non_Living_Resources.setQuantity(object.getQuantity());
 		non_Living_Resources.setRoom_id(object.getRoom_id());
 		non_Living_Resources.setInstitute_id(object.getInstitute_id());
+		non_Living_Resources.setDepartment_id(object.getDepartment_id());
 		non_living_resources_repository.insert(non_Living_Resources);
 		
 		redisUtilityRoot.deleteList(HASH_KEY_Objects_LIST+object.getInstitute_id());
