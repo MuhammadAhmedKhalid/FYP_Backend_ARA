@@ -24,6 +24,13 @@ public class Position_service {
 	public static final String HASH_KEY_POSITION_LIST = "PositionList";
 	
 	public String add(Position position) {
+		
+		for(Position pos: position_repository.findAll()) {
+			if(pos.getPosition_name().equals(position.getPosition_name())) {
+				return null;
+			}
+		}
+		
 		position.setPosition_id(sequenceGeneratorService.getSequenceNumber(position.SEQUENCE_NAME));
 		position_repository.insert(position);
 		redisUtilityRoot.deleteList(HASH_KEY_POSITION_LIST+position.getInstitute_id());

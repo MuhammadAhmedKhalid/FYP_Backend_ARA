@@ -23,6 +23,9 @@ public class Position_controller {
 	@PostMapping("/addPosition")
 	public ResponseEntity<String> addPosition(@RequestBody Position position){
 		String response = position_service.add(position);
+		if(response == null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Position already exists with this name.");
+		}
 		return ResponseEntity.ok(response);
 	}
 	
