@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.springboot.fyp.root.dao.Room_request_repository;
+import com.springboot.fyp.root.models.Object_Request;
 import com.springboot.fyp.root.models.Room_Request;
 
 @Service
@@ -45,6 +46,21 @@ public class Room_request_service {
 			redisUtilityRoot.saveList(roomRequests, HASH_KEY_ROOM_REQUESTS+institute_id);
 			return roomRequests;
 		}
+	}
+	
+	public String delete(int room_req_id) {
+		List<Room_Request> roomRequests = room_request_repository.findAll();
+		int institute_id = 0;
+		for(Room_Request requests : roomRequests) {
+			if(requests.getRoom_req_id() == room_req_id) {
+				institute_id = requests.getInstitute_id();
+				room_request_repository.deleteById(room_req_id);
+				redisUtilityRoot.deleteList(HASH_KEY_ROOM_REQUESTS+institute_id);
+				redisUtilityRoot.saveList(room_request_repository.findAll(), HASH_KEY_ROOM_REQUESTS+institute_id);
+				return "Requested room deleted.";
+			}
+		}
+		return null;
 	}
 	
 }
