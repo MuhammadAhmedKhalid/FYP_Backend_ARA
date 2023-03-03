@@ -3,7 +3,7 @@ package com.springboot.fyp.root.models;
 import lombok.Data;
 
 @Data
-public class Add_object {
+public class Object {
 	
 	private String object_name;
 	private int quantity;
