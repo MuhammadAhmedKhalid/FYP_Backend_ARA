@@ -27,7 +27,6 @@ public class Department_service {
 		
 		for(Department dep: department_repository.findAll()) {
 			if(dep.getDepartment_name().equals(department.getDepartment_name())) {
-//				return "Department already exists with this name.";
 				return null;
 			}
 		}

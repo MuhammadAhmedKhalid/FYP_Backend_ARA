@@ -23,6 +23,9 @@ public class Room_controller {
 	@PostMapping("/add_room")
 	public ResponseEntity<String> addRoom(@RequestBody Room room){
 		String response = room_service.insert(room);
+		if(response == null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Room already exists with this name.");
+		}
 		return ResponseEntity.ok(response);
 	}
 	

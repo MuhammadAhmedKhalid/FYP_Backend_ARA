@@ -24,6 +24,13 @@ public class Room_service {
 	public static final String HASH_KEY_ROOMS_LIST = "RoomsList";
 
 	public String insert(Room room) {
+		
+		for(Room rooms: room_repository.findAll()) {
+			if(rooms.getRoom_name().equals(room.getRoom_name())) {
+				return null;
+			}
+		}
+		
 		room.setRoom_id(sequenceGeneratorService.getSequenceNumber(room.SEQUENCE_NAME));
 		room_repository.insert(room);
 		redisUtilityRoot.deleteList(HASH_KEY_ROOMS_LIST+room.getInstitute_id());
