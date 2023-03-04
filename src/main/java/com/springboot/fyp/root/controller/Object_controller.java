@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.springboot.fyp.root.models.Non_Living_Resources;
 import com.springboot.fyp.root.models.Object;
 import com.springboot.fyp.root.service.Object_service;
 
@@ -40,12 +39,12 @@ public class Object_controller {
 	}
 	
 	@GetMapping("/objectsPerResourceType/{resourceType}")
-	public ResponseEntity<List<Non_Living_Resources>> objectsPerResourceType(@PathVariable("resourceType") int resourceType){
-		List<Non_Living_Resources> objects = object_service.getObjectsPerResourceType(resourceType);
-		if(objects == null) {
+	public ResponseEntity<Integer> objectsPerResourceType(@PathVariable("resourceType") int resourceType){
+		int totalQuantity = object_service.getObjectsPerResourceType(resourceType);
+		if(totalQuantity == 0) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
-		return ResponseEntity.ok(objects);
+		return ResponseEntity.ok(totalQuantity);
 	}
 	
 }

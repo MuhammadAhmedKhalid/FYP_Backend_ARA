@@ -126,14 +126,14 @@ public class Object_service {
 		}
 	}
 	
-	public List<Non_Living_Resources> getObjectsPerResourceType(int resourceType){
-		List<Non_Living_Resources> objects = new ArrayList<>();
+	public int getObjectsPerResourceType(int resourceType){
+		int totalQuantity = 0;
 		for(Non_Living_Resources resource : non_living_resource_service.getAll()) {
 			if(resource.getResource_type_id() == resourceType) {
-				objects.add(resource);
+				totalQuantity += resource.getQuantity();
 			}
 		}
-		return objects;
+		return totalQuantity;
 	}
 	
 }
