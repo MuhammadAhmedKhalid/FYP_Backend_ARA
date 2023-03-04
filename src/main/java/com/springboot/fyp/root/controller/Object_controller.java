@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springboot.fyp.root.models.Non_Living_Resources;
 import com.springboot.fyp.root.models.Object;
 import com.springboot.fyp.root.service.Object_service;
 
@@ -32,6 +33,15 @@ public class Object_controller {
 	@GetMapping("/objects/{institute_id}")
 	public ResponseEntity<List<String>> getObjects(@PathVariable("institute_id") int institute_id){
 		List<String> objects = object_service.getAll(institute_id);
+		if(objects == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		}
+		return ResponseEntity.ok(objects);
+	}
+	
+	@GetMapping("/objectsPerResourceType/{resourceType}")
+	public ResponseEntity<List<Non_Living_Resources>> objectsPerResourceType(@PathVariable("resourceType") int resourceType){
+		List<Non_Living_Resources> objects = object_service.getObjectsPerResourceType(resourceType);
 		if(objects == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}

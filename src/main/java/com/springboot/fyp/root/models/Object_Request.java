@@ -24,5 +24,5 @@ public class Object_Request {
 	private String startTime;
 	private String endTime;
 	private String date;
-	
+	private int resource_id;
 }

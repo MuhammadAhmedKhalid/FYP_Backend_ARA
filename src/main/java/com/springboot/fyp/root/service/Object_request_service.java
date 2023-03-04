@@ -27,6 +27,10 @@ public class Object_request_service {
 	public static final String HASH_KEY_OBJECT_REQUESTS = "ObjectRequests";
 		
 	public String add(Object_Request object_Request) {
+		
+//		int requestedObjectId = object_Request.getResource_type_id();
+//		int requestedQuantity = object_Request.getQuantity();
+		
 		object_Request.setObj_req_id(sequenceGeneratorService.getSequenceNumber(object_Request.SEQUENCE_NAME));
 		int available_quantity = non_living_resource_service.getQuantity(object_Request.getResource_type_id());
 		if(object_Request.getQuantity() > available_quantity) {			

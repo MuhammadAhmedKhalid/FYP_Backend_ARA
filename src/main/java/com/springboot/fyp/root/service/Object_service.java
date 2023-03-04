@@ -126,4 +126,14 @@ public class Object_service {
 		}
 	}
 	
+	public List<Non_Living_Resources> getObjectsPerResourceType(int resourceType){
+		List<Non_Living_Resources> objects = new ArrayList<>();
+		for(Non_Living_Resources resource : non_living_resource_service.getAll()) {
+			if(resource.getResource_type_id() == resourceType) {
+				objects.add(resource);
+			}
+		}
+		return objects;
+	}
+	
 }
