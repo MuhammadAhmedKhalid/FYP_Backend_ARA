@@ -1,5 +1,6 @@
 package com.springboot.fyp.root.controller;
 
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +23,8 @@ public class Object_request_controller {
 	Object_request_service object_request_service;
 	
 	@PostMapping("/addObjectRequest")
-	public ResponseEntity<String> addObjectRequest(@RequestBody Object_Request object_Request){
+	public ResponseEntity<String> addObjectRequest(@RequestBody Object_Request object_Request) throws ParseException{
 		String response = object_request_service.add(object_Request);
-		if(response == null) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Requested quantity is greater than the available quantity.");
-		}
 		return ResponseEntity.ok(response);
 	}
 	

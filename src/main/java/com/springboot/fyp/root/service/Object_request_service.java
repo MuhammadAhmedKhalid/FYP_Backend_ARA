@@ -1,12 +1,17 @@
 package com.springboot.fyp.root.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.springboot.fyp.root.dao.Object_request_repository;
+import com.springboot.fyp.root.models.Conflict;
+import com.springboot.fyp.root.models.Non_Living_Resources;
 import com.springboot.fyp.root.models.Object_Request;
 
 @Service
@@ -22,22 +27,79 @@ public class Object_request_service {
 	Non_living_resource_service non_living_resource_service;
 	
 	@Autowired
+	Conflict_service conflict_service;
+	
+	@Autowired
 	RedisUtilityRoot redisUtilityRoot;
 	
 	public static final String HASH_KEY_OBJECT_REQUESTS = "ObjectRequests";
+
+	public String add(Object_Request object_Request) throws ParseException {
 		
-	public String add(Object_Request object_Request) {
-		
-//		int requestedObjectId = object_Request.getResource_type_id();
-//		int requestedQuantity = object_Request.getQuantity();
-		
-		object_Request.setObj_req_id(sequenceGeneratorService.getSequenceNumber(object_Request.SEQUENCE_NAME));
-		int available_quantity = non_living_resource_service.getQuantity(object_Request.getResource_type_id());
-		if(object_Request.getQuantity() > available_quantity) {			
-			return null;
+		List<Non_Living_Resources> resources = new ArrayList<>();
+		for (Non_Living_Resources resource : non_living_resource_service.getAll()) {
+			if(resource.getResource_type_id() == object_Request.getResource_type_id()) {
+				resources.add(resource);
+			}
 		}
-		object_request_repository.insert(object_Request);
-		redisUtilityRoot.deleteList(HASH_KEY_OBJECT_REQUESTS+object_Request.getInstitute_id());
+		
+		List<Object_Request> requests = new ArrayList<>();
+		for(Object_Request request : object_request_repository.findAll()) {
+			for(Non_Living_Resources resource : resources) {
+				if(request.getResource_id() == resource.getResource_id()) {
+					
+					SimpleDateFormat sf = new SimpleDateFormat("HH:mm");
+					
+					Date startTime1 = sf.parse(request.getStartTime());
+					Date endTime1 = sf.parse(request.getEndTime());
+					Date startTime2 = sf.parse(object_Request.getStartTime());
+					Date endTime2 = sf.parse(object_Request.getEndTime());
+					
+					Conflict conflict1 = new Conflict();
+					conflict1.setStartTime(startTime1);
+					conflict1.setEndTime(endTime1);
+					
+					
+					Conflict conflict2 = new Conflict();
+					conflict2.setStartTime(startTime2);
+					conflict2.setEndTime(endTime2);
+					
+					boolean conflict = conflict_service.hasConflict(conflict1, conflict2);
+					
+					if(conflict) {
+						requests.add(request);
+					}
+				}
+			}
+		}
+		
+		for(Non_Living_Resources resource : resources) {
+			for(Object_Request request : requests) {
+				if(request.getResource_id() == resource.getResource_id()) {
+					resource.setQuantity(resource.getQuantity() - request.getQuantity());
+				}
+			}
+		}
+		
+		int requestedQuantity = object_Request.getQuantity();
+		
+		for(Non_Living_Resources resource : resources) {
+			if(requestedQuantity != 0) {
+				object_Request.setObj_req_id(sequenceGeneratorService.getSequenceNumber(object_Request.SEQUENCE_NAME));
+				
+				if(requestedQuantity <= resource.getQuantity()) {
+					object_Request.setQuantity(requestedQuantity);
+					requestedQuantity -= requestedQuantity;
+				} else {
+					object_Request.setQuantity(resource.getQuantity());
+					requestedQuantity -= resource.getQuantity();
+				}
+				
+				object_Request.setResource_id(resource.getResource_id());
+				object_request_repository.insert(object_Request);
+				redisUtilityRoot.deleteList(HASH_KEY_OBJECT_REQUESTS+object_Request.getInstitute_id());
+			}
+		}
 		return "Operation performed successfully.";
 	}
 	
