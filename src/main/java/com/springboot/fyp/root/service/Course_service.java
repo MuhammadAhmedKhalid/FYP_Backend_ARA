@@ -21,7 +21,7 @@ public class Course_service {
 	@Autowired
 	RedisUtilityRoot redisUtilityRoot;
 	
-	public static final String HASH_KEY_SPECIALIZATION_LIST = "CourseList";
+	public static final String HASH_KEY_COURSE_LIST = "CourseList";
 	
 	public String add(Course course) {
 		
@@ -34,13 +34,13 @@ public class Course_service {
 		
 		course.setCourse_id(sequenceGeneratorService.getSequenceNumber(course.SEQUENCE_NAME));
 		course_repository.insert(course);
-		redisUtilityRoot.deleteList(HASH_KEY_SPECIALIZATION_LIST+course.getInstitute_id());
+		redisUtilityRoot.deleteList(HASH_KEY_COURSE_LIST+course.getInstitute_id());
 		return "Operation performed successfully.";
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Course> getAll(int institute_id){
-		List<Course> courses = redisUtilityRoot.getList(HASH_KEY_SPECIALIZATION_LIST+institute_id);
+		List<Course> courses = redisUtilityRoot.getList(HASH_KEY_COURSE_LIST+institute_id);
 		if(courses.size() > 0) {
 			return courses;
 		}else {
@@ -54,7 +54,7 @@ public class Course_service {
 						courses_lst.add(course);
 					}
 				}
-				redisUtilityRoot.saveList(courses_lst, HASH_KEY_SPECIALIZATION_LIST+institute_id);
+				redisUtilityRoot.saveList(courses_lst, HASH_KEY_COURSE_LIST+institute_id);
 				return courses_lst;
 			}
 		}
