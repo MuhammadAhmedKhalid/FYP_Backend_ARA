@@ -16,7 +16,7 @@ public class Batch {
 	@Id
 	private int batchId;
 	private int batchYear;
-	private String batchType;
+//	private String batchType;
 	private int department_id;
 	private int institute_id;
 	
