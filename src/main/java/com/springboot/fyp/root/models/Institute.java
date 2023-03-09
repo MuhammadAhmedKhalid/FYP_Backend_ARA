@@ -21,4 +21,8 @@ public class Institute {
 	private String address;
 	private String contact;
 	public int user_id;
+	public String springStartMonth;
+	public String springEndMonth;
+	public String fallStartMonth;
+	public String fallEndMonth;
 }
