@@ -23,6 +23,7 @@ public class AssignedCourse {
 	private String endTime;
 	private int faculty_id;
 	private int institute_id;
+	private int room_id;
 	private String semesterType;
 	
 }
