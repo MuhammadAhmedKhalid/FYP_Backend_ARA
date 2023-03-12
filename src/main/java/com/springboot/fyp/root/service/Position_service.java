@@ -26,7 +26,8 @@ public class Position_service {
 	public String add(Position position) {
 		
 		for(Position pos: position_repository.findAll()) {
-			if(pos.getPosition_name().equals(position.getPosition_name())) {
+			if(pos.getPosition_name().equals(position.getPosition_name())
+					&& pos.getInstitute_id() == position.getInstitute_id()) {
 				return null;
 			}
 		}

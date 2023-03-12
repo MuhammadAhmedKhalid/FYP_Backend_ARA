@@ -45,7 +45,7 @@ public class Object_service {
 		for(Resource_type resource : allResources) {
 			if(resource.getObject_name().equals(object.getObject_name())) {
 				resource_id = resource.getResource_type_id();
-				System.out.println(resource_id);
+//				System.out.println(resource_id);
 				break;
 			}
 		}
@@ -116,7 +116,8 @@ public class Object_service {
 			List<String> objects = new ArrayList<>();
 			for(Non_Living_Resources resource : non_living_resource_service.getAll()) {
 				for(Resource_type resource_type : resource_type_service.getAll()) {
-					if(resource.getResource_type_id() == resource_type.getResource_type_id()) {
+					if(resource.getResource_type_id() == resource_type.getResource_type_id()
+							&& resource.getInstitute_id() == institute_id) {
 						objects.add(resource_type.getObject_name());
 					}
 				}
