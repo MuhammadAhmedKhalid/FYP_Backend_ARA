@@ -2,6 +2,7 @@ package com.springboot.fyp.root.service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,20 +31,22 @@ public class AssignedCourse_service {
 	
 	public static final String HASH_KEY_ASSIGNED_COURSE_LIST = "AssignedCourseList";
 	
-	public class DateFetcher {
-	    public static List<LocalDate> fetchDatesForDayOfMonth(int year, int month, DayOfWeek dayOfWeek) {
-	        LocalDate start = LocalDate.of(year, month, 1);
-	        LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
-	        List<LocalDate> dates = new ArrayList<>();
-	        while (start.isBefore(end) || start.equals(end)) {
-	            if (start.getDayOfWeek() == dayOfWeek) {
-	                dates.add(start);
-	            }
-	            start = start.plusDays(1);
-	        }
-	        return dates;
-	    }
-	}
+	public static List<LocalDate> fetchDatesForDayOfMonth(int year, int startMonth, int endMonth, DayOfWeek dayOfWeek) {
+        LocalDate start = LocalDate.of(year, startMonth, 1);
+        LocalDate end = LocalDate.of(year, endMonth, 1).plusMonths(1).withDayOfMonth(1).minusDays(1);
+        List<LocalDate> dates = new ArrayList<>();
+        while (start.isBefore(end) || start.equals(end)) {
+            if (start.getDayOfWeek() == dayOfWeek) {
+                dates.add(start);
+            }
+            start = start.plusDays(1);
+        }
+        return dates;
+    }
+	
+	public static int fetchMonthNumber(String monthName) {
+        return Month.valueOf(monthName.toUpperCase()).getValue();
+    }
 	
 	@SuppressWarnings("unused")
 	public String insert(AssignedCourse assignedCourse){
@@ -63,12 +66,12 @@ public class AssignedCourse_service {
 				}
 			}
 		}
-		System.out.println(startingMonth);
-		System.out.println(endingMonth);
-//		List<LocalDate> dates = DateFetcher.fetchDatesForDayOfMonth(2023, 3, DayOfWeek.FRIDAY);
-//		for (LocalDate date : dates) {
-//		    System.out.println(date);
-//		}
+		
+		List<LocalDate> dates = fetchDatesForDayOfMonth(LocalDate.now().getYear(), 
+				fetchMonthNumber(startingMonth), fetchMonthNumber(endingMonth), DayOfWeek.valueOf(day.toUpperCase()));
+		for (LocalDate date : dates) {
+		    System.out.println(date);
+		}
 		
 //		assignCourse_repository.insert(assignedCourse);
 //		redisUtilityRoot.deleteList(HASH_KEY_ASSIGNED_COURSE_LIST+assignedCourse.getInstitute_id());
