@@ -3,6 +3,7 @@ package com.springboot.fyp.root.service;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,13 +49,12 @@ public class AssignedCourse_service {
         return Month.valueOf(monthName.toUpperCase()).getValue();
     }
 	
-	@SuppressWarnings("unused")
 	public String insert(AssignedCourse assignedCourse){
-		assignedCourse.setAssignedCourseId(sequenceGeneratorService.getSequenceNumber(assignedCourse.SEQUENCE_NAME));
 		
-		String startingMonth = null;
-		String endingMonth = null;
+		String startingMonth = "";
+		String endingMonth = "";
 		String day = assignedCourse.getDay();
+		
 		for(Institute institute : institute_repository.findAll()) {
 			if(institute.getInstitute_id() == assignedCourse.getInstitute_id()) {
 				if(assignedCourse.getSemesterType().equals("SPRING")) {
@@ -69,12 +69,17 @@ public class AssignedCourse_service {
 		
 		List<LocalDate> dates = fetchDatesForDayOfMonth(LocalDate.now().getYear(), 
 				fetchMonthNumber(startingMonth), fetchMonthNumber(endingMonth), DayOfWeek.valueOf(day.toUpperCase()));
+		
 		for (LocalDate date : dates) {
-		    System.out.println(date);
+			assignedCourse.setAssignedCourseId(sequenceGeneratorService.getSequenceNumber(assignedCourse.SEQUENCE_NAME));
+			
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		
+			assignedCourse.setDate(date.format(formatter));
+			assignCourse_repository.insert(assignedCourse);
 		}
 		
-//		assignCourse_repository.insert(assignedCourse);
-//		redisUtilityRoot.deleteList(HASH_KEY_ASSIGNED_COURSE_LIST+assignedCourse.getInstitute_id());
+		redisUtilityRoot.deleteList(HASH_KEY_ASSIGNED_COURSE_LIST+assignedCourse.getInstitute_id());
 		return "Operation performed successfully.";
 	}
 	

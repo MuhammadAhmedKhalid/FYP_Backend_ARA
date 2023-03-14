@@ -25,5 +25,6 @@ public class AssignedCourse {
 	private int institute_id;
 	private int room_id;
 	private String semesterType;
+	private String date;
 	
 }
