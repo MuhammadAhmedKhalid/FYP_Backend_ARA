@@ -70,6 +70,7 @@ public class Admin_service {
 			 final String jwt = getToken(email);
 			 String institute_name = "";
 			 int institute_id = 0;
+			 int faculty_id = 0;
 			 
 			 List<Institute> institutesList = institute_repository.findAll();
 			 for (int i=0; i < institutesList.size(); i++) {
@@ -82,12 +83,14 @@ public class Admin_service {
 					 for (Faculty checkFaculty : faculty_lst) {
 						 if(checkUser.getUser_id() == checkFaculty.getUser().getUser_id()) {
 							 institute_id = checkFaculty.getInstitute_id();
+							 faculty_id = checkFaculty.getFaculty_id();
 						 }
 					 }
 				 }
 			 }
 			 
-			 JWT_Response jwt_Response = new JWT_Response(checkUser.getUser_id(), email, jwt, checkUser.getName(), institute_name, institute_id, checkUser.is_admin());
+			 JWT_Response jwt_Response = new JWT_Response(checkUser.getUser_id(), email, jwt, checkUser.getName(), 
+					 institute_name, institute_id, faculty_id, checkUser.is_admin());
 			return jwt_Response;
 		}
 		return null;
