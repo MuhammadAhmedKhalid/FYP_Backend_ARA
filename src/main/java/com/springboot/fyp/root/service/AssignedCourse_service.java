@@ -73,7 +73,7 @@ public class AssignedCourse_service {
 		for (LocalDate date : dates) {
 			assignedCourse.setAssignedCourseId(sequenceGeneratorService.getSequenceNumber(assignedCourse.SEQUENCE_NAME));
 			
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
 		
 			assignedCourse.setDate(date.format(formatter));
 			assignCourse_repository.insert(assignedCourse);
