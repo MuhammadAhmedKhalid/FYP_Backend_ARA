@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.springboot.fyp.root.dao.AssignedCourse_repository;
+import com.springboot.fyp.root.dao.AssignedCoursesForTable_repository;
 import com.springboot.fyp.root.dao.Institute_repository;
 import com.springboot.fyp.root.models.AssignedCourse;
+import com.springboot.fyp.root.models.AssignedCoursesForTable;
 import com.springboot.fyp.root.models.Institute;
 
 @Service
@@ -20,6 +22,9 @@ public class AssignedCourse_service {
 	
 	@Autowired
 	AssignedCourse_repository assignCourse_repository;
+	
+	@Autowired
+	AssignedCoursesForTable_repository assignedCoursesForTable_repository;
 	
 	@Autowired
 	Institute_repository institute_repository;
@@ -31,6 +36,7 @@ public class AssignedCourse_service {
 	RedisUtilityRoot redisUtilityRoot;
 	
 	public static final String HASH_KEY_ASSIGNED_COURSE_LIST = "AssignedCourseList";
+	public static final String HASH_KEY_ASSIGNED_COURSES_FOR_TABALE_LIST = "AssignedCoursesForTableList";
 	
 	public static List<LocalDate> fetchDatesForDayOfMonth(int year, int startMonth, int endMonth, DayOfWeek dayOfWeek) {
         LocalDate start = LocalDate.of(year, startMonth, 1);
@@ -79,6 +85,17 @@ public class AssignedCourse_service {
 			assignCourse_repository.insert(assignedCourse);
 		}
 		
+		AssignedCoursesForTable assignedCoursesForTable = new AssignedCoursesForTable();
+		assignedCoursesForTable.setAssignedCoursesId(
+				sequenceGeneratorService.getSequenceNumber(assignedCoursesForTable.SEQUENCE_NAME));
+		assignedCoursesForTable.setCourseId(assignedCourse.getCourse_id());
+		assignedCoursesForTable.setDepartmentId(assignedCourse.getDepartment_id());
+		assignedCoursesForTable.setFacultyId(assignedCourse.getFaculty_id());
+		assignedCoursesForTable.setBatchId(assignedCourse.getBatchId());
+		assignedCoursesForTable.setSemesterType(assignedCourse.getSemesterType());
+		assignedCoursesForTable_repository.insert(assignedCoursesForTable);
+		
+		redisUtilityRoot.deleteList(HASH_KEY_ASSIGNED_COURSES_FOR_TABALE_LIST+assignedCourse.getInstitute_id());
 		redisUtilityRoot.deleteList(HASH_KEY_ASSIGNED_COURSE_LIST+assignedCourse.getInstitute_id());
 		return "Operation performed successfully.";
 	}
