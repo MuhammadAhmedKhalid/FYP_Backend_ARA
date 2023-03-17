@@ -26,7 +26,7 @@ public class Course_service {
 	public String add(Course course) {
 		
 		for(Course crs: course_repository.findAll()) {
-			if(crs.getCourse_name().equals(course.getCourse_name())
+			if(crs.getCourse_name().equalsIgnoreCase(course.getCourse_name())
 					&& crs.getDepartment_id() == course.getDepartment_id()) {
 				return null;
 			}

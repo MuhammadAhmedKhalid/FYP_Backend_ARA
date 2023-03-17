@@ -26,7 +26,7 @@ public class Department_service {
 	public String insert(Department department){
 		
 		for(Department dep: department_repository.findAll()) {
-			if(dep.getDepartment_name().equals(department.getDepartment_name())
+			if(dep.getDepartment_name().equalsIgnoreCase(department.getDepartment_name())
 					&& dep.getInstitute_id() == department.getInstitute_id()) {
 				return null;
 			}

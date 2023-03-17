@@ -43,7 +43,7 @@ public class Object_service {
 		
 		List<Resource_type> allResources = resource_type_service.getAll();
 		for(Resource_type resource : allResources) {
-			if(resource.getObject_name().equals(object.getObject_name())) {
+			if(resource.getObject_name().equalsIgnoreCase(object.getObject_name())) {
 				resource_id = resource.getResource_type_id();
 //				System.out.println(resource_id);
 				break;

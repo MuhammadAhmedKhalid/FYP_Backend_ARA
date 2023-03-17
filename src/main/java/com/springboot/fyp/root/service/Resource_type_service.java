@@ -29,7 +29,7 @@ public class Resource_type_service {
 		return resource_type_repository.findAll();
 	}
 	
-	@SuppressWarnings({ "unchecked", "null" })
+	@SuppressWarnings({ "unchecked" })
 	public List<Resource_type> getAll(int institute_id){
 		List<Resource_type> resource_types = redisUtilityRoot.getList(HASH_KEY_ResourceTypes_LIST+institute_id);
 		if(resource_types.size() > 0) {

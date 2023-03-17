@@ -26,7 +26,7 @@ public class Room_service {
 	public String insert(Room room) {
 		
 		for(Room rooms: room_repository.findAll()) {
-			if(rooms.getRoom_name().equals(room.getRoom_name()) && rooms.getDepartment_id() == room.getDepartment_id()) {
+			if(rooms.getRoom_name().equalsIgnoreCase(room.getRoom_name()) && rooms.getDepartment_id() == room.getDepartment_id()) {
 				return null;
 			}
 		}
