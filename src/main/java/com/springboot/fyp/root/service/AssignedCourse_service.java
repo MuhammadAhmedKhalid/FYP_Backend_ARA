@@ -93,6 +93,7 @@ public class AssignedCourse_service {
 		assignedCoursesForTable.setFacultyId(assignedCourse.getFaculty_id());
 		assignedCoursesForTable.setBatchId(assignedCourse.getBatchId());
 		assignedCoursesForTable.setSemesterType(assignedCourse.getSemesterType());
+		assignedCoursesForTable.setInstituteId(assignedCourse.getInstitute_id());
 		assignedCoursesForTable_repository.insert(assignedCoursesForTable);
 		
 		redisUtilityRoot.deleteList(HASH_KEY_ASSIGNED_COURSES_FOR_TABALE_LIST+assignedCourse.getInstitute_id());

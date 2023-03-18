@@ -20,5 +20,6 @@ public class AssignedCoursesForTable {
 	private int facultyId;
 	private int batchId;
 	private String semesterType;
+	private int instituteId;
 	
 }
