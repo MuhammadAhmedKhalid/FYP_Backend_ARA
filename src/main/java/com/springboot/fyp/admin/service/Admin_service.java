@@ -67,16 +67,24 @@ public class Admin_service {
 		User checkUser = user_repository.findByEmail(email);
 		String encryptedPassword = AES.encrypt(password, secretKey);
 		if(checkUser != null && checkUser.getPassword().equals(encryptedPassword)) {
-			 final String jwt = getToken(email);
-			 String institute_name = "";
-			 int institute_id = 0;
-			 int faculty_id = 0;
+			final String jwt = getToken(email);
+			String institute_name = "";
+			int institute_id = 0;
+			int faculty_id = 0;
+			String springStartMonth = "";
+			String springEndMonth = "";
+			String fallStartMonth = "";
+			String fallEndMonth = "";
 			 
 			 List<Institute> institutesList = institute_repository.findAll();
 			 for (int i=0; i < institutesList.size(); i++) {
 				 if(institutesList.get(i).getUser_id() == checkUser.getUser_id()) {
 					 institute_name = institutesList.get(i).getInstitute_name();
 					 institute_id = institutesList.get(i).getInstitute_id();
+					 springStartMonth = institutesList.get(i).getSpringStartMonth();
+					 springEndMonth = institutesList.get(i).getSpringEndMonth();
+					 fallStartMonth = institutesList.get(i).getFallStartMonth();
+					 fallEndMonth = institutesList.get(i).getFallEndMonth();
 				 }
 				 else if (!checkUser.is_admin()) {
 					 List<Faculty> faculty_lst = faculty_repositiory.findAll();
@@ -90,7 +98,8 @@ public class Admin_service {
 			 }
 			 
 			 JWT_Response jwt_Response = new JWT_Response(checkUser.getUser_id(), email, jwt, checkUser.getName(), 
-					 institute_name, institute_id, faculty_id, checkUser.is_admin());
+					 institute_name, institute_id, faculty_id, checkUser.is_admin(),
+					 springStartMonth, springEndMonth, fallStartMonth, fallEndMonth);
 			return jwt_Response;
 		}
 		return null;
