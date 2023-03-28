@@ -23,5 +23,6 @@ public class Staff_Request {
 	private String startTime;
 	private String endTime;
 	private String date;
+	private int leaveId;
 	
 }

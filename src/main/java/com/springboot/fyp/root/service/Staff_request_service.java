@@ -21,19 +21,19 @@ public class Staff_request_service {
 	@Autowired
 	RedisUtilityRoot redisUtilityRoot;
 	
-	public static final String HASH_KEY_ROOM_REQUESTS = "StaffRequests";
+	public static final String HASH_KEY_STAFF_REQUESTS = "StaffRequests";
 	
 	public String add(Staff_Request staff_Request) {
 		staff_Request.setStaff_req_id(sequenceGeneratorService.getSequenceNumber(staff_Request.SEQUENCE_NAME));
 		staff_request_repository.insert(staff_Request);
-		redisUtilityRoot.deleteList(HASH_KEY_ROOM_REQUESTS+staff_Request.getInstitute_id());
+		redisUtilityRoot.deleteList(HASH_KEY_STAFF_REQUESTS+staff_Request.getInstitute_id());
 		return "Operation performed successfully.";
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Staff_Request> getAll(int institute_id){
-		if(redisUtilityRoot.getList(HASH_KEY_ROOM_REQUESTS+institute_id).size()>0) {
-			return redisUtilityRoot.getList(HASH_KEY_ROOM_REQUESTS+institute_id);
+		if(redisUtilityRoot.getList(HASH_KEY_STAFF_REQUESTS+institute_id).size()>0) {
+			return redisUtilityRoot.getList(HASH_KEY_STAFF_REQUESTS+institute_id);
 		}else {
 			
 			List<Staff_Request> staffRequests = new ArrayList<>();
@@ -42,7 +42,7 @@ public class Staff_request_service {
 					staffRequests.add(requests);
 				}
 			}
-			redisUtilityRoot.saveList(staffRequests, HASH_KEY_ROOM_REQUESTS+institute_id);
+			redisUtilityRoot.saveList(staffRequests, HASH_KEY_STAFF_REQUESTS+institute_id);
 			return staffRequests;
 		}
 	}
@@ -54,8 +54,8 @@ public class Staff_request_service {
 			if(requests.getStaff_req_id() == staff_req_id) {
 				institute_id = requests.getInstitute_id();
 				staff_request_repository.deleteById(staff_req_id);
-				redisUtilityRoot.deleteList(HASH_KEY_ROOM_REQUESTS+institute_id);
-				redisUtilityRoot.saveList(staff_request_repository.findAll(), HASH_KEY_ROOM_REQUESTS+institute_id);
+				redisUtilityRoot.deleteList(HASH_KEY_STAFF_REQUESTS+institute_id);
+				redisUtilityRoot.saveList(staff_request_repository.findAll(), HASH_KEY_STAFF_REQUESTS+institute_id);
 				return "Requested object deleted.";
 			}
 		}

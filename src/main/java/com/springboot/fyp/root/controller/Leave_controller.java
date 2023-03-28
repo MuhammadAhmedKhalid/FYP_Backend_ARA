@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.fyp.root.models.Leave;
+import com.springboot.fyp.root.models.LeaveRequest;
 import com.springboot.fyp.root.service.Leave_service;
 
 @RestController
@@ -22,8 +23,8 @@ public class Leave_controller {
 	Leave_service leave_service;
 	
 	@PostMapping("/addLeaveRequest")
-	public ResponseEntity<String> addLeaveRequest(@RequestBody Leave leave){
-		String response = leave_service.add(leave);
+	public ResponseEntity<String> addLeaveRequest(@RequestBody LeaveRequest leaveRequest){
+		String response = leave_service.add(leaveRequest);
 		return ResponseEntity.ok(response);
 	}
 
