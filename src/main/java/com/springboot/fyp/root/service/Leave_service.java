@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.springboot.fyp.faculty.dao.Faculty_repositiory;
+import com.springboot.fyp.faculty.models.Faculty;
 import com.springboot.fyp.root.dao.Leave_repository;
 import com.springboot.fyp.root.dao.Staff_request_repository;
 import com.springboot.fyp.root.models.Leave;
@@ -67,20 +68,17 @@ public class Leave_service {
 		staff_request_repository.insert(staff_Request);
 		redisUtilityRoot.deleteList(HASH_KEY_STAFF_REQUESTS+staff_Request.getInstitute_id());
 		
-		
-		 //also pass assigned course name during leave time
-		findReplacement(leaveRequest.getInstitute_id(), requestedLeave.getCourseName());
+		String courseName = requestedLeave.getCourseName();
+		if(courseName.length() != 0) {
+			findReplacement(courseName, requestedLeave.getAvailableFaculty());
+		}
 		
 		return "Operation performed successfully.";
 	}
 	
-	public List<String> findReplacement(int institute_id, String courseName){
+	public List<Faculty> findReplacement(String courseName, List<Integer> availableFaculty){
 		
-//		List<Faculty> facultyList = faculty_repositiory.findAll();
-//		for(Faculty faculty : facultyList) {
-//			if(faculty.get)
-//		}
-		
+		// apply algorithm for best choice
 		return null;
 		
 	}
