@@ -6,10 +6,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.springboot.fyp.faculty.dao.Faculty_repositiory;
 import com.springboot.fyp.root.dao.Leave_repository;
 import com.springboot.fyp.root.dao.Staff_request_repository;
 import com.springboot.fyp.root.models.Leave;
 import com.springboot.fyp.root.models.LeaveRequest;
+import com.springboot.fyp.root.models.RequestedLeave;
 import com.springboot.fyp.root.models.Staff_Request;
 
 @Service
@@ -22,6 +24,9 @@ public class Leave_service {
 	Staff_request_repository staff_request_repository;
 	
 	@Autowired
+	Faculty_repositiory faculty_repositiory;
+	
+	@Autowired
 	SequenceGeneratorService sequenceGeneratorService;
 	
 	@Autowired
@@ -31,7 +36,11 @@ public class Leave_service {
 	
 	public static final String HASH_KEY_STAFF_REQUESTS = "StaffRequests";
 	
-	public String add(LeaveRequest leaveRequest) {
+	public static final String HASH_KEY_FACULTY_LIST = "FacultyList";
+	
+	public String add(RequestedLeave requestedLeave) {
+		
+		LeaveRequest leaveRequest = requestedLeave.getLeaveRequest();
 		
 		Leave leave = new Leave();
 		leave.setLeaveId(sequenceGeneratorService.getSequenceNumber(leave.SEQUENCE_NAME));
@@ -58,7 +67,22 @@ public class Leave_service {
 		staff_request_repository.insert(staff_Request);
 		redisUtilityRoot.deleteList(HASH_KEY_STAFF_REQUESTS+staff_Request.getInstitute_id());
 		
+		
+		 //also pass assigned course name during leave time
+		findReplacement(leaveRequest.getInstitute_id(), requestedLeave.getCourseName());
+		
 		return "Operation performed successfully.";
+	}
+	
+	public List<String> findReplacement(int institute_id, String courseName){
+		
+//		List<Faculty> facultyList = faculty_repositiory.findAll();
+//		for(Faculty faculty : facultyList) {
+//			if(faculty.get)
+//		}
+		
+		return null;
+		
 	}
 	
 	@SuppressWarnings("unchecked")
