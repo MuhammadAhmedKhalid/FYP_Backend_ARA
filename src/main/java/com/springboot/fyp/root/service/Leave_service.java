@@ -87,7 +87,14 @@ public class Leave_service {
 				leave_repository.deleteById(leaveId);
 				redisUtilityRoot.deleteList(HASH_KEY_LEAVE_REQUESTS+institute_id);
 				redisUtilityRoot.saveList(leave_repository.findAll(), HASH_KEY_LEAVE_REQUESTS+institute_id);
-				return "Leave Request deleted.";
+			}
+		}
+		List<Staff_Request> staffRequests = staff_request_repository.findAll();
+		for(Staff_Request requests : staffRequests) {
+			if(requests.getLeaveId() == leaveId) {
+				staff_request_repository.deleteById(requests.getStaff_req_id());
+				redisUtilityRoot.deleteList(HASH_KEY_STAFF_REQUESTS+institute_id);
+				redisUtilityRoot.saveList(staff_request_repository.findAll(), HASH_KEY_STAFF_REQUESTS+institute_id);
 			}
 		}
 		return null;
