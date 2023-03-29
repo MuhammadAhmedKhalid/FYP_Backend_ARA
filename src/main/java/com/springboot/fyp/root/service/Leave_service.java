@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.springboot.fyp.faculty.dao.Faculty_repositiory;
 import com.springboot.fyp.faculty.models.Faculty;
 import com.springboot.fyp.root.dao.Leave_repository;
 import com.springboot.fyp.root.dao.Staff_request_repository;
@@ -25,9 +24,6 @@ public class Leave_service {
 	Staff_request_repository staff_request_repository;
 	
 	@Autowired
-	Faculty_repositiory faculty_repositiory;
-	
-	@Autowired
 	SequenceGeneratorService sequenceGeneratorService;
 	
 	@Autowired
@@ -36,8 +32,6 @@ public class Leave_service {
 	public static final String HASH_KEY_LEAVE_REQUESTS = "LeaveRequests";
 	
 	public static final String HASH_KEY_STAFF_REQUESTS = "StaffRequests";
-	
-	public static final String HASH_KEY_FACULTY_LIST = "FacultyList";
 	
 	public String add(RequestedLeave requestedLeave) {
 		
@@ -69,8 +63,9 @@ public class Leave_service {
 		redisUtilityRoot.deleteList(HASH_KEY_STAFF_REQUESTS+staff_Request.getInstitute_id());
 		
 		String courseName = requestedLeave.getCourseName();
-		if(courseName.length() != 0) {
-			findReplacement(courseName, requestedLeave.getAvailableFaculty());
+		List<Integer> availableFaculty = requestedLeave.getAvailableFaculty();
+		if(courseName.length() != 0 && availableFaculty.size() > 1) {
+			findReplacement(courseName, availableFaculty);
 		}
 		
 		return "Operation performed successfully.";

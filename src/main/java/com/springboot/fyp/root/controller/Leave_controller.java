@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.fyp.root.models.Leave;
-import com.springboot.fyp.root.models.LeaveRequest;
 import com.springboot.fyp.root.models.RequestedLeave;
 import com.springboot.fyp.root.service.Leave_service;
 
