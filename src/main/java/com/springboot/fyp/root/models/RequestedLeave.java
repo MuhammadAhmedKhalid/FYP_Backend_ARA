@@ -8,7 +8,7 @@ import lombok.Data;
 public class RequestedLeave {
 
 	private LeaveRequest leaveRequest;
-	private String courseName;
-	private List<Integer> availableFaculty;
+	private List<Course> coursesList;
+	private List<AvailableFacultyList> availableFacultyList;
 	
 }

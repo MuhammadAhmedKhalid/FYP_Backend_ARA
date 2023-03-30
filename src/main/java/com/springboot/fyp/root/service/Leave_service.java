@@ -1,7 +1,11 @@
 package com.springboot.fyp.root.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,10 +13,13 @@ import org.springframework.stereotype.Service;
 import com.springboot.fyp.faculty.models.Faculty;
 import com.springboot.fyp.root.dao.Leave_repository;
 import com.springboot.fyp.root.dao.Staff_request_repository;
+import com.springboot.fyp.root.models.AvailableFacultyList;
+import com.springboot.fyp.root.models.Course;
 import com.springboot.fyp.root.models.Leave;
 import com.springboot.fyp.root.models.LeaveRequest;
 import com.springboot.fyp.root.models.RequestedLeave;
 import com.springboot.fyp.root.models.Staff_Request;
+import com.springboot.fyp.root.models.Teacher;
 
 @Service
 public class Leave_service {
@@ -37,46 +44,97 @@ public class Leave_service {
 		
 		LeaveRequest leaveRequest = requestedLeave.getLeaveRequest();
 		
-		Leave leave = new Leave();
-		leave.setLeaveId(sequenceGeneratorService.getSequenceNumber(leave.SEQUENCE_NAME));
-		leave.setDate(leaveRequest.getDate());
-		leave.setEndTime(leaveRequest.getEndTime());
-		leave.setFaculty_id(leaveRequest.getFaculty_id());
-		leave.setInstitute_id(leaveRequest.getInstitute_id());
-		leave.setReason(leaveRequest.getReason());
-		leave.setStartTime(leaveRequest.getStartTime());
-		leave_repository.insert(leave);
-		redisUtilityRoot.deleteList(HASH_KEY_LEAVE_REQUESTS+leave.getInstitute_id());
+//		Leave leave = new Leave();
+//		leave.setLeaveId(sequenceGeneratorService.getSequenceNumber(leave.SEQUENCE_NAME));
+//		leave.setDate(leaveRequest.getDate());
+//		leave.setEndTime(leaveRequest.getEndTime());
+//		leave.setFaculty_id(leaveRequest.getFaculty_id());
+//		leave.setInstitute_id(leaveRequest.getInstitute_id());
+//		leave.setReason(leaveRequest.getReason());
+//		leave.setStartTime(leaveRequest.getStartTime());
+//		leave_repository.insert(leave);
+//		redisUtilityRoot.deleteList(HASH_KEY_LEAVE_REQUESTS+leave.getInstitute_id());
+//		
+//		Staff_Request staff_Request = new Staff_Request();
+//		staff_Request.setStaff_req_id(sequenceGeneratorService.getSequenceNumber(staff_Request.SEQUENCE_NAME));
+//		staff_Request.setLeaveId(leave.getLeaveId());
+//		staff_Request.setDate(leaveRequest.getDate());
+//		staff_Request.setDepartment_id(leaveRequest.getDepartment_id());
+//		staff_Request.setEndTime(leaveRequest.getEndTime());
+//		staff_Request.setInstitute_id(leaveRequest.getInstitute_id());
+//		staff_Request.setRequested_faculty_id(leaveRequest.getFaculty_id());
+//		staff_Request.setRoom_id(0);
+//		staff_Request.setStartTime(leaveRequest.getStartTime());
+//		staff_Request.setUser_id(leaveRequest.getUser_id());
+//		staff_request_repository.insert(staff_Request);
+//		redisUtilityRoot.deleteList(HASH_KEY_STAFF_REQUESTS+staff_Request.getInstitute_id());
 		
-		Staff_Request staff_Request = new Staff_Request();
-		staff_Request.setStaff_req_id(sequenceGeneratorService.getSequenceNumber(staff_Request.SEQUENCE_NAME));
-		staff_Request.setLeaveId(leave.getLeaveId());
-		staff_Request.setDate(leaveRequest.getDate());
-		staff_Request.setDepartment_id(leaveRequest.getDepartment_id());
-		staff_Request.setEndTime(leaveRequest.getEndTime());
-		staff_Request.setInstitute_id(leaveRequest.getInstitute_id());
-		staff_Request.setRequested_faculty_id(leaveRequest.getFaculty_id());
-		staff_Request.setRoom_id(0);
-		staff_Request.setStartTime(leaveRequest.getStartTime());
-		staff_Request.setUser_id(leaveRequest.getUser_id());
-		staff_request_repository.insert(staff_Request);
-		redisUtilityRoot.deleteList(HASH_KEY_STAFF_REQUESTS+staff_Request.getInstitute_id());
+//		List<Course> coursesList = requestedLeave.getCoursesList();
+//		List<AvailableFacultyList> availableFacultyList = requestedLeave.getAvailableFacultyList();
+//		if(courseName.length() != 0 && availableFaculty.size() > 1) {
+//			findReplacement(courseName, availableFaculty);
+//		}
 		
-		String courseName = requestedLeave.getCourseName();
-		List<Integer> availableFaculty = requestedLeave.getAvailableFaculty();
-		if(courseName.length() != 0 && availableFaculty.size() > 1) {
-			findReplacement(courseName, availableFaculty);
-		}
+		List<Teacher> teachers = new ArrayList<>();
+		teachers.add(new Teacher("John Doe", 10));
+		teachers.add(new Teacher("Jane Smith", 7));
+		teachers.add(new Teacher("Bob Johnson", 8));
+
+		System.out.println(findBestTeacher(teachers));
 		
 		return "Operation performed successfully.";
 	}
-	
-	public List<Faculty> findReplacement(String courseName, List<Integer> availableFaculty){
-		
-		// apply algorithm for best choice
-		return null;
-		
+
+	public static double jaccardIndex(Teacher teacher1, Teacher teacher2) {
+	    Set<Integer> set1 = new HashSet<>();
+	    Set<Integer> set2 = new HashSet<>();
+
+	    for (int i = 1; i <= teacher1.getExperience(); i++) {
+	        set1.add(i);
+	    }
+
+	    for (int i = 1; i <= teacher2.getExperience(); i++) {
+	        set2.add(i);
+	    }
+
+	    Set<Integer> intersection = new HashSet<>(set1);
+	    intersection.retainAll(set2);
+	    System.out.println(intersection);
+	    
+	    Set<Integer> union = new HashSet<>(set1);
+	    union.addAll(set2);
+	    System.out.println(union);
+
+	    double jaccardIndex = (double) intersection.size() / union.size();
+	    System.out.println(jaccardIndex);
+	    return jaccardIndex;
 	}
+	
+	public static Teacher findBestTeacher(List<Teacher> teachers) {
+	    Teacher bestTeacher = null;
+	    double bestIndex = 0.0;
+
+	    for (int i = 0; i < teachers.size(); i++) {
+	        for (int j = i + 1; j < teachers.size(); j++) {
+	            double index = jaccardIndex(teachers.get(i), teachers.get(j));
+
+	            if (index > bestIndex) {
+	                bestIndex = index;
+	                bestTeacher = index > bestIndex ? teachers.get(i) : teachers.get(j);
+	            }
+	        }
+	    }
+
+	    return bestTeacher;
+	}
+
+	
+//	public List<Faculty> findReplacement(String courseName, List<Integer> availableFaculty){
+//		
+//		// apply algorithm for best choice
+//		return null;
+//		
+//	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Leave> getAll(int institute_id){
