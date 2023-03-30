@@ -27,5 +27,6 @@ public class Faculty {
 	private String designation;
 	private int institute_id;
 	User user;
+	private int yearsOfExperience;
 	
 }
