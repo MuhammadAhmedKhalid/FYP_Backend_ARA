@@ -63,7 +63,7 @@ public class AssignedCourse_service {
 		
 		for(Institute institute : institute_repository.findAll()) {
 			if(institute.getInstitute_id() == assignedCourse.getInstitute_id()) {
-				if(assignedCourse.getSemesterType().equals("SPRING")) {
+				if(assignedCourse.getSemesterType().equals("Spring")) {
 					startingMonth = institute.getSpringStartMonth();
 					endingMonth = institute.getSpringEndMonth();
 				}else {
