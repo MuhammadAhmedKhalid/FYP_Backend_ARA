@@ -38,10 +38,10 @@ public class Leave_controller {
 		return ResponseEntity.ok(leaveRequests);
 	}
 	
-	@GetMapping("/jaccard")
-	public ResponseEntity<Teacher> jaccard(@PathVariable List<Teacher> teachers){
+	@PostMapping("/jaccard")
+	public ResponseEntity<Integer> jaccard(@RequestBody List<Teacher> teachers){
 		Teacher teacher = leave_service.findBestTeacher(teachers);
-		return ResponseEntity.ok(teacher);
+		return ResponseEntity.ok(teacher.getFaculty_id());
 	}
 	
 	@DeleteMapping("/deleteLeaveRequest/{leaveId}")
