@@ -12,7 +12,6 @@ import com.springboot.fyp.root.dao.Leave_repository;
 import com.springboot.fyp.root.dao.Staff_request_repository;
 import com.springboot.fyp.root.models.Leave;
 import com.springboot.fyp.root.models.LeaveRequest;
-import com.springboot.fyp.root.models.RequestedLeave;
 import com.springboot.fyp.root.models.Staff_Request;
 import com.springboot.fyp.root.models.Teacher;
 
@@ -35,9 +34,7 @@ public class Leave_service {
 	
 	public static final String HASH_KEY_STAFF_REQUESTS = "StaffRequests";
 	
-	public String add(RequestedLeave requestedLeave) {
-		
-		LeaveRequest leaveRequest = requestedLeave.getLeaveRequest();
+	public String add(LeaveRequest leaveRequest) {
 		
 		Leave leave = new Leave();
 		leave.setLeaveId(sequenceGeneratorService.getSequenceNumber(leave.SEQUENCE_NAME));
@@ -63,16 +60,6 @@ public class Leave_service {
 		staff_Request.setUser_id(leaveRequest.getUser_id());
 		staff_request_repository.insert(staff_Request);
 		redisUtilityRoot.deleteList(HASH_KEY_STAFF_REQUESTS+staff_Request.getInstitute_id());
-		
-//		List<Course> coursesList = requestedLeave.getCoursesList();
-//		List<AvailableFacultyList> availableFacultyList = requestedLeave.getAvailableFacultyList();
-		
-//		List<Teacher> teachers = new ArrayList<>();
-//		teachers.add(new Teacher("John Doe", 10));
-//		teachers.add(new Teacher("Jane Smith", 7));
-//		teachers.add(new Teacher("Bob Johnson", 8));
-//
-//		System.out.println(findBestTeacher(teachers));
 		
 		return "Operation performed successfully.";
 	}
