@@ -5,13 +5,13 @@ import lombok.Data;
 @Data
 public class Teacher {
 	
-	public Teacher(String name, int experience) {
+	public Teacher(int faculty_id, int yearsOfExperience) {
 		super();
-		this.name = name;
-		this.experience = experience;
+		this.faculty_id = faculty_id;
+		this.yearsOfExperience = yearsOfExperience;
 	}
 	
-	private String name;
-    private int experience;
+	private int faculty_id;
+    private int yearsOfExperience;
 	
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.fyp.root.models.Leave;
 import com.springboot.fyp.root.models.RequestedLeave;
+import com.springboot.fyp.root.models.Teacher;
 import com.springboot.fyp.root.service.Leave_service;
 
 @RestController
@@ -35,6 +36,12 @@ public class Leave_controller {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
 		return ResponseEntity.ok(leaveRequests);
+	}
+	
+	@GetMapping("/jaccard")
+	public ResponseEntity<Teacher> jaccard(@PathVariable List<Teacher> teachers){
+		Teacher teacher = leave_service.findBestTeacher(teachers);
+		return ResponseEntity.ok(teacher);
 	}
 	
 	@DeleteMapping("/deleteLeaveRequest/{leaveId}")
