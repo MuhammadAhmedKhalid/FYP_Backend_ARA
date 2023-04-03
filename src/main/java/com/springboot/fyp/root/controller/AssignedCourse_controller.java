@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,6 +34,14 @@ public class AssignedCourse_controller {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
 		return ResponseEntity.ok(assignedCourses);
+	}
+	
+	@PutMapping("/updateAssignedCourse/{institute_id}/{assignedCourseId}/{faculty_id}")
+	public ResponseEntity<String> updateAssignedCourse(@PathVariable("institute_id") int institute_id, 
+			@PathVariable("assignedCourseId") int assignedCourseId, @PathVariable("faculty_id") int faculty_id){
+		
+		String response = assignedCourse_service.update(institute_id, assignedCourseId, faculty_id);
+		return ResponseEntity.ok(response);
 	}
 	
 }

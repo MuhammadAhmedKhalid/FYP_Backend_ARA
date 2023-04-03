@@ -121,4 +121,17 @@ public class AssignedCourse_service {
 		}
 	}
 	
+	public String update(int institute_id, int assignedCourseId, int faculty_id) {
+		List<AssignedCourse> assignedCourses = getAll(institute_id);
+		for(AssignedCourse course : assignedCourses) {
+			if(course.getAssignedCourseId() == assignedCourseId) {
+				course.setFaculty_id(faculty_id);
+				assignCourse_repository.save(course);
+				break;
+			}
+		}
+		redisUtilityRoot.deleteList(HASH_KEY_ASSIGNED_COURSE_LIST+institute_id);
+		return "Operation performed successfully.";
+	}
+	
 }
