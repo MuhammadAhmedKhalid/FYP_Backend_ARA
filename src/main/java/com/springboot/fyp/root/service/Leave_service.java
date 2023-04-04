@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.springboot.fyp.root.dao.Leave_repository;
 import com.springboot.fyp.root.dao.Staff_request_repository;
@@ -14,6 +15,7 @@ import com.springboot.fyp.root.models.Leave;
 import com.springboot.fyp.root.models.LeaveRequest;
 import com.springboot.fyp.root.models.Staff_Request;
 import com.springboot.fyp.root.models.Teacher;
+import com.springboot.fyp.root.models.TeacherResult;
 
 @Service
 public class Leave_service {
@@ -86,23 +88,39 @@ public class Leave_service {
 	    return jaccardIndex;
 	}
 	
-	public Teacher findBestTeacher(List<Teacher> teachers) {
-	    Teacher bestTeacher = null;
-	    double bestIndex = 0.0;
+	public List<TeacherResult> getBestTeacher(@RequestBody List<Teacher> teachers) {
+        List<TeacherResult> teacherResults = new ArrayList<>();
 
-	    for (int i = 0; i < teachers.size(); i++) {
-	        for (int j = i + 1; j < teachers.size(); j++) {
-	            double index = jaccardIndex(teachers.get(i), teachers.get(j));
+        for (Teacher teacher : teachers) {
+            double totalJaccardSimilarity = 0;
+            for (Teacher otherTeacher : teachers) {
+                if (!teacher.equals(otherTeacher)) {
+                    totalJaccardSimilarity += jaccardIndex(teacher, otherTeacher);
+                }
+            }
+            teacherResults.add(new TeacherResult(teacher.getFaculty_id(), totalJaccardSimilarity));
+        }
 
-	            if (index > bestIndex) {
-	                bestIndex = index;
-	                bestTeacher = index > bestIndex ? teachers.get(i) : teachers.get(j);
-	            }
-	        }
-	    }
-
-	    return bestTeacher;
-	}
+        return teacherResults;
+    }
+	
+//	public Teacher findBestTeacher(List<Teacher> teachers) {
+//	    Teacher bestTeacher = null;
+//	    double bestIndex = 0.0;
+//
+//	    for (int i = 0; i < teachers.size(); i++) {
+//	        for (int j = i + 1; j < teachers.size(); j++) {
+//	            double index = jaccardIndex(teachers.get(i), teachers.get(j));
+//
+//	            if (index > bestIndex) {
+//	                bestIndex = index;
+//	                bestTeacher = index > bestIndex ? teachers.get(i) : teachers.get(j);
+//	            }
+//	        }
+//	    }
+//
+//	    return bestTeacher;
+//	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Leave> getAll(int institute_id){
