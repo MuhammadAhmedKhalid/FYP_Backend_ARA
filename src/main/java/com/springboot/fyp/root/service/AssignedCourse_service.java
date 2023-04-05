@@ -121,11 +121,12 @@ public class AssignedCourse_service {
 		}
 	}
 	
-	public String update(int institute_id, int assignedCourseId, int faculty_id) {
-		List<AssignedCourse> assignedCourses = getAll(institute_id);
-		for(AssignedCourse course : assignedCourses) {
-			if(course.getAssignedCourseId() == assignedCourseId) {
+	public String update(AssignedCourse assignedCourse, int faculty_id) {
+		int institute_id= 0;
+		for(AssignedCourse course : assignCourse_repository.findAll()) {
+			if(course.getAssignedCourseId() == assignedCourse.getAssignedCourseId()) {
 				course.setFaculty_id(faculty_id);
+				institute_id = course.getInstitute_id();
 				assignCourse_repository.save(course);
 				break;
 			}

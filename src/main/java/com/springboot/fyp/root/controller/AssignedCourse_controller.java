@@ -36,11 +36,11 @@ public class AssignedCourse_controller {
 		return ResponseEntity.ok(assignedCourses);
 	}
 	
-	@PutMapping("/updateAssignedCourse/{institute_id}/{assignedCourseId}/{faculty_id}")
-	public ResponseEntity<String> updateAssignedCourse(@PathVariable("institute_id") int institute_id, 
-			@PathVariable("assignedCourseId") int assignedCourseId, @PathVariable("faculty_id") int faculty_id){
+	@PutMapping("/updateAssignedCourse/{faculty_id}")
+	public ResponseEntity<String> updateAssignedCourse(
+			@RequestBody AssignedCourse assignedCourse, @PathVariable("faculty_id") int faculty_id){
 		
-		String response = assignedCourse_service.update(institute_id, assignedCourseId, faculty_id);
+		String response = assignedCourse_service.update(assignedCourse, faculty_id);
 		return ResponseEntity.ok(response);
 	}
 	
