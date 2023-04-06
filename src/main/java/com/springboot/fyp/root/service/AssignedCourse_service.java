@@ -135,4 +135,17 @@ public class AssignedCourse_service {
 		return "Operation performed successfully.";
 	}
 	
+	public String delete(int assignedCourseId) {
+		int institute_id= 0;
+		for(AssignedCourse course : assignCourse_repository.findAll()) {
+			if(course.getAssignedCourseId() == assignedCourseId) {
+				institute_id = course.getInstitute_id();
+				assignCourse_repository.deleteById(assignedCourseId);
+				break;
+			}
+		}
+		redisUtilityRoot.deleteList(HASH_KEY_ASSIGNED_COURSE_LIST+institute_id);
+		return "Operation performed successfully.";
+	}
+	
 }

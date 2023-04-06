@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,6 +42,12 @@ public class AssignedCourse_controller {
 			@RequestBody AssignedCourse assignedCourse, @PathVariable("faculty_id") int faculty_id){
 		
 		String response = assignedCourse_service.update(assignedCourse, faculty_id);
+		return ResponseEntity.ok(response);
+	}
+	
+	@DeleteMapping("/deleteAssignedCourse/{assignedCourseId}")
+	public ResponseEntity<String> deleteAssignedCourse(@PathVariable("assignedCourseId") int assignedCourseId){
+		String response = assignedCourse_service.delete(assignedCourseId);
 		return ResponseEntity.ok(response);
 	}
 	
