@@ -56,7 +56,7 @@ public class Room_request_service {
 				room_request_repository.deleteById(room_req_id);
 				redisUtilityRoot.deleteList(HASH_KEY_ROOM_REQUESTS+institute_id);
 				redisUtilityRoot.saveList(room_request_repository.findAll(), HASH_KEY_ROOM_REQUESTS+institute_id);
-				return "Requested room deleted.";
+				return "Requested room request deleted.";
 			}
 		}
 		return null;
