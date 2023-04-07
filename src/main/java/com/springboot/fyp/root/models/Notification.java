@@ -6,17 +6,19 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Data;
 
-@Document(collection = "Batch")
+@Document(collection = "Notification")
 @Data
-public class Batch {
+public class Notification {
 	
 	@Transient
-	public final String SEQUENCE_NAME="Batch_sequence";
+	public final String SEQUENCE_NAME="Notification_sequence";
 	
 	@Id
-	private int batchId;
-	private int batchYear;
+	private int notificationId;
+	private String title;
+	private String date;
+	private String details;
 	private int department_id;
 	private int institute_id;
-	
+
 }
