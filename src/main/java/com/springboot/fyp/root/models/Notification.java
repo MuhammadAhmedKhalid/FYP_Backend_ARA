@@ -20,5 +20,6 @@ public class Notification {
 	private String details;
 	private int department_id;
 	private int institute_id;
+	private int user_id;
 
 }
