@@ -1,5 +1,7 @@
 package com.springboot.fyp.root.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,8 +18,8 @@ public class Notification_controller {
 	Notification_service notification_service;
 	
 	@PostMapping("/addNotification")
-	public ResponseEntity<String> addNotification(@RequestBody Notification notification){
-		String response = notification_service.insert(notification);
+	public ResponseEntity<String> addNotification(@RequestBody List<Notification> notifications){
+		String response = notification_service.insert(notifications);
 		return ResponseEntity.ok(response);
 	}
 	
