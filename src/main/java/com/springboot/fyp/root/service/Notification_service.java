@@ -1,5 +1,6 @@
 package com.springboot.fyp.root.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,23 @@ public class Notification_service {
 			redisUtilityRoot.deleteList(HASH_KEY_NOTIFICATION_LIST+notification.getInstitute_id());
 		}
 		return "Operation performed successfully.";
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Notification> getAll(int institute_id){
+		if(redisUtilityRoot.getList(HASH_KEY_NOTIFICATION_LIST+institute_id).size()>0) {
+			return redisUtilityRoot.getList(HASH_KEY_NOTIFICATION_LIST+institute_id);
+		}else {
+			
+			List<Notification> notifications = new ArrayList<>();
+			for(Notification notification : notification_repository.findAll()) {
+				if(notification.getInstitute_id() == institute_id) {
+					notifications.add(notification);
+				}
+			}
+			redisUtilityRoot.saveList(notifications, HASH_KEY_NOTIFICATION_LIST+institute_id);
+			return notifications;
+		}
 	}
 	
 }
