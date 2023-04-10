@@ -18,7 +18,7 @@ public class Weightage {
 	@Id
 	private int weightageId;
 	private int institute_id;
-	List<JaccardResult> jaccardResults;
-	private AssignedCourse assignedCourse;
+	private List<List<JaccardResult>> jaccardResults;
+	private List<AssignedCourse> assignedCourse;
 	
 }
