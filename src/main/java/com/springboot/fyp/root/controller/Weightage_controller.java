@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.fyp.root.models.Weightage;
+import com.springboot.fyp.root.models.WeightageDB;
 import com.springboot.fyp.root.service.Weightage_service;
 
 @RestController
@@ -27,8 +28,8 @@ public class Weightage_controller {
 	}
 	
 	@GetMapping("/getWeightage/{institute_id}")
-	public ResponseEntity<List<Weightage>> getWeightage(@PathVariable("institute_id") int institute_id){
-		List<Weightage> weightage_lst = weightage_service.getAll(institute_id);
+	public ResponseEntity<List<WeightageDB>> getWeightage(@PathVariable("institute_id") int institute_id){
+		List<WeightageDB> weightage_lst = weightage_service.getAll(institute_id);
 		if(weightage_lst == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
