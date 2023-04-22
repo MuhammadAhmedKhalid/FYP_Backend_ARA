@@ -49,4 +49,18 @@ public class Weightage_service {
 		}
 	}
 	
+	public String update(int weightageId) {
+		int institute_id= 0;
+		for(WeightageDB weightage : weightageDB_repository.findAll()) {
+			if(weightage.getWeightageId() == weightageId) {
+				weightage.setSelected(true);
+				institute_id = weightage.getInstitute_id();
+				weightageDB_repository.save(weightage);
+				break;
+			}
+		}
+		redisUtilityRoot.deleteList(HASH_KEY_WEIGHTAGE_LIST+institute_id);
+		return "Operation performed successfully.";
+	}
+	
 }

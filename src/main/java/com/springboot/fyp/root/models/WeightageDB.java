@@ -17,6 +17,7 @@ public class WeightageDB {
 	
 	@Id
 	private int weightageId;
+	private boolean isSelected;
 	private int institute_id;
 	private List<JaccardResult> jaccardResults;
 	private AssignedCourse assignedCourse;
