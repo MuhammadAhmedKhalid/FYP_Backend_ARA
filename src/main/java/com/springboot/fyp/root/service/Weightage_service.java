@@ -38,14 +38,14 @@ public class Weightage_service {
 	
 	@SuppressWarnings("unchecked")
 	public List<WeightageDB> getAll(int institute_id){
-		if(redisUtilityRoot.getList(HASH_KEY_WEIGHTAGE_LIST).size() > 0) {
-			return redisUtilityRoot.getList(HASH_KEY_WEIGHTAGE_LIST);
+		if(redisUtilityRoot.getList(HASH_KEY_WEIGHTAGE_LIST+institute_id).size() > 0) {
+			return redisUtilityRoot.getList(HASH_KEY_WEIGHTAGE_LIST+institute_id);
 		}else {
 			if(weightageDB_repository.findAll().isEmpty()) {
 				return null;
 			}
-			redisUtilityRoot.saveList(weightageDB_repository.findAll(), HASH_KEY_WEIGHTAGE_LIST);
-			return redisUtilityRoot.getList(HASH_KEY_WEIGHTAGE_LIST);
+			redisUtilityRoot.saveList(weightageDB_repository.findAll(), HASH_KEY_WEIGHTAGE_LIST+institute_id);
+			return redisUtilityRoot.getList(HASH_KEY_WEIGHTAGE_LIST+institute_id);
 		}
 	}
 	
