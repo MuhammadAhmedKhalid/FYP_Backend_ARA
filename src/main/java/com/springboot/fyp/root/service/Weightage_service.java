@@ -24,12 +24,12 @@ public class Weightage_service {
 	public static final String HASH_KEY_WEIGHTAGE_LIST = "WeightageList";
 	
 	public String insert(Weightage weightage) {
-		for(int i=0; i<weightage.getAssignedCourse().size(); i++) {
+		for(int i=1; i<=weightage.getAssignedCourse().size(); i++) {
 			WeightageDB weightageDB = new WeightageDB();
 			weightageDB.setWeightageId(sequenceGeneratorService.getSequenceNumber(weightageDB.SEQUENCE_NAME));
-			weightageDB.setAssignedCourse(weightage.getAssignedCourse().get(i));
+			weightageDB.setAssignedCourse(weightage.getAssignedCourse().get(i-1));
 			weightageDB.setInstitute_id(weightage.getInstitute_id());
-			weightageDB.setJaccardResults(weightage.getJaccardResults().get(i));
+			weightageDB.setJaccardResults(weightage.getJaccardResults().get(i-1));
 			weightageDB_repository.insert(weightageDB);
 			redisUtilityRoot.deleteList(HASH_KEY_WEIGHTAGE_LIST+weightage.getInstitute_id());
 		}
