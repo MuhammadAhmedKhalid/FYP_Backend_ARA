@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,6 +37,17 @@ public class Course_controller {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
 		return ResponseEntity.ok(courses);
+	}
+	
+	@PutMapping("updateCourse/{course_id}/{department_id}")
+	public ResponseEntity<String> updateCourse(@PathVariable("course_id") int course_id,
+			@PathVariable("department_id") int department_id, @RequestBody String course_name){
+		String response = course_service.update(course_id, department_id, course_name);
+		if(response == null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body("Course already exists with this name in this department.");
+		}
+		return ResponseEntity.ok(response);
 	}
 	
 }

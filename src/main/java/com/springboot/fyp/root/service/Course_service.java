@@ -60,4 +60,24 @@ public class Course_service {
 		}
 	}
 	
+	public String update(int course_id, int department_id, String course_name) {
+		int institute_id= 0;
+		List<Course> courses = course_repository.findAll();
+		for(Course course : courses) {
+			if(course.getCourse_name().equalsIgnoreCase(course_name) && course.getDepartment_id() == department_id) {
+				return null;
+			}
+		}
+		for(Course course : courses) {
+			if(course.getCourse_id() == course_id) {
+				course.setCourse_name(course_name);
+				institute_id = course.getInstitute_id();
+				course_repository.save(course);
+				break;
+			}
+		}
+		redisUtilityRoot.deleteList(HASH_KEY_COURSE_LIST+institute_id);
+		return "Operation performed successfully.";
+	}
+	
 }
