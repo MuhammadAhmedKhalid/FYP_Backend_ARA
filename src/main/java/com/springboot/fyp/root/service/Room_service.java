@@ -58,4 +58,24 @@ public class Room_service {
 		}
 	}
 	
+	public String update(int room_id, String room_name, int department_id) {
+		int institute_id = 0;
+		List<Room> rooms = room_repository.findAll();
+		for(Room room : rooms) {
+			if(room.getRoom_name() == room_name && room.getDepartment_id() == department_id) {
+				return null;
+			}
+		}
+		for(Room room : rooms) {
+			if(room.getRoom_id() == room_id) {
+				room.setRoom_name(room_name);
+				institute_id = room.getInstitute_id();
+				room_repository.save(room);
+				break;
+			}
+		}
+		redisUtilityRoot.deleteList(HASH_KEY_ROOMS_LIST+institute_id);
+		return "Operation performed successfully.";
+	}
+	
 }
