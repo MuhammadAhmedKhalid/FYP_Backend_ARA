@@ -58,4 +58,24 @@ public class Batch_service {
 		}
 	}
 	
+	public String update(int batchId, int department_id, int batchYear) {
+		int institute_id= 0;
+		List<Batch> batches = batch_repository.findAll();
+		for(Batch batch : batches) {
+			if(batch.getBatchYear() == batchYear && batch.getDepartment_id() == department_id) {
+				return null;
+			}
+		}
+		for(Batch batch : batches) {
+			if(batch.getBatchId() == batchId) {
+				batch.setBatchYear(batchYear);
+				institute_id = batch.getInstitute_id();
+				batch_repository.save(batch);
+				break;
+			}
+		}
+		redisUtilityRoot.deleteList(HASH_KEY_BATCHES_LIST+institute_id);
+		return "Operation performed successfully.";
+	}
+	
 }

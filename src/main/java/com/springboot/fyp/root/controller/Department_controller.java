@@ -40,7 +40,7 @@ public class Department_controller {
 		return ResponseEntity.ok(departments_lst);
 	}
 	
-	@PutMapping("/updateDepartment/{department_id}/{department_name}")
+	@PutMapping("/updateDepartment/{department_id}")
 	public ResponseEntity<String> updateDepartment(@RequestBody String department_name, 
 			@PathVariable("department_id") int department_id){
 		String response = department_service.update(department_id, department_name);
