@@ -65,4 +65,22 @@ public class Faculty_service {
 			return redisUtilityRoot.getList(HASH_KEY_FACULTY_LIST+institute_id);
 		}
 	}
+	
+	public String update(int faculty_id, String name, String phone_number, String designation) {
+		int institute_id= 0;
+		List<Faculty> facultyList = faculty_repositiory.findAll();
+		for(Faculty faculty : facultyList) {
+			if(faculty.getFaculty_id() == faculty_id) {
+				faculty.setName(name);
+				faculty.setPhone_number(phone_number);
+				faculty.setDesignation(designation);
+				institute_id = faculty.getInstitute_id();
+				faculty_repositiory.save(faculty);
+				break;
+			}
+		}
+		redisUtilityRoot.deleteList(HASH_KEY_FACULTY_LIST+institute_id);
+		return "Operation performed successfully.";
+	}
+	
 }

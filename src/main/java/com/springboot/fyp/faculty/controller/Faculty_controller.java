@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,5 +37,13 @@ public class Faculty_controller {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
 		return ResponseEntity.ok(facultyList);
-	}	
+	}
+	
+	@PutMapping("/updateFaculty/{faculty_id}")
+	public ResponseEntity<String> updateFaculty(@PathVariable("faculty_id") int faculty_id,
+			@RequestBody String name, @RequestBody String phone_number, @RequestBody String designation){
+		String response = faculty_service.update(faculty_id, name, phone_number, designation);
+		return ResponseEntity.ok(response);
+	}
+	
 }
