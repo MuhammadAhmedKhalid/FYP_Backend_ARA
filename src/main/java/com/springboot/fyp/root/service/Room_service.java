@@ -62,7 +62,7 @@ public class Room_service {
 		int institute_id = 0;
 		List<Room> rooms = room_repository.findAll();
 		for(Room room : rooms) {
-			if(room.getRoom_name() == room_name && room.getDepartment_id() == department_id) {
+			if(room.getRoom_name().equalsIgnoreCase(room_name) && room.getDepartment_id() == department_id) {
 				return null;
 			}
 		}
