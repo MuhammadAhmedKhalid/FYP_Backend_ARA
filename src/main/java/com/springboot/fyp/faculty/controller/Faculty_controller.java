@@ -41,8 +41,8 @@ public class Faculty_controller {
 	
 	@PutMapping("/updateFaculty/{faculty_id}")
 	public ResponseEntity<String> updateFaculty(@PathVariable("faculty_id") int faculty_id,
-			@RequestBody String name, @RequestBody String phone_number, @RequestBody String designation){
-		String response = faculty_service.update(faculty_id, name, phone_number, designation);
+			@RequestBody Faculty faculty){
+		String response = faculty_service.update(faculty_id, faculty);
 		return ResponseEntity.ok(response);
 	}
 	

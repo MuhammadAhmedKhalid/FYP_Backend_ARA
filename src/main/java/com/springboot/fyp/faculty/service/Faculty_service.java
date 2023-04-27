@@ -66,14 +66,14 @@ public class Faculty_service {
 		}
 	}
 	
-	public String update(int faculty_id, String name, String phone_number, String designation) {
+	public String update(int faculty_id, Faculty facultyObj) {
 		int institute_id= 0;
 		List<Faculty> facultyList = faculty_repositiory.findAll();
 		for(Faculty faculty : facultyList) {
 			if(faculty.getFaculty_id() == faculty_id) {
-				faculty.setName(name);
-				faculty.setPhone_number(phone_number);
-				faculty.setDesignation(designation);
+				faculty.setName(facultyObj.getName());
+				faculty.setPhone_number(facultyObj.getPhone_number());
+				faculty.setDesignation(facultyObj.getDesignation());
 				institute_id = faculty.getInstitute_id();
 				faculty_repositiory.save(faculty);
 				break;
