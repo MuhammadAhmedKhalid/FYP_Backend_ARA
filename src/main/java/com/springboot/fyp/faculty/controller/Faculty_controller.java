@@ -40,8 +40,10 @@ public class Faculty_controller {
 	}
 	
 	@PutMapping("/updateFaculty/{faculty_id}")
-	public ResponseEntity<String> updateFaculty(@PathVariable("faculty_id") int faculty_id,
-			@RequestBody Faculty faculty){
+	public ResponseEntity<String> updateFaculty(
+			@RequestBody Faculty faculty,
+			@PathVariable("faculty_id") int faculty_id
+			){
 		String response = faculty_service.update(faculty_id, faculty);
 		return ResponseEntity.ok(response);
 	}

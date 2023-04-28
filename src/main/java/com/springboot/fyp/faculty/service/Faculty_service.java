@@ -71,9 +71,17 @@ public class Faculty_service {
 		List<Faculty> facultyList = faculty_repositiory.findAll();
 		for(Faculty faculty : facultyList) {
 			if(faculty.getFaculty_id() == faculty_id) {
-				faculty.setName(facultyObj.getName());
-				faculty.setPhone_number(facultyObj.getPhone_number());
-				faculty.setDesignation(facultyObj.getDesignation());
+				
+				if(facultyObj.getName().length() > 0) {
+					faculty.setName(facultyObj.getName());
+				}
+				if(facultyObj.getPhone_number().length() > 0) {
+					faculty.setPhone_number(facultyObj.getPhone_number());
+				}
+				if(facultyObj.getDesignation().length() > 0) {
+					faculty.setDesignation(facultyObj.getDesignation());
+				}
+			
 				institute_id = faculty.getInstitute_id();
 				faculty_repositiory.save(faculty);
 				break;
