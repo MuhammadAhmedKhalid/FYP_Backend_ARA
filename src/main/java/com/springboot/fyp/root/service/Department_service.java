@@ -78,4 +78,18 @@ public class Department_service {
 		return "Operation performed successfully.";
 	}
 	
+	public String delete(int department_id) {
+		int institute_id= 0;
+		List<Department> deptList = department_repository.findAll();
+		for(Department dept : deptList) {
+			if(dept.getDepartment_id() == department_id) {
+				institute_id = dept.getInstitute_id();
+				department_repository.deleteById(department_id);
+				break;
+			}
+		}
+		redisUtilityRoot.deleteList(HASH_KEY_DEPARTMENTS_LIST+institute_id);
+		return "Deleted successfully.";
+	}
+	
 }
