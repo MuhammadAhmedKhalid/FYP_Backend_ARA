@@ -78,4 +78,18 @@ public class Batch_service {
 		return "Operation performed successfully.";
 	}
 	
+	public String delete(int batchId) {
+		int institute_id= 0;
+		List<Batch> batches = batch_repository.findAll();
+		for(Batch batch : batches) {
+			if(batch.getBatchId() == batchId) {
+				institute_id = batch.getInstitute_id();
+				batch_repository.deleteById(batchId);
+				break;
+			}
+		}
+		redisUtilityRoot.deleteList(HASH_KEY_BATCHES_LIST+institute_id);
+		return "Deleted successfully.";
+	}
+	
 }

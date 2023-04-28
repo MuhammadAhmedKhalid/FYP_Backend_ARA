@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,6 +49,15 @@ public class Batch_controller {
 		String response = batch_service.update(batchId, department_id, Integer.parseInt(batchYear));
 		if(response == null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Batch already exists with this year.");
+		}
+		return ResponseEntity.ok(response);
+	}
+	
+	@DeleteMapping("/deleteBatch/{batchId}")
+	public ResponseEntity<String> deleteBatch(@PathVariable("batchId") int batchId){
+		String response = batch_service.delete(batchId);
+		if(response == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		}
 		return ResponseEntity.ok(response);
 	}
