@@ -22,7 +22,7 @@ public class Faculty {
 	private String name;
 	private String phone_number;
 	private String officialEmailAddress;
-	private String department;
+	private int department_id;
 	private List<String> specialization;
 	private String designation;
 	private int institute_id;
