@@ -80,4 +80,18 @@ public class Position_service {
 		return "Operation performed successfully.";
 	}
 	
+	public String delete(int position_id) {
+		int institute_id= 0;
+		List<Position> positions = position_repository.findAll();
+		for(Position position : positions) {
+			if(position.getPosition_id() == position_id) {
+				institute_id = position.getInstitute_id();
+				position_repository.deleteById(position_id);
+				break;
+			}
+		}
+		redisUtilityRoot.deleteList(HASH_KEY_POSITION_LIST+institute_id);
+		return "Deleted successfully.";
+	}
+	
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,6 +47,12 @@ public class Position_controller {
 		if(response == null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Position already exists with this name.");
 		}
+		return ResponseEntity.ok(response);
+	}
+	
+	@DeleteMapping("/deletePosition/{position_id}")
+	public ResponseEntity<String> deletePosition(@PathVariable("position_id") int position_id){
+		String response = position_service.delete(position_id);
 		return ResponseEntity.ok(response);
 	}
 	
