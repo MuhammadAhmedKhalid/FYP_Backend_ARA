@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,6 +46,12 @@ public class Faculty_controller {
 			@PathVariable("faculty_id") int faculty_id
 			){
 		String response = faculty_service.update(faculty_id, faculty);
+		return ResponseEntity.ok(response);
+	}
+	
+	@DeleteMapping("/deleteFaculty/{faculty_id}")
+	public ResponseEntity<String> deleteBatch(@PathVariable("faculty_id") int faculty_id){
+		String response = faculty_service.delete(faculty_id);
 		return ResponseEntity.ok(response);
 	}
 	

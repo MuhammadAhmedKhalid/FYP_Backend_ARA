@@ -91,4 +91,19 @@ public class Faculty_service {
 		return "Operation performed successfully.";
 	}
 	
+	public String delete(int faculty_id) {
+		int institute_id= 0;
+		List<Faculty> facultyList = faculty_repositiory.findAll();
+		for(Faculty faculty : facultyList) {
+			if(faculty.getFaculty_id() == faculty_id) {
+				institute_id = faculty.getInstitute_id();
+				user_repository.deleteById(faculty.getUser().getUser_id());
+				faculty_repositiory.delete(faculty);
+				break;
+			}
+		}
+		redisUtilityRoot.deleteList(HASH_KEY_FACULTY_LIST+institute_id);
+		return "Deleted successfully.";
+	}
+	
 }
