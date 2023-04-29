@@ -45,7 +45,6 @@ public class Object_service {
 		for(Resource_type resource : allResources) {
 			if(resource.getObject_name().equalsIgnoreCase(object.getObject_name())) {
 				resource_id = resource.getResource_type_id();
-//				System.out.println(resource_id);
 				break;
 			}
 		}
@@ -135,6 +134,21 @@ public class Object_service {
 			}
 		}
 		return totalQuantity;
+	}
+	
+	public String delete(int resource_id) {
+		int institute_id= 0;
+		List<Non_Living_Resources> resources = non_living_resources_repository.findAll();
+		for(Non_Living_Resources resource : resources) {
+			if(resource.getResource_type_id() == resource_id) {
+				institute_id = resource.getInstitute_id();
+				non_living_resources_repository.deleteById(resource_id);
+				break;
+			}
+		}
+		redisUtilityRoot.deleteList(HASH_KEY_Objects_LIST+institute_id);
+		redisUtilityRoot.deleteList(HASH_KEY_NonLivingResources_LIST+institute_id);
+		return "Deleted successfully.";
 	}
 	
 }
