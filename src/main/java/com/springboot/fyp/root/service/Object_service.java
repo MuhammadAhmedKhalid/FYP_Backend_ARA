@@ -140,7 +140,7 @@ public class Object_service {
 		int institute_id= 0;
 		List<Non_Living_Resources> resources = non_living_resources_repository.findAll();
 		for(Non_Living_Resources resource : resources) {
-			if(resource.getResource_type_id() == resource_id) {
+			if(resource.getResource_id() == resource_id) {
 				institute_id = resource.getInstitute_id();
 				non_living_resources_repository.deleteById(resource_id);
 				break;
