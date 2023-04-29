@@ -24,5 +24,6 @@ public class Staff_Request {
 	private String endTime;
 	private String date;
 	private int leaveId;
+	private boolean requestedByStaff;
 	
 }
