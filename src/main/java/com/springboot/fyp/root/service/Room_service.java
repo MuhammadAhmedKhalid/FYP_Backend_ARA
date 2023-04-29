@@ -78,4 +78,18 @@ public class Room_service {
 		return "Operation performed successfully.";
 	}
 	
+	public String delete(int room_id) {
+		int institute_id= 0;
+		List<Room> rooms = room_repository.findAll();
+		for(Room room : rooms) {
+			if(room.getRoom_id() == room_id) {
+				institute_id = room.getInstitute_id();
+				room_repository.deleteById(room_id);
+				break;
+			}
+		}
+		redisUtilityRoot.deleteList(HASH_KEY_ROOMS_LIST+institute_id);
+		return "Deleted successfully.";
+	}
+	
 }

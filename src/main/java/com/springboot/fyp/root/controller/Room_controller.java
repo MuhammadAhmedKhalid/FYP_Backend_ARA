@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,6 +46,15 @@ public class Room_controller {
 		String response = room_service.update(room_id, room_name, department_id);
 		if(response == null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Room already exists with this name in same department.");
+		}
+		return ResponseEntity.ok(response);
+	}
+	
+	@DeleteMapping("/deleteRoom/{room_id}")
+	public ResponseEntity<String> deleteRoom(@PathVariable("room_id") int room_id){
+		String response = room_service.delete(room_id);
+		if(response == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		}
 		return ResponseEntity.ok(response);
 	}
