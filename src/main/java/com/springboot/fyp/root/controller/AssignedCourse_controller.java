@@ -45,9 +45,9 @@ public class AssignedCourse_controller {
 		return ResponseEntity.ok(response);
 	}
 	
-	@DeleteMapping("/deleteAssignedCourse/{assignedCourseId}")
-	public ResponseEntity<String> deleteAssignedCourse(@PathVariable("assignedCourseId") int assignedCourseId){
-		String response = assignedCourse_service.delete(assignedCourseId);
+	@DeleteMapping("/deleteAssignedCourse/{assignedCoursesId}")
+	public ResponseEntity<String> deleteAssignedCourse(@PathVariable("assignedCoursesId") int assignedCoursesId){
+		String response = assignedCourse_service.delete(assignedCoursesId);
 		return ResponseEntity.ok(response);
 	}
 	

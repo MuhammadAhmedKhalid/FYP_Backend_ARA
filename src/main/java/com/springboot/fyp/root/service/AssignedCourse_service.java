@@ -73,21 +73,9 @@ public class AssignedCourse_service {
 			}
 		}
 		
-		List<LocalDate> dates = fetchDatesForDayOfMonth(LocalDate.now().getYear(), 
-				fetchMonthNumber(startingMonth), fetchMonthNumber(endingMonth), DayOfWeek.valueOf(day.toUpperCase()));
-		
-		for (LocalDate date : dates) {
-			assignedCourse.setAssignedCourseId(sequenceGeneratorService.getSequenceNumber(assignedCourse.SEQUENCE_NAME));
-			
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
-		
-			assignedCourse.setDate(date.format(formatter));
-			assignCourse_repository.insert(assignedCourse);
-		}
-		
 		AssignedCoursesForTable assignedCoursesForTable = new AssignedCoursesForTable();
-		assignedCoursesForTable.setAssignedCoursesId(
-				sequenceGeneratorService.getSequenceNumber(assignedCoursesForTable.SEQUENCE_NAME));
+		int assignedCoursesId = sequenceGeneratorService.getSequenceNumber(assignedCoursesForTable.SEQUENCE_NAME);
+		assignedCoursesForTable.setAssignedCoursesId(assignedCoursesId);
 		assignedCoursesForTable.setCourseId(assignedCourse.getCourse_id());
 		assignedCoursesForTable.setDepartmentId(assignedCourse.getDepartment_id());
 		assignedCoursesForTable.setFacultyId(assignedCourse.getFaculty_id());
@@ -95,6 +83,20 @@ public class AssignedCourse_service {
 		assignedCoursesForTable.setSemesterType(assignedCourse.getSemesterType());
 		assignedCoursesForTable.setInstituteId(assignedCourse.getInstitute_id());
 		assignedCoursesForTable_repository.insert(assignedCoursesForTable);
+		
+		List<LocalDate> dates = fetchDatesForDayOfMonth(LocalDate.now().getYear(), 
+				fetchMonthNumber(startingMonth), fetchMonthNumber(endingMonth), DayOfWeek.valueOf(day.toUpperCase()));
+		
+		for (LocalDate date : dates) {
+			assignedCourse.setAssignedCourseId(sequenceGeneratorService.getSequenceNumber(assignedCourse.SEQUENCE_NAME));
+			
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+			assignedCourse.setAssignedCoursesId(assignedCoursesId);
+			assignedCourse.setDate(date.format(formatter));
+			assignCourse_repository.insert(assignedCourse);
+		}
+		
+		
 		
 		redisUtilityRoot.deleteList(HASH_KEY_ASSIGNED_COURSES_FOR_TABALE_LIST+assignedCourse.getInstitute_id());
 		redisUtilityRoot.deleteList(HASH_KEY_ASSIGNED_COURSE_LIST+assignedCourse.getInstitute_id());
@@ -135,15 +137,21 @@ public class AssignedCourse_service {
 		return "Operation performed successfully.";
 	}
 	
-	public String delete(int assignedCourseId) {
+	public String delete(int assignedCoursesId) {
 		int institute_id= 0;
-		for(AssignedCourse course : assignCourse_repository.findAll()) {
-			if(course.getAssignedCourseId() == assignedCourseId) {
-				institute_id = course.getInstitute_id();
-				assignCourse_repository.deleteById(assignedCourseId);
+		for(AssignedCoursesForTable course : assignedCoursesForTable_repository.findAll()) {
+			if(course.getAssignedCoursesId() == assignedCoursesId) {
+				institute_id = course.getInstituteId();
+				assignedCoursesForTable_repository.deleteById(assignedCoursesId);
+				for(AssignedCourse assignedCourse : assignCourse_repository.findAll()) {
+					if(assignedCourse.getAssignedCoursesId() == assignedCoursesId) {
+						assignCourse_repository.delete(assignedCourse);
+					}
+				}
 				break;
 			}
 		}
+		redisUtilityRoot.deleteList(HASH_KEY_ASSIGNED_COURSES_FOR_TABALE_LIST+institute_id);
 		redisUtilityRoot.deleteList(HASH_KEY_ASSIGNED_COURSE_LIST+institute_id);
 		return "Operation performed successfully.";
 	}
