@@ -80,4 +80,18 @@ public class Course_service {
 		return "Operation performed successfully.";
 	}
 	
+	public String delete(int course_id) {
+		int institute_id= 0;
+		List<Course> courses = course_repository.findAll();
+		for(Course course : courses) {
+			if(course.getCourse_id() == course_id) {
+				institute_id = course.getInstitute_id();
+				course_repository.deleteById(course_id);
+				break;
+			}
+		}
+		redisUtilityRoot.deleteList(HASH_KEY_COURSE_LIST+institute_id);
+		return "Deleted successfully.";
+	}
+	
 }
