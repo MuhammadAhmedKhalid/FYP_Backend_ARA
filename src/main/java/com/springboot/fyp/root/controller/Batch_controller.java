@@ -56,9 +56,6 @@ public class Batch_controller {
 	@DeleteMapping("/deleteBatch/{batchId}")
 	public ResponseEntity<String> deleteBatch(@PathVariable("batchId") int batchId){
 		String response = batch_service.delete(batchId);
-		if(response == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-		}
 		return ResponseEntity.ok(response);
 	}
 	

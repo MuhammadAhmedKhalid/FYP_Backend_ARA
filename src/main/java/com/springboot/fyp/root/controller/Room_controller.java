@@ -53,9 +53,6 @@ public class Room_controller {
 	@DeleteMapping("/deleteRoom/{room_id}")
 	public ResponseEntity<String> deleteRoom(@PathVariable("room_id") int room_id){
 		String response = room_service.delete(room_id);
-		if(response == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-		}
 		return ResponseEntity.ok(response);
 	}
 	

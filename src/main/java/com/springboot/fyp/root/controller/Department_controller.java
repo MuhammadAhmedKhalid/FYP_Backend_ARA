@@ -54,9 +54,6 @@ public class Department_controller {
 	@DeleteMapping("/deleteDepartment/{department_id}")
 	public ResponseEntity<String> deleteDepartment(@PathVariable("department_id") int department_id){
 		String response = department_service.delete(department_id);
-		if(response == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-		}
 		return ResponseEntity.ok(response);
 	}
 	

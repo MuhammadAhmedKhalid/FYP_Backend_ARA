@@ -26,7 +26,6 @@ public class Batch_service {
 	public String insert(Batch batch){
 		for(Batch btch: batch_repository.findAll()) {
 			if(btch.getBatchYear() == batch.getBatchYear()
-//					&& btch.getBatchType().equals(batch.getBatchType())
 					&& btch.getDepartment_id() == batch.getDepartment_id()) {
 				return null;
 			}
