@@ -43,9 +43,8 @@ public class Admin_controller {
 	
 	@SuppressWarnings("rawtypes")
 	@GetMapping("/checkTokenValidity")
-	public ResponseEntity checkToken(@RequestBody String token) {
-		boolean response = jwt_Utils.isTokenExpired(token);
-		return ResponseEntity.ok(response);
+	public ResponseEntity checkToken() {
+		return ResponseEntity.ok(true);
 	}
 	
 }
