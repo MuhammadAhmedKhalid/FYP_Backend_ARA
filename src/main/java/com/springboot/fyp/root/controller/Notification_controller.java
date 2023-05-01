@@ -30,7 +30,7 @@ public class Notification_controller {
 	public ResponseEntity<List<Notification>> getNotifications(@PathVariable("institute_id") int institute_id){
 		List<Notification> notifications = notification_service.getAll(institute_id);
 		if(notifications == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 		}
 		return ResponseEntity.ok(notifications);
 	}

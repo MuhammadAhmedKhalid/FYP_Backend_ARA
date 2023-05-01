@@ -35,7 +35,7 @@ public class Room_controller {
 	public ResponseEntity<List<Room>> getRooms(@PathVariable("institute_id") int institute_id){
 		List<Room> rooms_lst = room_service.getAll(institute_id);
 		if(rooms_lst == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 		}
 		return ResponseEntity.ok(rooms_lst);
 	}

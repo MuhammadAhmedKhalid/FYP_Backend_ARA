@@ -32,7 +32,7 @@ public class Object_request_controller {
 	public ResponseEntity<List<Object_Request>> getAllObjectRequests(@PathVariable("institute_id") int institute_id){
 		List<Object_Request> objectRequests = object_request_service.getAll(institute_id);
 		if(objectRequests == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 		}
 		return ResponseEntity.ok(objectRequests);
 	}
@@ -41,7 +41,7 @@ public class Object_request_controller {
 	public ResponseEntity<String> deleteObjectRequest(@PathVariable("obj_req_id") int obj_req_id){
 		String response = object_request_service.delete(obj_req_id);
 		if(response == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 		}
 		return ResponseEntity.ok(response);
 	}

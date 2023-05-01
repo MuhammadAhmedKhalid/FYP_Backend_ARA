@@ -36,7 +36,7 @@ public class Department_controller {
 	public ResponseEntity<List<Department>> getDepartments(@PathVariable("institute_id") int institute_id){
 		List<Department> departments_lst = department_service.getAll(institute_id);
 		if(departments_lst == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 		}
 		return ResponseEntity.ok(departments_lst);
 	}

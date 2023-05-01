@@ -22,7 +22,7 @@ public class AssignedCoursesForTable_controller {
 	public ResponseEntity<List<AssignedCoursesForTable>> assignedCourses(@PathVariable("institute_id") int institute_id){
 		List<AssignedCoursesForTable> assignedCourses = assignedCoursesForTable_service.getAll(institute_id);
 		if(assignedCourses == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 		}
 		return ResponseEntity.ok(assignedCourses);
 	}

@@ -34,7 +34,7 @@ public class Staff_request_controller {
 	public ResponseEntity<List<Staff_Request>> getAllRequests(@PathVariable("institute_id") int institute_id){
 		List<Staff_Request> staffRequests = staff_request_service.getAll(institute_id);
 		if(staffRequests == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 		}
 		return ResponseEntity.ok(staffRequests);
 	}
@@ -43,7 +43,7 @@ public class Staff_request_controller {
 	public ResponseEntity<String> deleteStaffRequest(@PathVariable("staff_req_id") int staff_req_id){
 		String response = staff_request_service.delete(staff_req_id);
 		if(response == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 		}
 		return ResponseEntity.ok(response);
 	}

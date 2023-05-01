@@ -32,7 +32,7 @@ public class AssignedCourse_controller {
 	public ResponseEntity<List<AssignedCourse>> assignedCourses(@PathVariable("institute_id") int institute_id){
 		List<AssignedCourse> assignedCourses = assignedCourse_service.getAll(institute_id);
 		if(assignedCourses == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 		}
 		return ResponseEntity.ok(assignedCourses);
 	}

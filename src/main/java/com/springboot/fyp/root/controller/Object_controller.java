@@ -34,7 +34,7 @@ public class Object_controller {
 	public ResponseEntity<List<String>> getObjects(@PathVariable("institute_id") int institute_id){
 		List<String> objects = object_service.getAll(institute_id);
 		if(objects == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 		}
 		return ResponseEntity.ok(objects);
 	}
@@ -43,7 +43,7 @@ public class Object_controller {
 	public ResponseEntity<Integer> objectsPerResourceType(@PathVariable("resourceType") int resourceType){
 		int totalQuantity = object_service.getObjectsPerResourceType(resourceType);
 		if(totalQuantity == 0) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 		}
 		return ResponseEntity.ok(totalQuantity);
 	}

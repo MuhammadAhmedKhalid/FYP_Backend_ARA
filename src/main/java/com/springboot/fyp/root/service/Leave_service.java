@@ -104,24 +104,6 @@ public class Leave_service {
         return teacherResults;
     }
 	
-//	public Teacher findBestTeacher(List<Teacher> teachers) {
-//	    Teacher bestTeacher = null;
-//	    double bestIndex = 0.0;
-//
-//	    for (int i = 0; i < teachers.size(); i++) {
-//	        for (int j = i + 1; j < teachers.size(); j++) {
-//	            double index = jaccardIndex(teachers.get(i), teachers.get(j));
-//
-//	            if (index > bestIndex) {
-//	                bestIndex = index;
-//	                bestTeacher = index > bestIndex ? teachers.get(i) : teachers.get(j);
-//	            }
-//	        }
-//	    }
-//
-//	    return bestTeacher;
-//	}
-	
 	@SuppressWarnings("unchecked")
 	public List<Leave> getAll(int institute_id){
 		if(redisUtilityRoot.getList(HASH_KEY_LEAVE_REQUESTS+institute_id).size()>0) {

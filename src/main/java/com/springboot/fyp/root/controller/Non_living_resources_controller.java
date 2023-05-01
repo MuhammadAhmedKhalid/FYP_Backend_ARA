@@ -22,7 +22,7 @@ public class Non_living_resources_controller {
 	public ResponseEntity<List<Non_Living_Resources>> getResources(@PathVariable("institute_id") int institute_id){
 		List<Non_Living_Resources> non_Living_Resources_lst = non_living_resource_service.getAll(institute_id);
 		if(non_Living_Resources_lst == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 		}
 		return ResponseEntity.ok(non_Living_Resources_lst);
 	}

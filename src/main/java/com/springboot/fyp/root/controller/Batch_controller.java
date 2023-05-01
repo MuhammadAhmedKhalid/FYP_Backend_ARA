@@ -35,7 +35,7 @@ public class Batch_controller {
 	public ResponseEntity<List<Batch>> getBatches(@PathVariable("institute_id") int institute_id){
 		List<Batch> batchesList = batch_service.getAll(institute_id);
 		if(batchesList == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 		}
 		return ResponseEntity.ok(batchesList);
 	}

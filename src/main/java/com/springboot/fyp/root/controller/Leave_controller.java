@@ -34,7 +34,7 @@ public class Leave_controller {
 	public ResponseEntity<List<Leave>> getAllRequests(@PathVariable("institute_id") int institute_id){
 		List<Leave> leaveRequests = leave_service.getAll(institute_id);
 		if(leaveRequests == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 		}
 		return ResponseEntity.ok(leaveRequests);
 	}
@@ -49,7 +49,7 @@ public class Leave_controller {
 	public ResponseEntity<String> deleteLeaveRequest(@PathVariable("leaveId") int leaveId){
 		String response = leave_service.delete(leaveId);
 		if(response == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 		}
 		return ResponseEntity.ok(response);
 	}

@@ -35,7 +35,7 @@ public class Course_controller {
 	public ResponseEntity<List<Course>> getCourses(@PathVariable("institute_id") int institute_id){
 		List<Course> courses = course_service.getAll(institute_id);
 		if(courses == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 		}
 		return ResponseEntity.ok(courses);
 	}

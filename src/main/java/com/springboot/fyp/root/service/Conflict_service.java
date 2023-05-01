@@ -10,9 +10,9 @@ public class Conflict_service {
 	 public boolean hasConflict(Conflict conflict1, Conflict conflict2) {
 	        if (conflict1.getEndTime().before(conflict2.getStartTime()) || 
 	        		conflict1.getStartTime().after(conflict2.getEndTime())) {
-	            return false; // no conflict
+	            return false;
 	        } else {
-	            return true; // conflict
+	            return true;
 	        }
 	    }
 	

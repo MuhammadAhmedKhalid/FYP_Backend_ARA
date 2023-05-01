@@ -34,7 +34,7 @@ public class Room_request_controller {
 	public ResponseEntity<List<Room_Request>> getAllRequests(@PathVariable("institute_id") int institute_id){
 		List<Room_Request> roomRequests = room_request_service.getAll(institute_id);
 		if(roomRequests == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 		}
 		return ResponseEntity.ok(roomRequests);
 	}
@@ -43,7 +43,7 @@ public class Room_request_controller {
 	public ResponseEntity<String> deleteRoomRequest(@PathVariable("room_req_id") int room_req_id){
 		String response = room_request_service.delete(room_req_id);
 		if(response == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 		}
 		return ResponseEntity.ok(response);
 	}
