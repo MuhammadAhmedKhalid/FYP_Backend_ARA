@@ -92,6 +92,7 @@ public class Admin_service {
 						 if(checkUser.getUser_id() == checkFaculty.getUser().getUser_id()) {
 							 institute_id = checkFaculty.getInstitute_id();
 							 faculty_id = checkFaculty.getFaculty_id();
+							 institute_name = institutesList.get(i).getInstitute_name();
 						 }
 					 }
 				 }
