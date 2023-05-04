@@ -6,7 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,6 +35,13 @@ public class Institute_controller {
 			return ResponseEntity.ok(new ArrayList<>());
 		}
 		return ResponseEntity.ok(instituteList);
+	}
+	
+	@PutMapping("updateInstitute/{institute_id}")
+	public ResponseEntity<String> updateInstitute(@RequestBody Institute institute, 
+			@PathVariable("institute_id") int institute_id){
+		String response = institute_service.update(institute_id, institute);
+		return ResponseEntity.ok(response);
 	}
 	
 }

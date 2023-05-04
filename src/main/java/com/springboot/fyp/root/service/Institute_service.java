@@ -47,4 +47,29 @@ public class Institute_service {
 		}
 		
 	}
+	
+	public String update(int institute_id, Institute institute) {
+		List<Institute> institutes = institute_repository.findAll();
+		for(Institute instituteDB : institutes) {
+			if(instituteDB.getInstitute_id() == institute_id) {
+				if(institute.getAddress().length() > 0) {
+					instituteDB.setAddress(institute.getAddress());
+				}
+				if(institute.getBranch().length() > 0) {
+					instituteDB.setBranch(institute.getBranch());
+				}
+				if(institute.getContact().length() > 0) {
+					instituteDB.setContact(institute.getContact());
+				}
+				if(institute.getInstitute_name().length() > 0) {
+					instituteDB.setInstitute_name(institute.getInstitute_name());
+				}
+				institute_repository.save(instituteDB);
+				break;
+			}
+		}
+		redisUtilityRoot.deleteList(HASH_KEY_INSTITUTES_LIST+institute_id);
+		return "Updated successfully.";
+	}
+	
 }
