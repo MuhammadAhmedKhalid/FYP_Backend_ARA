@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -45,6 +47,12 @@ public class Admin_controller {
 	@GetMapping("/checkTokenValidity")
 	public ResponseEntity checkToken() {
 		return ResponseEntity.ok(true);
+	}
+	
+	@PutMapping("/updateAdmin/{user_id}")
+	public ResponseEntity<String> updateAdmin(@RequestBody User user, @PathVariable("user_id") int user_id){
+		String response = admin_service.update(user_id, user);
+		return ResponseEntity.ok(response);
 	}
 	
 }

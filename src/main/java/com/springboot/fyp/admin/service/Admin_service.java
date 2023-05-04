@@ -105,4 +105,23 @@ public class Admin_service {
 		}
 		return null;
 	}
+	
+	public String update(int user_id, User user) {
+		List<User> users = user_repository.findAll();
+		for(User userDB : users) {
+			if(user.getUser_id() == user_id) {
+				if(user.getName().length() > 0) {
+					userDB.setName(user.getName());
+				}
+				if(user.getPassword().length() > 0) {
+					String encryptedPassword = AES.encrypt(user.getPassword(), secretKey);
+					userDB.setPassword(encryptedPassword);
+				}
+				user_repository.save(userDB);
+				break;
+			}
+		}
+		return "Operation performed successfully.";
+	}
+	
 }

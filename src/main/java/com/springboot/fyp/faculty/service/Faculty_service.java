@@ -10,6 +10,8 @@ import com.springboot.fyp.admin.service.Admin_service;
 import com.springboot.fyp.faculty.dao.Faculty_repositiory;
 import com.springboot.fyp.faculty.models.Faculty;
 import com.springboot.fyp.root.dao.User_repository;
+import com.springboot.fyp.root.models.User;
+import com.springboot.fyp.root.security.AES;
 import com.springboot.fyp.root.service.RedisUtilityRoot;
 import com.springboot.fyp.root.service.SequenceGeneratorService;
 
@@ -81,7 +83,18 @@ public class Faculty_service {
 				if(facultyObj.getDesignation().length() > 0) {
 					faculty.setDesignation(facultyObj.getDesignation());
 				}
-			
+//				if(facultyObj.getSpecialization().size() > 0) {
+//					faculty.setSpecialization(facultyObj.getSpecialization());
+//				}
+//				if(facultyObj.getUser().getPassword().length() > 0) {
+//					String encryptedPassword = AES.encrypt(facultyObj.getUser().getPassword(), secretKey);
+//						User user = facultyObj.getUser();
+//						user.setPassword(encryptedPassword);
+//						user_repository.save(user);
+//				}
+//				
+//				faculty.setYearsOfExperience(facultyObj.getYearsOfExperience());
+				
 				institute_id = faculty.getInstitute_id();
 				faculty_repositiory.save(faculty);
 				break;
