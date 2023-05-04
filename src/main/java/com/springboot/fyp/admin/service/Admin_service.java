@@ -16,6 +16,7 @@ import com.springboot.fyp.root.models.User;
 import com.springboot.fyp.root.security.AES;
 import com.springboot.fyp.root.service.JWT_Utils;
 import com.springboot.fyp.root.service.MongoAuthUserDetailService;
+import com.springboot.fyp.root.service.RedisUtilityRoot;
 import com.springboot.fyp.root.service.SequenceGeneratorService;
 
 @Service
@@ -40,6 +41,11 @@ public class Admin_service {
 	
 	@Autowired
 	Faculty_repositiory faculty_repositiory;
+	
+	public static final String HASH_KEY_FACULTY_LIST = "FacultyList";
+	
+	@Autowired
+	RedisUtilityRoot redisUtilityRoot;
 	
 	public String create(User user, boolean isFaculty){
 		User checkUser = user_repository.findByEmail(user.getEmail());
@@ -107,9 +113,10 @@ public class Admin_service {
 	}
 	
 	public String update(int user_id, User user) {
+		int institute_id = 0;
 		List<User> users = user_repository.findAll();
 		for(User userDB : users) {
-			if(user.getUser_id() == user_id) {
+			if(userDB.getUser_id() == user_id) {
 				if(user.getName().length() > 0) {
 					userDB.setName(user.getName());
 				}
@@ -117,9 +124,21 @@ public class Admin_service {
 					String encryptedPassword = AES.encrypt(user.getPassword(), secretKey);
 					userDB.setPassword(encryptedPassword);
 				}
+				if(!userDB.is_admin()) {
+					 List<Faculty> facultyList = faculty_repositiory.findAll();
+					 for (Faculty faculty : facultyList) {
+						 if(faculty.getUser().getUser_id() == userDB.getUser_id()) {
+							 faculty.setUser(userDB);
+							 institute_id = faculty.getInstitute_id();
+							 faculty_repositiory.save(faculty); 
+							 redisUtilityRoot.deleteList(HASH_KEY_FACULTY_LIST+institute_id);
+							 break;
+						 }
+					 }
+				}
 				user_repository.save(userDB);
 				break;
-			}
+			}	
 		}
 		return "Operation performed successfully.";
 	}
