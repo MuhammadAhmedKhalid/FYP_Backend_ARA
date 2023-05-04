@@ -68,7 +68,7 @@ public class Institute_service {
 				break;
 			}
 		}
-		redisUtilityRoot.deleteList(HASH_KEY_INSTITUTES_LIST+institute_id);
+		redisUtilityRoot.deleteList(HASH_KEY_INSTITUTES_LIST);
 		return "Updated successfully.";
 	}
 	
