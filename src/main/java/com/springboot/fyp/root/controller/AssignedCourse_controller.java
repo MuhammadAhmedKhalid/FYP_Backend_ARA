@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.fyp.root.models.AssignedCourse;
 import com.springboot.fyp.root.models.MakeResBusy;
+import com.springboot.fyp.root.models.UpdateAssignedCourse;
 import com.springboot.fyp.root.service.AssignedCourse_service;
 
 @RestController
@@ -40,9 +41,9 @@ public class AssignedCourse_controller {
 	
 	@PutMapping("/updateAssignedCourse/{faculty_id}")
 	public ResponseEntity<String> updateAssignedCourse(
-			@RequestBody AssignedCourse assignedCourse, @PathVariable("faculty_id") int faculty_id){
+			@RequestBody UpdateAssignedCourse updateAssignedCourse, @PathVariable("faculty_id") int faculty_id){
 		
-		String response = assignedCourse_service.update(assignedCourse, faculty_id);
+		String response = assignedCourse_service.update(updateAssignedCourse, faculty_id);
 		return ResponseEntity.ok(response);
 	}
 	
