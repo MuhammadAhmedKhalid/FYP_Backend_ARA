@@ -13,15 +13,33 @@ import org.springframework.stereotype.Service;
 import com.springboot.fyp.root.dao.AssignedCourse_repository;
 import com.springboot.fyp.root.dao.AssignedCoursesForTable_repository;
 import com.springboot.fyp.root.dao.Institute_repository;
+import com.springboot.fyp.root.dao.Room_request_repository;
+import com.springboot.fyp.root.dao.Staff_request_repository;
 import com.springboot.fyp.root.models.AssignedCourse;
 import com.springboot.fyp.root.models.AssignedCoursesForTable;
 import com.springboot.fyp.root.models.Institute;
+import com.springboot.fyp.root.models.MakeResBusy;
+import com.springboot.fyp.root.models.Room_Request;
+import com.springboot.fyp.root.models.Staff_Request;
 
 @Service
 public class AssignedCourse_service {
 	
 	@Autowired
 	AssignedCourse_repository assignCourse_repository;
+	
+	@Autowired
+	Staff_request_repository staff_request_repository;
+	
+	@Autowired
+	Room_request_repository room_request_repository;
+	
+
+	@Autowired
+	Room_request_service room_request_service;
+	
+	@Autowired
+	Staff_request_service staff_request_service;
 	
 	@Autowired
 	AssignedCoursesForTable_repository assignedCoursesForTable_repository;
@@ -37,6 +55,8 @@ public class AssignedCourse_service {
 	
 	public static final String HASH_KEY_ASSIGNED_COURSE_LIST = "AssignedCourseList";
 	public static final String HASH_KEY_ASSIGNED_COURSES_FOR_TABALE_LIST = "AssignedCoursesForTableList";
+	public static final String HASH_KEY_ROOM_REQUESTS = "RoomRequests";
+	public static final String HASH_KEY_STAFF_REQUESTS = "StaffRequests";
 	
 	public static List<LocalDate> fetchDatesForDayOfMonth(int year, int startMonth, int endMonth, DayOfWeek dayOfWeek) {
         LocalDate start = LocalDate.of(year, startMonth, 1);
@@ -55,7 +75,9 @@ public class AssignedCourse_service {
         return Month.valueOf(monthName.toUpperCase()).getValue();
     }
 	
-	public String insert(AssignedCourse assignedCourse){
+	public String insert(MakeResBusy makeResBusy){
+		
+		AssignedCourse assignedCourse = makeResBusy.getAssignedCourse();
 		
 		String startingMonth = "";
 		String endingMonth = "";
@@ -96,7 +118,18 @@ public class AssignedCourse_service {
 			assignCourse_repository.insert(assignedCourse);
 		}
 		
+		ArrayList<String> dateList = makeResBusy.getDates_lst();
 		
+		for(int i=0; i<makeResBusy.getDates_lst().size(); i++) {
+			Room_Request room_Request = makeResBusy.getRoom_Request();
+			Staff_Request staff_Request = makeResBusy.getStaff_Request();
+			room_Request.setDate(dateList.get(i));
+			room_Request.setAssignedCoursesId(assignedCoursesId);
+			staff_Request.setDate(dateList.get(i));
+			staff_Request.setAssignedCoursesId(assignedCoursesId);
+			room_request_service.add(room_Request);
+			staff_request_service.add(staff_Request);
+		}
 		
 		redisUtilityRoot.deleteList(HASH_KEY_ASSIGNED_COURSES_FOR_TABALE_LIST+assignedCourse.getInstitute_id());
 		redisUtilityRoot.deleteList(HASH_KEY_ASSIGNED_COURSE_LIST+assignedCourse.getInstitute_id());
@@ -161,11 +194,23 @@ public class AssignedCourse_service {
 						assignCourse_repository.delete(assignedCourse);
 					}
 				}
+				for(Staff_Request request : staff_request_repository.findAll()) {
+					if(request.getAssignedCoursesId() == assignedCoursesId) {
+						staff_request_repository.delete(request);
+					}
+				}
+				for(Room_Request request : room_request_repository.findAll()) {
+					if(request.getAssignedCoursesId() == assignedCoursesId) {
+						room_request_repository.delete(request);
+					}
+				}
 				break;
 			}
 		}
 		redisUtilityRoot.deleteList(HASH_KEY_ASSIGNED_COURSES_FOR_TABALE_LIST+institute_id);
 		redisUtilityRoot.deleteList(HASH_KEY_ASSIGNED_COURSE_LIST+institute_id);
+		redisUtilityRoot.deleteList(HASH_KEY_STAFF_REQUESTS+institute_id);
+		redisUtilityRoot.deleteList(HASH_KEY_ROOM_REQUESTS+institute_id);
 		return "Operation performed successfully.";
 	}
 	

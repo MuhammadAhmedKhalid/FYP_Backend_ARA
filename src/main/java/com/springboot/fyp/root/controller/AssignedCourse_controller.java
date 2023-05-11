@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.fyp.root.models.AssignedCourse;
+import com.springboot.fyp.root.models.MakeResBusy;
 import com.springboot.fyp.root.service.AssignedCourse_service;
 
 @RestController
@@ -23,8 +24,8 @@ public class AssignedCourse_controller {
 	AssignedCourse_service assignedCourse_service;
 	
 	@PostMapping("/assignCourse")
-	public ResponseEntity<String> assignCourse(@RequestBody AssignedCourse assignedCourse){
-		String response = assignedCourse_service.insert(assignedCourse);
+	public ResponseEntity<String> assignCourse(@RequestBody MakeResBusy makeResBusy){
+		String response = assignedCourse_service.insert(makeResBusy);
 		return ResponseEntity.ok(response);
 	}
 	

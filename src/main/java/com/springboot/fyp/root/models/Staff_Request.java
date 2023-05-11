@@ -15,6 +15,7 @@ public class Staff_Request {
 	
 	@Id
 	private int staff_req_id;
+	private int assignedCoursesId;
 	private int department_id;
 	private int institute_id;
 	private int user_id;
