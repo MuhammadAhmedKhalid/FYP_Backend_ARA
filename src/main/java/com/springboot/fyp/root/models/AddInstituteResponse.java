@@ -7,5 +7,9 @@ public class AddInstituteResponse {
 	
 	private int institute_id;
 	private String institute_name;
+	private String springStartMonth;
+	private String springEndMonth;
+	private String fallStartMonth;
+	private String fallEndMonth;
 	
 }

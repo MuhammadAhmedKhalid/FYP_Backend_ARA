@@ -31,6 +31,10 @@ public class Institute_service {
 		AddInstituteResponse response = new AddInstituteResponse();
 		response.setInstitute_id(institute.getInstitute_id());
 		response.setInstitute_name(institute.getInstitute_name());
+		response.setSpringStartMonth(institute.getSpringStartMonth());
+		response.setSpringEndMonth(institute.getSpringEndMonth());
+		response.setFallStartMonth(institute.getFallStartMonth());
+		response.setFallEndMonth(institute.getFallEndMonth());
 		return response;
 	}
 	
