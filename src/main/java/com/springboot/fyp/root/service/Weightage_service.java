@@ -1,5 +1,6 @@
 package com.springboot.fyp.root.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +44,16 @@ public class Weightage_service {
 		}else {
 			if(weightageDB_repository.findAll().isEmpty()) {
 				return null;
+			}else {
+				List<WeightageDB> weightageList = new ArrayList<>();
+				for(WeightageDB weightageDB : weightageDB_repository.findAll()) {
+					if(weightageDB.getInstitute_id() == institute_id) {
+						weightageList.add(weightageDB);
+					}
+				}
+				redisUtilityRoot.saveList(weightageList, HASH_KEY_WEIGHTAGE_LIST+institute_id);
+				return weightageList;
 			}
-			redisUtilityRoot.saveList(weightageDB_repository.findAll(), HASH_KEY_WEIGHTAGE_LIST+institute_id);
-			return redisUtilityRoot.getList(HASH_KEY_WEIGHTAGE_LIST+institute_id);
 		}
 	}
 	
