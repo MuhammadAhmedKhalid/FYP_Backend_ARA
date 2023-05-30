@@ -10,6 +10,7 @@ import com.springboot.fyp.admin.service.Admin_service;
 import com.springboot.fyp.faculty.dao.Faculty_repositiory;
 import com.springboot.fyp.faculty.models.Faculty;
 import com.springboot.fyp.root.dao.User_repository;
+import com.springboot.fyp.root.models.User;
 import com.springboot.fyp.root.service.RedisUtilityRoot;
 import com.springboot.fyp.root.service.SequenceGeneratorService;
 
@@ -69,6 +70,15 @@ public class Faculty_service {
 	public String update(int faculty_id, Faculty facultyObj) {
 		int institute_id= 0;
 		List<Faculty> facultyList = faculty_repositiory.findAll();
+		System.out.println(facultyObj);
+		
+		if(facultyObj.getOfficialEmailAddress().length() > 0) {
+			Faculty checkFaculty = faculty_repositiory.findByOfficialEmailAddress(facultyObj.getOfficialEmailAddress()); 
+			if(checkFaculty != null) {
+				return null;
+			}
+		}
+		
 		for(Faculty faculty : facultyList) {
 			if(faculty.getFaculty_id() == faculty_id) {
 				if(facultyObj.getName().length() > 0) {
@@ -89,7 +99,12 @@ public class Faculty_service {
 				if(facultyObj.getYearsOfExperience() > 0) {
 					faculty.setYearsOfExperience(facultyObj.getYearsOfExperience());
 				}
-				
+				if(facultyObj.getOfficialEmailAddress().length() > 0) {
+					faculty.setOfficialEmailAddress(facultyObj.getOfficialEmailAddress());
+					User user = faculty.getUser();
+					user.setEmail(facultyObj.getOfficialEmailAddress());
+					user_repository.save(user);
+				}
 				institute_id = faculty.getInstitute_id();
 				faculty_repositiory.save(faculty);
 				break;

@@ -46,6 +46,9 @@ public class Faculty_controller {
 			@PathVariable("faculty_id") int faculty_id
 			){
 		String response = faculty_service.update(faculty_id, faculty);
+		if(response == null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Faculty already exists with this email.");
+		}
 		return ResponseEntity.ok(response);
 	}
 	
