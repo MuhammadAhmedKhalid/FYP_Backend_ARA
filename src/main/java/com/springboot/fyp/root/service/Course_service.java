@@ -60,22 +60,45 @@ public class Course_service {
 		}
 	}
 	
-	public String update(int course_id, int department_id, String course_name) {
+	public String update(int course_id, int department_id, Course bodyCourse) {
 		int institute_id= 0;
+		String course_name = "";
 		List<Course> courses = course_repository.findAll();
+		
 		for(Course course : courses) {
-			if(course.getCourse_name().equalsIgnoreCase(course_name) && course.getDepartment_id() == department_id) {
+			if(course.getCourse_id() == course_id) {
+				course_name = course.getCourse_name();
+			}
+		}
+		
+		for(Course course : courses) {
+			if(course.getCourse_name().equalsIgnoreCase(bodyCourse.getCourse_name()) 
+					&& course.getDepartment_id() == department_id) {
+				return null;
+			}else if(course.getDepartment_id() == bodyCourse.getDepartment_id()
+					&& course.getCourse_name().equalsIgnoreCase(course_name)) {
+				return null;
+			}else if(course.getDepartment_id() == bodyCourse.getDepartment_id()
+					&& course.getDepartment_id() == department_id
+					&& course.getCourse_name().equalsIgnoreCase(bodyCourse.getCourse_name())) {
 				return null;
 			}
 		}
+		
 		for(Course course : courses) {
 			if(course.getCourse_id() == course_id) {
-				course.setCourse_name(course_name);
+				if(bodyCourse.getCourse_name().length() > 0) {
+					course.setCourse_name(bodyCourse.getCourse_name());
+				}
+				if(bodyCourse.getDepartment_id() > 0) {
+					course.setDepartment_id(bodyCourse.getDepartment_id());
+				}
 				institute_id = course.getInstitute_id();
 				course_repository.save(course);
 				break;
 			}
 		}
+		
 		redisUtilityRoot.deleteList(HASH_KEY_COURSE_LIST+institute_id);
 		return "Operation performed successfully.";
 	}
