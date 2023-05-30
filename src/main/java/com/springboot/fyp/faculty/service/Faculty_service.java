@@ -77,13 +77,18 @@ public class Faculty_service {
 				if(facultyObj.getPhone_number().length() > 0) {
 					faculty.setPhone_number(facultyObj.getPhone_number());
 				}
-				if(facultyObj.getDesignation().length() > 0) {
-					faculty.setDesignation(facultyObj.getDesignation());
+				if(facultyObj.getDepartment_id() > 0) {
+					faculty.setDepartment_id(facultyObj.getDepartment_id());
 				}
 				if(facultyObj.getSpecialization().size() > 0) {
 					faculty.setSpecialization(facultyObj.getSpecialization());
 				}
-				faculty.setYearsOfExperience(facultyObj.getYearsOfExperience());
+				if(facultyObj.getDesignation().length() > 0) {
+					faculty.setDesignation(facultyObj.getDesignation());
+				}
+				if(facultyObj.getYearsOfExperience() > 0) {
+					faculty.setYearsOfExperience(facultyObj.getYearsOfExperience());
+				}
 				
 				institute_id = faculty.getInstitute_id();
 				faculty_repositiory.save(faculty);
