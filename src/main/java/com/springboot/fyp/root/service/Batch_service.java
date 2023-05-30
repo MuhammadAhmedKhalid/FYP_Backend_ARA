@@ -66,6 +66,9 @@ public class Batch_service {
 			if(batchId == batch.getBatchId()) {
 				batchYear = batch.getBatchYear();
 			}
+		}
+		
+		for(Batch batch : batches) {
 			if(batch.getBatchYear() == bodyBatch.getBatchYear() && batch.getDepartment_id() == department_id) {
 				return null;
 			} else if(batch.getDepartment_id() == bodyBatch.getDepartment_id() 

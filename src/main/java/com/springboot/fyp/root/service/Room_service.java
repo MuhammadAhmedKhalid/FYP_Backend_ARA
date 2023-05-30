@@ -58,22 +58,44 @@ public class Room_service {
 		}
 	}
 	
-	public String update(int room_id, String room_name, int department_id) {
+	public String update(int room_id, Room bodyRoom, int department_id) {
 		int institute_id = 0;
+		String room_name = "";
 		List<Room> rooms = room_repository.findAll();
+		
 		for(Room room : rooms) {
-			if(room.getRoom_name().equalsIgnoreCase(room_name) && room.getDepartment_id() == department_id) {
+			if(room_id == room.getRoom_id()) {
+				room_name = room.getRoom_name();
+			}
+		}
+		
+		for(Room room : rooms) {
+			if(room.getRoom_name().equalsIgnoreCase(bodyRoom.getRoom_name()) && room.getDepartment_id() == department_id) {
+				return null;
+			}else if(room.getDepartment_id() == bodyRoom.getDepartment_id() 
+					&& room.getRoom_name().equalsIgnoreCase(room_name)) {
+				return null;
+			}else if(room.getDepartment_id() == bodyRoom.getDepartment_id()
+					&& room.getDepartment_id() == department_id 
+					&& room.getRoom_name().equalsIgnoreCase(bodyRoom.getRoom_name())) {
 				return null;
 			}
 		}
+		
 		for(Room room : rooms) {
 			if(room.getRoom_id() == room_id) {
-				room.setRoom_name(room_name);
+				if(bodyRoom.getRoom_name().length() > 0) {
+					room.setRoom_name(bodyRoom.getRoom_name());
+				}
+				if(bodyRoom.getDepartment_id() > 0) {
+					room.setDepartment_id(bodyRoom.getDepartment_id());
+				}
 				institute_id = room.getInstitute_id();
 				room_repository.save(room);
 				break;
 			}
 		}
+		
 		redisUtilityRoot.deleteList(HASH_KEY_ROOMS_LIST+institute_id);
 		return "Operation performed successfully.";
 	}
