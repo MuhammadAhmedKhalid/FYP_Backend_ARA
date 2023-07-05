@@ -93,14 +93,19 @@ public class Admin_service {
 					 fallEndMonth = institutesList.get(i).getFallEndMonth();
 				 }
 				 else if (!checkUser.is_admin()) {
-					 List<Faculty> faculty_lst = faculty_repositiory.findAll();
-					 for (Faculty checkFaculty : faculty_lst) {
-						 if(checkUser.getUser_id() == checkFaculty.getUser().getUser_id()) {
+					 boolean shouldBreak = false;
+					 for (Faculty checkFaculty : faculty_repositiory.findAll()) {
+						 if(checkFaculty.getUser().getUser_id() == checkUser.getUser_id()
+								 && checkFaculty.getInstitute_id() == institutesList.get(i).getInstitute_id()) {
 							 institute_id = checkFaculty.getInstitute_id();
 							 faculty_id = checkFaculty.getFaculty_id();
 							 institute_name = institutesList.get(i).getInstitute_name();
+							 shouldBreak = true;
+							 break;
 						 }
 					 }
+					 
+					 if(shouldBreak) break;
 				 }
 			 }
 			 
