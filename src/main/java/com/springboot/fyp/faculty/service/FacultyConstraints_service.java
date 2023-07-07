@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.springboot.fyp.faculty.dao.FacultyConstraints_repository;
-import com.springboot.fyp.root.service.RedisUtilityRoot;
+import com.springboot.fyp.faculty.models.FacultyConstraints;
 import com.springboot.fyp.root.service.SequenceGeneratorService;
 
 @Service
@@ -14,11 +14,15 @@ public class FacultyConstraints_service {
 	SequenceGeneratorService sequenceGeneratorService;
 	
 	@Autowired
-	RedisUtilityRoot redisUtilityRoot;
-	
-	@Autowired
 	FacultyConstraints_repository facultyConstraints_repository;
 	
-	public static final String HASH_KEY_FACULTY_CONSTRAINTS_LIST = "FacultyConstraintsList";
+	public String add(FacultyConstraints facultyConstraints) {
+		
+		facultyConstraints.setFacultyConstraintId(
+				sequenceGeneratorService.getSequenceNumber(facultyConstraints.SEQUENCE_NAME));
+		facultyConstraints_repository.insert(facultyConstraints);
+		
+		return "Operation performed successfully.";
+	}
 
 }
