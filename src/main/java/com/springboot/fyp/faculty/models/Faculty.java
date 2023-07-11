@@ -20,6 +20,7 @@ public class Faculty {
 	@Id
 	private int faculty_id;
 	private String name;
+	private String code;
 	private String phone_number;
 	private String officialEmailAddress;
 	private int department_id;
