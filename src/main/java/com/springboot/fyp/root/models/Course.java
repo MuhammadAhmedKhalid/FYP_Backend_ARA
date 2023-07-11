@@ -16,6 +16,9 @@ public class Course {
 	@Id
 	private int course_id;
 	private String course_name;
+	private String course_code;
+	private String credit_hours;
+	private String type;
 	private int department_id;
 	private int institute_id;
 	
