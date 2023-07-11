@@ -58,7 +58,7 @@ public class Batch_service {
 		}
 	}
 	
-	public String update(int batchId, int department_id, Batch bodyBatch) {
+	public String update(int batchId, int department_id, String section, Batch bodyBatch) {
 		int institute_id= 0;
 		int batchYear = 0;
 		List<Batch> batches = batch_repository.findAll();
@@ -66,11 +66,17 @@ public class Batch_service {
 		for(Batch batch : batches) {
 			if(batchId == batch.getBatchId()) {
 				batchYear = batch.getBatchYear();
+				break;
 			}
 		}
 		
 		for(Batch batch : batches) {
-			if(batch.getBatchYear() == bodyBatch.getBatchYear() && batch.getDepartment_id() == department_id) {
+			if(batch.getBatchYear() == bodyBatch.getBatchYear() &&
+					batch.getDepartment_id() == bodyBatch.getDepartment_id() &&
+					batch.getSection().equalsIgnoreCase(bodyBatch.getSection()) &&
+					batch.getInstitute_id() == bodyBatch.getInstitute_id()) {
+				return null;
+			} else if(batch.getBatchYear() == bodyBatch.getBatchYear() && batch.getDepartment_id() == department_id) {
 				return null;
 			} else if(batch.getDepartment_id() == bodyBatch.getDepartment_id() 
 					&& batch.getBatchYear() == batchYear) {
