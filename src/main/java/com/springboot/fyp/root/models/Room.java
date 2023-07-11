@@ -16,6 +16,8 @@ public class Room {
 	@Id
 	private int room_id;
 	private String room_name;
+	private String location;
+	private String area;
 	private int department_id;
 	private int institute_id;
 	
