@@ -58,23 +58,23 @@ public class Department_service {
 		}
 	}
 	
-	public String update(int department_id, String department_name) {
-		int institute_id= 0;
+	public String update(int department_id, Department bodyDept) {
 		List<Department> deptList = department_repository.findAll();
+		
 		for(Department dept : deptList) {
-			if(dept.getDepartment_name().equalsIgnoreCase(department_name)) {
+			if(dept.getDepartment_name().equalsIgnoreCase(bodyDept.getDepartment_name())
+					&& dept.getInstitute_id() == bodyDept.getInstitute_id()) {
 				return null;
 			}
 		}
 		for(Department dept : deptList) {
 			if(dept.getDepartment_id() == department_id) {
-				dept.setDepartment_name(department_name);
-				institute_id = dept.getInstitute_id();
+				dept.setDepartment_name(bodyDept.getDepartment_name());
 				department_repository.save(dept);
 				break;
 			}
 		}
-		redisUtilityRoot.deleteList(HASH_KEY_DEPARTMENTS_LIST+institute_id);
+		redisUtilityRoot.deleteList(HASH_KEY_DEPARTMENTS_LIST+bodyDept.getInstitute_id());
 		return "Operation performed successfully.";
 	}
 	
