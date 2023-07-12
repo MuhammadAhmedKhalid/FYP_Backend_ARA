@@ -26,8 +26,7 @@ public class Batch_service {
 	public String insert(Batch batch){
 		for(Batch btch: batch_repository.findAll()) {
 			if(btch.getBatchYear() == batch.getBatchYear()
-					&& btch.getDepartment_id() == batch.getDepartment_id() 
-					&& (btch.getSection() != null && btch.getSection().equalsIgnoreCase(batch.getSection()))) {
+					&& btch.getDepartment_id() == batch.getDepartment_id()) {
 				return null;
 			}
 		}
@@ -58,49 +57,28 @@ public class Batch_service {
 		}
 	}
 	
-	public String update(int batchId, int department_id, String section, Batch bodyBatch) {
-		int institute_id= 0;
-		int batchYear = 0;
+	public String update(int batchId, int department_id, Batch bodyBatch) {
 		List<Batch> batches = batch_repository.findAll();
 		
 		for(Batch batch : batches) {
-			if(batchId == batch.getBatchId()) {
-				batchYear = batch.getBatchYear();
-				break;
-			}
-		}
-		
-		for(Batch batch : batches) {
-			if(batch.getBatchYear() == bodyBatch.getBatchYear() &&
-					batch.getDepartment_id() == bodyBatch.getDepartment_id() &&
-					batch.getSection().equalsIgnoreCase(bodyBatch.getSection()) &&
-					batch.getInstitute_id() == bodyBatch.getInstitute_id()) {
-				return null;
-			} else if(batch.getBatchYear() == bodyBatch.getBatchYear() && batch.getDepartment_id() == department_id) {
-				return null;
-			} else if(batch.getDepartment_id() == bodyBatch.getDepartment_id() 
-					&& batch.getBatchYear() == batchYear) {
-				return null;
-			} else if(batch.getDepartment_id() == bodyBatch.getDepartment_id() 
-					&& batch.getDepartment_id() == department_id && batch.getBatchYear() == bodyBatch.getBatchYear()) {
+			if(batchId != batch.getBatchId()
+					&& (batch.getBatchYear() == bodyBatch.getBatchYear()
+							&& batch.getDepartment_id() == bodyBatch.getDepartment_id())){
 				return null;
 			}
 		}
 		
 		for(Batch batch : batches) {
 			if(batch.getBatchId() == batchId) {
-				if(bodyBatch.getBatchYear() > 0) {
-					batch.setBatchYear(bodyBatch.getBatchYear());
-				}
-				if(bodyBatch.getDepartment_id() > 0) {
-					batch.setDepartment_id(bodyBatch.getDepartment_id());
-				}
-				institute_id = batch.getInstitute_id();
+				batch.setBatchYear(bodyBatch.getBatchYear());
+				batch.setDepartment_id(bodyBatch.getDepartment_id());
+				batch.setBatchCode(bodyBatch.getBatchCode());
+				batch.setNumOfStudents(bodyBatch.getNumOfStudents());
 				batch_repository.save(batch);
 				break;
 			}
 		}
-		redisUtilityRoot.deleteList(HASH_KEY_BATCHES_LIST+institute_id);
+		redisUtilityRoot.deleteList(HASH_KEY_BATCHES_LIST+bodyBatch.getInstitute_id());
 		return "Operation performed successfully.";
 	}
 	
