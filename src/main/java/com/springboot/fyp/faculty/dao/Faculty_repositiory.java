@@ -4,9 +4,8 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import com.springboot.fyp.faculty.models.Faculty;
-import com.springboot.fyp.root.models.User;
 
 @Repository
-public interface Faculty_repositiory extends MongoRepository<Faculty, User> {
+public interface Faculty_repositiory extends MongoRepository<Faculty,Integer> {
 	Faculty findByOfficialEmailAddress(String officialEmailAddress);
 }

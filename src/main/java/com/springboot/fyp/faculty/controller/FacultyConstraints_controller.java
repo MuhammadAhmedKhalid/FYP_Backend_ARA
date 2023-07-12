@@ -26,9 +26,9 @@ public class FacultyConstraints_controller {
 		return ResponseEntity.ok(response);
 	}
 	
-	@GetMapping("/getFacultyConstraints/{institute_id}")
-	public ResponseEntity<List<FacultyConstraints>> getFacultyConstraints(@PathVariable("institute_id") int institute_id){
-		List<FacultyConstraints> constraints = facultyConstraints_service.getAll(institute_id);
+	@GetMapping("/getFacultyConstraints/{faculty_id}")
+	public ResponseEntity<List<FacultyConstraints>> getFacultyConstraints(@PathVariable("faculty_id") int faculty_id){
+		List<FacultyConstraints> constraints = facultyConstraints_service.getAll(faculty_id);
 		if(constraints == null) {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 		}
