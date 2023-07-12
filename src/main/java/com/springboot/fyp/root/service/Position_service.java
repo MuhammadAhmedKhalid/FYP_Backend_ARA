@@ -60,23 +60,24 @@ public class Position_service {
 		}
 	}
 	
-	public String update(int position_id, String position_name) {
-		int institute_id= 0;
+	public String update(int position_id, Position bodyPosition) {
 		List<Position> positions = position_repository.findAll();
+		
 		for(Position position : positions) {
-			if(position.getPosition_name().equalsIgnoreCase(position_name)) {
+			if(position.getPosition_name().equalsIgnoreCase(bodyPosition.getPosition_name())
+					&& position.getInstitute_id() == bodyPosition.getInstitute_id()) {
 				return null;
 			}
 		}
 		for(Position position : positions) {
 			if(position.getPosition_id() == position_id) {
-				position.setPosition_name(position_name);
-				institute_id = position.getInstitute_id();
+				position.setPosition_name(bodyPosition.getPosition_name());
 				position_repository.save(position);
 				break;
 			}
 		}
-		redisUtilityRoot.deleteList(HASH_KEY_POSITION_LIST+institute_id);
+		
+		redisUtilityRoot.deleteList(HASH_KEY_POSITION_LIST+bodyPosition.getInstitute_id());
 		return "Operation performed successfully.";
 	}
 	

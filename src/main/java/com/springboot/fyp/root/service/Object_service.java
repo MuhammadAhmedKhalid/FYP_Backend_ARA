@@ -53,7 +53,8 @@ public class Object_service {
 			for(Non_Living_Resources resource : non_living_resource_service.getAll()) {
 				if(resource.getResource_type_id() == resource_id) {
 					if(object.getRoom_id() == resource.getRoom_id()
-							&& object.getDepartment_id() == resource.getDepartment_id()) {
+							&& object.getDepartment_id() == resource.getDepartment_id()
+							&& object.getInstitute_id() == resource.getInstitute_id()) {
 						return null;
 					}
 				}

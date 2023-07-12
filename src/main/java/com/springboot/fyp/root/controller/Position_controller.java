@@ -42,8 +42,8 @@ public class Position_controller {
 	
 	@PutMapping("updatePosition/{position_id}")
 	public ResponseEntity<String> updatePosition(@PathVariable("position_id") int position_id,
-			@RequestBody String position_name){
-		String response = position_service.update(position_id, position_name);
+			@RequestBody Position position){
+		String response = position_service.update(position_id, position);
 		if(response == null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Position already exists with this name.");
 		}

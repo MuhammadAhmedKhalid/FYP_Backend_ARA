@@ -27,7 +27,8 @@ public class Course_service {
 		
 		for(Course crs: course_repository.findAll()) {
 			if(crs.getCourse_name().equalsIgnoreCase(course.getCourse_name())
-					&& crs.getDepartment_id() == course.getDepartment_id()) {
+					&& crs.getDepartment_id() == course.getDepartment_id()
+					&& crs.getInstitute_id() == course.getInstitute_id()) {
 				return null;
 			}
 		}
@@ -68,7 +69,8 @@ public class Course_service {
 			if(course_id != course.getCourse_id()
 					&& (course.getCourse_name().equalsIgnoreCase(bodyCourse.getCourse_name())
 							&& course.getDepartment_id() == bodyCourse.getDepartment_id()
-							&& course.getType().equalsIgnoreCase(bodyCourse.getType()))) {
+							&& course.getType().equalsIgnoreCase(bodyCourse.getType())
+							&& course.getInstitute_id() == bodyCourse.getInstitute_id())) {
 				return null;
 			}
 		}

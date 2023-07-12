@@ -26,7 +26,9 @@ public class Room_service {
 	public String insert(Room room) {
 		
 		for(Room rooms: room_repository.findAll()) {
-			if(rooms.getRoom_name().equalsIgnoreCase(room.getRoom_name()) && rooms.getDepartment_id() == room.getDepartment_id()) {
+			if(rooms.getRoom_name().equalsIgnoreCase(room.getRoom_name()) 
+					&& rooms.getDepartment_id() == room.getDepartment_id()
+					&& rooms.getInstitute_id() == room.getInstitute_id()) {
 				return null;
 			}
 		}
@@ -63,8 +65,9 @@ public class Room_service {
 		
 		for(Room room : rooms) {
 			if(room_id != room.getRoom_id()
-					&& (room.getDepartment_id() == bodyRoom.getDepartment_id()
-							&& room.getRoom_name().equalsIgnoreCase(bodyRoom.getRoom_name()))) {
+					&& room.getDepartment_id() == bodyRoom.getDepartment_id()
+					&& room.getRoom_name().equalsIgnoreCase(bodyRoom.getRoom_name())
+					&& room.getInstitute_id() == bodyRoom.getInstitute_id()) {
 				return null;
 			}
 		}
