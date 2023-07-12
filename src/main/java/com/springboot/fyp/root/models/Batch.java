@@ -18,6 +18,7 @@ public class Batch {
 	private int batchYear;
 	private String batchCode;
 	private int numOfStudents;
+	private String section;
 	private int department_id;
 	private int institute_id;
 	

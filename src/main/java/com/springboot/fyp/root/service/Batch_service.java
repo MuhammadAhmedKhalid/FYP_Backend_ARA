@@ -57,13 +57,14 @@ public class Batch_service {
 		}
 	}
 	
-	public String update(int batchId, int department_id, Batch bodyBatch) {
+	public String update(int batchId, Batch bodyBatch) {
 		List<Batch> batches = batch_repository.findAll();
 		
 		for(Batch batch : batches) {
 			if(batchId != batch.getBatchId()
 					&& (batch.getBatchYear() == bodyBatch.getBatchYear()
-							&& batch.getDepartment_id() == bodyBatch.getDepartment_id())){
+							&& batch.getDepartment_id() == bodyBatch.getDepartment_id()
+							&& batch.getSection().equalsIgnoreCase(bodyBatch.getSection()))){
 				return null;
 			}
 		}
@@ -74,6 +75,7 @@ public class Batch_service {
 				batch.setDepartment_id(bodyBatch.getDepartment_id());
 				batch.setBatchCode(bodyBatch.getBatchCode());
 				batch.setNumOfStudents(bodyBatch.getNumOfStudents());
+				batch.setSection(bodyBatch.getSection());
 				batch_repository.save(batch);
 				break;
 			}

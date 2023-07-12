@@ -40,13 +40,12 @@ public class Batch_controller {
 		return ResponseEntity.ok(batchesList);
 	}
 	
-	@PutMapping("/updateBatch/{batchId}/{departmentId}")
+	@PutMapping("/updateBatch/{batchId}")
 	public ResponseEntity<String> updateBatch(
 			@RequestBody Batch batch,
-			@PathVariable("batchId") int batchId, 
-			@PathVariable("departmentId") int departmentId
+			@PathVariable("batchId") int batchId
 			){
-		String response = batch_service.update(batchId, departmentId, batch);
+		String response = batch_service.update(batchId, batch);
 		if(response == null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Batch already exists with this year.");
 		}
