@@ -40,10 +40,9 @@ public class Course_controller {
 		return ResponseEntity.ok(courses);
 	}
 	
-	@PutMapping("updateCourse/{course_id}/{department_id}")
-	public ResponseEntity<String> updateCourse(@PathVariable("course_id") int course_id,
-			@PathVariable("department_id") int department_id, @RequestBody Course course){
-		String response = course_service.update(course_id, department_id, course);
+	@PutMapping("updateCourse/{course_id}")
+	public ResponseEntity<String> updateCourse(@PathVariable("course_id") int course_id, @RequestBody Course course){
+		String response = course_service.update(course_id, course);
 		if(response == null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 					.body("Course already exists with this name in this department.");

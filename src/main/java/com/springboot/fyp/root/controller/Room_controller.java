@@ -40,10 +40,9 @@ public class Room_controller {
 		return ResponseEntity.ok(rooms_lst);
 	}
 	
-	@PutMapping("/updateRoom/{room_id}/{department_id}")
-	public ResponseEntity<String> updateRoom(@PathVariable("room_id") int room_id, 
-			@PathVariable("department_id") int department_id, @RequestBody Room room){
-		String response = room_service.update(room_id, room, department_id);
+	@PutMapping("/updateRoom/{room_id}")
+	public ResponseEntity<String> updateRoom(@PathVariable("room_id") int room_id, @RequestBody Room room){
+		String response = room_service.update(room_id, room);
 		if(response == null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Room already exists with this name in same department.");
 		}

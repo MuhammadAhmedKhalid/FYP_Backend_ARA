@@ -58,7 +58,7 @@ public class Room_service {
 		}
 	}
 	
-	public String update(int room_id, Room bodyRoom, int department_id) {
+	public String update(int room_id, Room bodyRoom) {
 		List<Room> rooms = room_repository.findAll();
 		
 		for(Room room : rooms) {
