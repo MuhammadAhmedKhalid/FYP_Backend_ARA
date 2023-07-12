@@ -68,49 +68,38 @@ public class Faculty_service {
 	}
 	
 	public String update(int faculty_id, Faculty facultyObj) {
-		int institute_id= 0;
 		List<Faculty> facultyList = faculty_repositiory.findAll();
-		System.out.println(facultyObj);
 		
-		if(facultyObj.getOfficialEmailAddress().length() > 0) {
-			Faculty checkFaculty = faculty_repositiory.findByOfficialEmailAddress(facultyObj.getOfficialEmailAddress()); 
-			if(checkFaculty != null) {
+		for(Faculty faculty : facultyList) {
+			if(faculty_id != faculty.getFaculty_id()
+					&& faculty.getOfficialEmailAddress().equals(facultyObj.getOfficialEmailAddress())) {
 				return null;
 			}
 		}
 		
 		for(Faculty faculty : facultyList) {
 			if(faculty.getFaculty_id() == faculty_id) {
-				if(facultyObj.getName().length() > 0) {
-					faculty.setName(facultyObj.getName());
-				}
-				if(facultyObj.getPhone_number().length() > 0) {
-					faculty.setPhone_number(facultyObj.getPhone_number());
-				}
-				if(facultyObj.getDepartment_id() > 0) {
-					faculty.setDepartment_id(facultyObj.getDepartment_id());
-				}
-				if(facultyObj.getSpecialization().size() > 0) {
-					faculty.setSpecialization(facultyObj.getSpecialization());
-				}
-				if(facultyObj.getDesignation().length() > 0) {
-					faculty.setDesignation(facultyObj.getDesignation());
-				}
-				if(facultyObj.getYearsOfExperience() > 0) {
-					faculty.setYearsOfExperience(facultyObj.getYearsOfExperience());
-				}
-				if(facultyObj.getOfficialEmailAddress().length() > 0) {
-					faculty.setOfficialEmailAddress(facultyObj.getOfficialEmailAddress());
-					User user = faculty.getUser();
-					user.setEmail(facultyObj.getOfficialEmailAddress());
-					user_repository.save(user);
-				}
-				institute_id = faculty.getInstitute_id();
+				
+				faculty.setName(facultyObj.getName());
+				faculty.setCode(facultyObj.getCode());
+				faculty.setPhone_number(facultyObj.getPhone_number());
+				faculty.setDepartment_id(facultyObj.getDepartment_id());
+				faculty.setSpecialization(facultyObj.getSpecialization());
+				faculty.setDesignation(facultyObj.getDesignation());
+				faculty.setYearsOfExperience(facultyObj.getYearsOfExperience());
+				
+				faculty.setOfficialEmailAddress(facultyObj.getOfficialEmailAddress());
+				User user = faculty.getUser();
+				user.setEmail(facultyObj.getOfficialEmailAddress());
+				user.setName(facultyObj.getName());
+				user_repository.save(user);
+
 				faculty_repositiory.save(faculty);
 				break;
 			}
 		}
-		redisUtilityRoot.deleteList(HASH_KEY_FACULTY_LIST+institute_id);
+		
+		redisUtilityRoot.deleteList(HASH_KEY_FACULTY_LIST+facultyObj.getInstitute_id());
 		return "Operation performed successfully.";
 	}
 	
