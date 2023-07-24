@@ -60,4 +60,17 @@ public class OfferCourse_service {
 		}
 	}
 	
+	public String delete(int offerCourseId) {
+		int institute_id= 0;
+		for(OfferCourse offeredCourse : offerCourse_repository.findAll()) {
+			if(offerCourseId == offeredCourse.getOfferCourseId()) {
+				institute_id = offeredCourse.getInstitute_id();
+				offerCourse_repository.deleteById(offerCourseId);
+				break;
+			}
+		}
+		redisUtilityRoot.deleteList(HASH_KEY_OFFERED_COURSES_LIST+institute_id);
+		return "Deleted successfully.";
+	}
+	
 }
