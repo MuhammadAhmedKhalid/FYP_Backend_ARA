@@ -1,5 +1,8 @@
 package com.springboot.fyp.root.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +38,26 @@ public class OfferCourse_service {
 		offerCourse_repository.insert(offerCourse);
 		redisUtilityRoot.deleteList(HASH_KEY_OFFERED_COURSES_LIST+offerCourse.getInstitute_id());
 		return "Operation performed successfully.";
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<OfferCourse> getAll(int institute_id){
+		if(redisUtilityRoot.getList(HASH_KEY_OFFERED_COURSES_LIST+institute_id).size() > 0) {
+			return redisUtilityRoot.getList(HASH_KEY_OFFERED_COURSES_LIST+institute_id);
+		} else {
+			if(offerCourse_repository.findAll().isEmpty()) {
+				return null;
+			} else {
+				List<OfferCourse> offeredCourses = new ArrayList<>();
+				for(OfferCourse offeredCourse : offerCourse_repository.findAll()) {
+					if(offeredCourse.getInstitute_id() == institute_id) {
+						offeredCourses.add(offeredCourse);
+					}
+				}
+				redisUtilityRoot.saveList(offeredCourses, HASH_KEY_OFFERED_COURSES_LIST+institute_id);
+				return offeredCourses;
+			}
+		}
 	}
 	
 }
