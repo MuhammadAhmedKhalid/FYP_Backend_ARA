@@ -2,6 +2,7 @@ package com.springboot.fyp.root.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,6 +67,29 @@ public class AllocateFaculty_service {
 			}
 		}
 		
+	}
+	
+	public String delete(int allocateFacultyId) {
+		for(AllocateFaculty allocateFaculty : allocateFaculty_repository.findAll()) {
+			if(allocateFaculty.getAllocateFacultyId() == allocateFacultyId) {
+				Optional<OfferCourse> offerCourse = offerCourse_repository.findById(allocateFaculty.getOfferCourseId());
+				if(!offerCourse.get().isAddedInTimetable()) {
+					
+					allocateFaculty_repository.delete(allocateFaculty);
+					redisUtilityRoot.deleteList(HASH_KEY_ALLOCATED_FACULTY_LIST+allocateFaculty.getInstitute_id());
+					
+					offerCourse.get().setAllocated(false);
+					offerCourse_repository.save(offerCourse.get());
+					redisUtilityRoot.deleteList(HASH_KEY_OFFERED_COURSES_LIST+offerCourse.get().getInstitute_id());
+					
+					return "Deleted successfully.";
+				} else {
+					return "Can't delete.";
+				}
+				
+			}
+		}
+		return null;
 	}
 	
 }
