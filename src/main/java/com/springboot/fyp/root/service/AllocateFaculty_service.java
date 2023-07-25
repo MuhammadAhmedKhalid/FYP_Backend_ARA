@@ -34,6 +34,7 @@ public class AllocateFaculty_service {
 		for(OfferCourse offerCourse : offerCourse_repository.findAll()) {
 			if(offerCourse.getOfferCourseId() == allocateFaculty.getOfferCourseId()) {
 				offerCourse.setAllocated(true);
+				offerCourse_repository.save(offerCourse);
 				redisUtilityRoot.deleteList(HASH_KEY_OFFERED_COURSES_LIST+offerCourse.getInstitute_id());
 				break;
 			}
