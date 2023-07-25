@@ -6,7 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.springboot.fyp.root.dao.AllocateFaculty_repository;
 import com.springboot.fyp.root.dao.OfferCourse_repository;
+import com.springboot.fyp.root.models.AllocateFaculty;
 import com.springboot.fyp.root.models.OfferCourse;
 
 @Service
@@ -16,12 +18,16 @@ public class OfferCourse_service {
 	OfferCourse_repository offerCourse_repository;
 	
 	@Autowired
+	AllocateFaculty_repository allocateFaculty_repository;
+	
+	@Autowired
 	SequenceGeneratorService sequenceGeneratorService;
 	
 	@Autowired
 	RedisUtilityRoot redisUtilityRoot;
 	
 	public static final String HASH_KEY_OFFERED_COURSES_LIST = "OfferedCourses";
+	public static final String HASH_KEY_ALLOCATED_FACULTY_LIST = "AllocatedFaculty";
 	
 	public String add(OfferCourse offerCourse) {
 		
@@ -91,13 +97,30 @@ public class OfferCourse_service {
 		int institute_id= 0;
 		for(OfferCourse offeredCourse : offerCourse_repository.findAll()) {
 			if(offerCourseId == offeredCourse.getOfferCourseId()) {
-				institute_id = offeredCourse.getInstitute_id();
-				offerCourse_repository.deleteById(offerCourseId);
-				break;
+				if(offeredCourse.isAllocated() == false && offeredCourse.isAddedInTimetable() == false) {
+					institute_id = offeredCourse.getInstitute_id();
+					offerCourse_repository.deleteById(offerCourseId);
+					redisUtilityRoot.deleteList(HASH_KEY_OFFERED_COURSES_LIST+institute_id);
+					return "Deleted successfully.";
+				} else if (offeredCourse.isAllocated() == true && offeredCourse.isAddedInTimetable() == false) {
+					institute_id = offeredCourse.getInstitute_id();
+					offerCourse_repository.deleteById(offerCourseId);
+					
+					for(AllocateFaculty allocateFaculty : allocateFaculty_repository.findAll()) {
+						if(offeredCourse.getOfferCourseId() == allocateFaculty.getOfferCourseId()) {
+							allocateFaculty_repository.delete(allocateFaculty);
+							redisUtilityRoot.deleteList(HASH_KEY_ALLOCATED_FACULTY_LIST+institute_id);
+							break;
+						}
+					}
+					redisUtilityRoot.deleteList(HASH_KEY_OFFERED_COURSES_LIST+institute_id);
+					return "Deleted successfully. Reallocate this course to faculty.";
+				} else {
+					return "Can't delete.";
+				}
 			}
 		}
-		redisUtilityRoot.deleteList(HASH_KEY_OFFERED_COURSES_LIST+institute_id);
-		return "Deleted successfully.";
+		return null;
 	}
 	
 }
