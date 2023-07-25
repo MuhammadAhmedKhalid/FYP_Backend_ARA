@@ -71,7 +71,7 @@ public class OfferCourse_service {
 		List<OfferCourse> offeredCourses = offerCourse_repository.findAll();
 		
 		for(OfferCourse offeredCourse : offeredCourses) {
-			if(offerCourseId != offeredCourse.getCourse_id()
+			if(offerCourseId != offeredCourse.getOfferCourseId()
 					&& offeredCourse.getBatchId() == offerCourse.getBatchId()
 					&& offeredCourse.getCourse_id() == offerCourse.getCourse_id()
 					&& offeredCourse.getDepartment_id() == offerCourse.getDepartment_id()

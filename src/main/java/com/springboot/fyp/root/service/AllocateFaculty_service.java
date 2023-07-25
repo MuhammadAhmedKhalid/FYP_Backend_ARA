@@ -69,6 +69,40 @@ public class AllocateFaculty_service {
 		
 	}
 	
+	public String update(int allocateFacultyId, AllocateFaculty allocate) {
+		List<AllocateFaculty> allocatedFaculty = allocateFaculty_repository.findAll();
+		
+		for(AllocateFaculty allocateFaculty : allocatedFaculty) {
+			if(allocateFacultyId == allocateFaculty.getAllocateFacultyId()) {
+				Optional<OfferCourse> offerCourse = offerCourse_repository.findById(allocateFaculty.getOfferCourseId());
+				if(!offerCourse.get().isAddedInTimetable()) {
+					
+					offerCourse.get().setAllocated(false);
+					offerCourse_repository.save(offerCourse.get());
+					
+					allocateFaculty.setFaculty_id(allocate.getFaculty_id());
+					allocateFaculty.setOfferCourseId(allocate.getOfferCourseId());
+					
+					allocateFaculty_repository.save(allocateFaculty);
+					redisUtilityRoot.deleteList(HASH_KEY_ALLOCATED_FACULTY_LIST+allocateFaculty.getInstitute_id());
+					
+					Optional<OfferCourse> updOfferCourse = 
+							offerCourse_repository.findById(allocateFaculty.getOfferCourseId());
+					updOfferCourse.get().setAllocated(true);
+					offerCourse_repository.save(updOfferCourse.get());
+					redisUtilityRoot.deleteList(HASH_KEY_OFFERED_COURSES_LIST+offerCourse.get().getInstitute_id());
+
+				} else {
+					return "Can't delete.";
+				}
+				break;
+			}
+		}
+		
+		redisUtilityRoot.deleteList(HASH_KEY_ALLOCATED_FACULTY_LIST+allocate.getInstitute_id());
+		return "Operation performed successfully.";
+	}
+	
 	public String delete(int allocateFacultyId) {
 		for(AllocateFaculty allocateFaculty : allocateFaculty_repository.findAll()) {
 			if(allocateFaculty.getAllocateFacultyId() == allocateFacultyId) {

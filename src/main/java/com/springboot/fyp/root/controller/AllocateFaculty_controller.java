@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,6 +36,13 @@ public class AllocateFaculty_controller {
 		} else {
 			return ResponseEntity.ok(allocated);
 		}
+	}
+	
+	@PutMapping("updateAllocatedFaculty/{allocateFacultyId}")
+	public ResponseEntity<String> updateAllocatedFaculty(@RequestBody AllocateFaculty allocateFaculty, 
+			@PathVariable("allocateFacultyId") int allocateFacultyId){
+		String res = allocateFaculty_service.update(allocateFacultyId, allocateFaculty); 
+		return ResponseEntity.ok(res);
 	}
 	
 	@DeleteMapping("/deleteAllocatedFaculty/{allocateFacultyId}")
