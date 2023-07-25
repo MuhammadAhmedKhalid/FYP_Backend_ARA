@@ -79,18 +79,43 @@ public class OfferCourse_service {
 				return null;
 			}
 		}
+		
+		String operationMsg = "";
+		
 		for(OfferCourse offeredCourse : offeredCourses) {
 			if(offeredCourse.getOfferCourseId() == offerCourseId) {
-				offeredCourse.setBatchId(offerCourse.getBatchId());
-				offeredCourse.setCourse_id(offerCourse.getCourse_id());
-				offeredCourse.setDepartment_id(offerCourse.getDepartment_id());
-				offeredCourse.setSemester(offerCourse.getSemester());
-				offerCourse_repository.save(offeredCourse);
+				if(offeredCourse.isAllocated() == false && offeredCourse.isAddedInTimetable() == false) {
+					operationMsg = "Operation performed successfully.";
+					edit(offeredCourse, offerCourse);
+				} else if (offeredCourse.isAllocated() == true && offeredCourse.isAddedInTimetable() == false) {
+					operationMsg = "Operation performed successfully. Reallocate this course to faculty.";
+					edit(offeredCourse, offerCourse);
+					
+					for(AllocateFaculty allocateFaculty : allocateFaculty_repository.findAll()) {
+						if(allocateFaculty.getOfferCourseId() == offerCourseId) {
+							allocateFaculty_repository.delete(allocateFaculty);
+							redisUtilityRoot.deleteList(HASH_KEY_ALLOCATED_FACULTY_LIST+allocateFaculty.getInstitute_id());
+							break;
+						}
+					}
+				} else {
+					return "Can't update.";
+				}
 				break;
 			}
 		}
+		
 		redisUtilityRoot.deleteList(HASH_KEY_OFFERED_COURSES_LIST+offerCourse.getInstitute_id());
-		return "Operation performed successfully.";
+		return operationMsg;
+	}
+	
+	void edit(OfferCourse offeredCourse, OfferCourse offerCourse) {
+		offeredCourse.setBatchId(offerCourse.getBatchId());
+		offeredCourse.setCourse_id(offerCourse.getCourse_id());
+		offeredCourse.setDepartment_id(offerCourse.getDepartment_id());
+		offeredCourse.setSemester(offerCourse.getSemester());
+		offeredCourse.setAllocated(false);
+		offerCourse_repository.save(offeredCourse);
 	}
 	
 	public String delete(int offerCourseId) {

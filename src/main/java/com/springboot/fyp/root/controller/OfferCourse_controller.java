@@ -48,6 +48,8 @@ public class OfferCourse_controller {
 		String res = offerCourse_service.update(offerCourseId, offerCourse);
 		if(res == null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Course already offered.");
+		} else if (res.equals("Can't update.")) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
 		}
 		return ResponseEntity.ok(res);
 	}
