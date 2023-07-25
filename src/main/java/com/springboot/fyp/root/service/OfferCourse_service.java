@@ -60,6 +60,34 @@ public class OfferCourse_service {
 		}
 	}
 	
+	public String update(int offerCourseId, OfferCourse offerCourse) {
+		
+		List<OfferCourse> offeredCourses = offerCourse_repository.findAll();
+		
+		for(OfferCourse offeredCourse : offeredCourses) {
+			if(offerCourseId != offeredCourse.getCourse_id()
+					&& offeredCourse.getBatchId() == offerCourse.getBatchId()
+					&& offeredCourse.getCourse_id() == offerCourse.getCourse_id()
+					&& offeredCourse.getDepartment_id() == offerCourse.getDepartment_id()
+					&& offeredCourse.getSemester() == offerCourse.getSemester()
+					&& offeredCourse.getInstitute_id() == offerCourse.getInstitute_id()) {
+				return null;
+			}
+		}
+		for(OfferCourse offeredCourse : offeredCourses) {
+			if(offeredCourse.getOfferCourseId() == offerCourseId) {
+				offeredCourse.setBatchId(offerCourse.getBatchId());
+				offeredCourse.setCourse_id(offerCourse.getCourse_id());
+				offeredCourse.setDepartment_id(offerCourse.getDepartment_id());
+				offeredCourse.setSemester(offerCourse.getSemester());
+				offerCourse_repository.save(offeredCourse);
+				break;
+			}
+		}
+		redisUtilityRoot.deleteList(HASH_KEY_OFFERED_COURSES_LIST+offerCourse.getInstitute_id());
+		return "Operation performed successfully.";
+	}
+	
 	public String delete(int offerCourseId) {
 		int institute_id= 0;
 		for(OfferCourse offeredCourse : offerCourse_repository.findAll()) {

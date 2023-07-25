@@ -44,7 +44,6 @@ public class Department_controller {
 	@PutMapping("/updateDepartment/{department_id}")
 	public ResponseEntity<String> updateDepartment(@RequestBody Department dept, 
 			@PathVariable("department_id") int department_id){
-		System.out.println(dept);
 		String response = department_service.update(department_id, dept);
 		if(response == null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Department already exists with this name.");
