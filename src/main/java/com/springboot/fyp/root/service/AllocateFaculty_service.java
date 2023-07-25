@@ -93,7 +93,7 @@ public class AllocateFaculty_service {
 					redisUtilityRoot.deleteList(HASH_KEY_OFFERED_COURSES_LIST+offerCourse.get().getInstitute_id());
 
 				} else {
-					return "Can't delete.";
+					return "Can't update.";
 				}
 				break;
 			}
