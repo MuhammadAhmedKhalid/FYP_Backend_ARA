@@ -16,9 +16,6 @@ public class AllocateFaculty {
 	@Id
 	private int allocateFacultyId;
 	private int offerCourseId;
-	private int department_id;
-	private int batchId;
-	private int institute_id;
 	private int faculty_id;
-	
+	private int institute_id;
 }
