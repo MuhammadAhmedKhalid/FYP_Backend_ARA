@@ -1,5 +1,8 @@
 package com.springboot.fyp.root.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +45,27 @@ public class AllocateFaculty_service {
 		
 		redisUtilityRoot.deleteList(HASH_KEY_ALLOCATED_FACULTY_LIST+allocateFaculty.getInstitute_id());
 		return "Operation performed successfully.";
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<AllocateFaculty> getAll(int institute_id){
+		if(redisUtilityRoot.getList(HASH_KEY_ALLOCATED_FACULTY_LIST+institute_id).size() > 0) {
+			return redisUtilityRoot.getList(HASH_KEY_ALLOCATED_FACULTY_LIST+institute_id);
+		} else {
+			if(allocateFaculty_repository.findAll().isEmpty()) {
+				return null;
+			} else {
+				List<AllocateFaculty> allocateFaculties = new ArrayList<>();
+				for(AllocateFaculty allocateFaculty : allocateFaculty_repository.findAll()) {
+					if(allocateFaculty.getInstitute_id() == institute_id) {
+						allocateFaculties.add(allocateFaculty);
+					}
+				}
+				redisUtilityRoot.saveList(allocateFaculties, HASH_KEY_ALLOCATED_FACULTY_LIST+institute_id);
+				return allocateFaculties;
+			}
+		}
+		
 	}
 	
 }
