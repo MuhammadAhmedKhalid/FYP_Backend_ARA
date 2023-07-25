@@ -20,5 +20,7 @@ public class OfferCourse {
 	private int department_id;
 	private int semester;
 	private int institute_id;
+	private boolean allocated;
+	private boolean addedInTimetable;
 
 }
