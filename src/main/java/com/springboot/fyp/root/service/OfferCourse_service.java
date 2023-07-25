@@ -69,7 +69,6 @@ public class OfferCourse_service {
 					&& offeredCourse.getBatchId() == offerCourse.getBatchId()
 					&& offeredCourse.getCourse_id() == offerCourse.getCourse_id()
 					&& offeredCourse.getDepartment_id() == offerCourse.getDepartment_id()
-					&& offeredCourse.getSemester() == offerCourse.getSemester()
 					&& offeredCourse.getInstitute_id() == offerCourse.getInstitute_id()) {
 				return null;
 			}
