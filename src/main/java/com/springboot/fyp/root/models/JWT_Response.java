@@ -17,10 +17,13 @@ public class JWT_Response {
 	String springEndMonth;
 	String fallStartMonth;
 	String fallEndMonth;
+	String instituteStartTime;
+	String instituteEndTime;
 	
 	public JWT_Response(int user_id, String email, String jwt, String name, String institute_name, 
 			int institute_id, int faculty_id, boolean is_admin,
-			String springStartMonth, String springEndMonth, String fallStartMonth, String fallEndMonth) {
+			String springStartMonth, String springEndMonth, String fallStartMonth, String fallEndMonth,
+			String instituteStartTime, String instituteEndTime) {
 		this.user_id = user_id;
 		this.email = email;
 		this.jwt = jwt;
@@ -33,6 +36,8 @@ public class JWT_Response {
 		this.springEndMonth = springEndMonth;
 		this.fallStartMonth = fallStartMonth;
 		this.fallEndMonth = fallEndMonth;
+		this.instituteStartTime = instituteStartTime;
+		this.instituteEndTime = instituteEndTime;
 	}
 	
 }

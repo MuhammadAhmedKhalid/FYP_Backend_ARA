@@ -25,4 +25,6 @@ public class Institute {
 	public String springEndMonth;
 	public String fallStartMonth;
 	public String fallEndMonth;
+	private String instituteStartTime;
+	private String instituteEndTime;
 }

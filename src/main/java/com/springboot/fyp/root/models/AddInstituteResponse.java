@@ -11,5 +11,6 @@ public class AddInstituteResponse {
 	private String springEndMonth;
 	private String fallStartMonth;
 	private String fallEndMonth;
-	
+	private String instituteStartTime;
+	private String instituteEndTime;
 }

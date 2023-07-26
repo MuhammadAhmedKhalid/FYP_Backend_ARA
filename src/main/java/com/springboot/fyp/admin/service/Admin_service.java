@@ -81,6 +81,8 @@ public class Admin_service {
 			String springEndMonth = "";
 			String fallStartMonth = "";
 			String fallEndMonth = "";
+			String instituteStartTime = "";
+			String instituteEndTime = "";
 			 
 			 List<Institute> institutesList = institute_repository.findAll();
 			 for (int i=0; i < institutesList.size(); i++) {
@@ -91,6 +93,8 @@ public class Admin_service {
 					 springEndMonth = institutesList.get(i).getSpringEndMonth();
 					 fallStartMonth = institutesList.get(i).getFallStartMonth();
 					 fallEndMonth = institutesList.get(i).getFallEndMonth();
+					 instituteStartTime = institutesList.get(i).getInstituteStartTime();
+					 instituteEndTime = institutesList.get(i).getInstituteEndTime();
 				 }
 				 else if (!checkUser.is_admin()) {
 					 boolean shouldBreak = false;
@@ -111,7 +115,7 @@ public class Admin_service {
 			 
 			 JWT_Response jwt_Response = new JWT_Response(checkUser.getUser_id(), email, jwt, checkUser.getName(), 
 					 institute_name, institute_id, faculty_id, checkUser.is_admin(),
-					 springStartMonth, springEndMonth, fallStartMonth, fallEndMonth);
+					 springStartMonth, springEndMonth, fallStartMonth, fallEndMonth, instituteStartTime, instituteEndTime);
 			return jwt_Response;
 		}
 		return null;
