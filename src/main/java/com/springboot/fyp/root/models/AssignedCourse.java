@@ -15,7 +15,7 @@ public class AssignedCourse {
 	
 	@Id
 	private int assignedCourseId;
-	private int assignedCoursesId;
+//	private int assignedCoursesId;
 	private int batchId;
 	private int course_id;
 	private String day;
