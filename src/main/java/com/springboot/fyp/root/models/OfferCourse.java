@@ -18,7 +18,7 @@ public class OfferCourse {
 	private int course_id;
 	private int batchId;
 	private int department_id;
-	private int semester;
+	private String semester;
 	private int institute_id;
 	private boolean allocated;
 	private boolean addedInTimetable;
