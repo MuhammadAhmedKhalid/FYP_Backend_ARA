@@ -57,7 +57,7 @@ public class AssignedCourse_service {
 	RedisUtilityRoot redisUtilityRoot;
 	
 	public static final String HASH_KEY_ASSIGNED_COURSE_LIST = "AssignedCourseList";
-	public static final String HASH_KEY_ASSIGNED_COURSES_FOR_TABALE_LIST = "AssignedCoursesForTableList";
+//	public static final String HASH_KEY_ASSIGNED_COURSES_FOR_TABALE_LIST = "AssignedCoursesForTableList";
 	public static final String HASH_KEY_ROOM_REQUESTS = "RoomRequests";
 	public static final String HASH_KEY_STAFF_REQUESTS = "StaffRequests";
 	
@@ -82,21 +82,21 @@ public class AssignedCourse_service {
 		
 		AssignedCourse assignedCourse = makeResBusy.getAssignedCourse();
 		
-		String startingMonth = "";
-		String endingMonth = "";
-		String day = assignedCourse.getDay();
-		
-		for(Institute institute : institute_repository.findAll()) {
-			if(institute.getInstitute_id() == assignedCourse.getInstitute_id()) {
-				if(assignedCourse.getSemesterType().equals("Spring")) {
-					startingMonth = institute.getSpringStartMonth();
-					endingMonth = institute.getSpringEndMonth();
-				}else {
-					startingMonth = institute.getFallStartMonth();
-					endingMonth = institute.getFallEndMonth();
-				}
-			}
-		}
+//		String startingMonth = "";
+//		String endingMonth = "";
+//		String day = assignedCourse.getDay();
+//		
+//		for(Institute institute : institute_repository.findAll()) {
+//			if(institute.getInstitute_id() == assignedCourse.getInstitute_id()) {
+//				if(assignedCourse.getSemesterType().equals("Spring")) {
+//					startingMonth = institute.getSpringStartMonth();
+//					endingMonth = institute.getSpringEndMonth();
+//				}else {
+//					startingMonth = institute.getFallStartMonth();
+//					endingMonth = institute.getFallEndMonth();
+//				}
+//			}
+//		}
 		
 //		AssignedCoursesForTable assignedCoursesForTable = new AssignedCoursesForTable();
 //		int assignedCoursesId = sequenceGeneratorService.getSequenceNumber(assignedCoursesForTable.SEQUENCE_NAME);
@@ -109,32 +109,45 @@ public class AssignedCourse_service {
 //		assignedCoursesForTable.setInstituteId(assignedCourse.getInstitute_id());
 //		assignedCoursesForTable_repository.insert(assignedCoursesForTable);
 		
-		List<LocalDate> dates = fetchDatesForDayOfMonth(LocalDate.now().getYear(), 
-				fetchMonthNumber(startingMonth), fetchMonthNumber(endingMonth), DayOfWeek.valueOf(day.toUpperCase()));
+//		List<LocalDate> dates = fetchDatesForDayOfMonth(LocalDate.now().getYear(), 
+//				fetchMonthNumber(startingMonth), fetchMonthNumber(endingMonth), DayOfWeek.valueOf(day.toUpperCase()));
 		
-		for (LocalDate date : dates) {
-			assignedCourse.setAssignedCourseId(sequenceGeneratorService.getSequenceNumber(assignedCourse.SEQUENCE_NAME));
-			
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
-//			assignedCourse.setAssignedCoursesId(assignedCoursesId);
-			assignedCourse.setDate(date.format(formatter));
-			assignCourse_repository.insert(assignedCourse);
-		}
+//		for (LocalDate date : dates) {
+//			assignedCourse.setAssignedCourseId(sequenceGeneratorService.getSequenceNumber(assignedCourse.SEQUENCE_NAME));
+//			
+//			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+////			assignedCourse.setAssignedCoursesId(assignedCoursesId);
+//			assignedCourse.setDate(date.format(formatter));
+//			assignCourse_repository.insert(assignedCourse);
+//		}
 		
-		ArrayList<String> dateList = makeResBusy.getDates_lst();
 		
-		for(int i=0; i<makeResBusy.getDates_lst().size(); i++) {
-			Room_Request room_Request = makeResBusy.getRoom_Request();
-			Staff_Request staff_Request = makeResBusy.getStaff_Request();
-			room_Request.setDate(dateList.get(i));
-//			room_Request.setAssignedCoursesId(assignedCoursesId);
-			staff_Request.setDate(dateList.get(i));
-//			staff_Request.setAssignedCoursesId(assignedCoursesId);
-			room_request_service.add(room_Request);
-			staff_request_service.add(staff_Request);
-		}
+		assignedCourse.setAssignedCourseId(sequenceGeneratorService.getSequenceNumber(assignedCourse.SEQUENCE_NAME));
+		assignCourse_repository.insert(assignedCourse);
 		
-		redisUtilityRoot.deleteList(HASH_KEY_ASSIGNED_COURSES_FOR_TABALE_LIST+assignedCourse.getInstitute_id());
+//		ArrayList<String> dateList = makeResBusy.getDates_lst();
+		
+//		for(int i=0; i<makeResBusy.getDates_lst().size(); i++) {
+//			Room_Request room_Request = makeResBusy.getRoom_Request();
+//			Staff_Request staff_Request = makeResBusy.getStaff_Request();
+//			room_Request.setDate(dateList.get(i));
+////			room_Request.setAssignedCoursesId(assignedCoursesId);
+//			staff_Request.setDate(dateList.get(i));
+////			staff_Request.setAssignedCoursesId(assignedCoursesId);
+//			room_request_service.add(room_Request);
+//			staff_request_service.add(staff_Request);
+//		}
+
+		Room_Request room_Request = makeResBusy.getRoom_Request();
+		Staff_Request staff_Request = makeResBusy.getStaff_Request();
+		
+		room_Request.setDate(assignedCourse.getDate());
+		staff_Request.setDate(assignedCourse.getDate());
+		
+		room_request_service.add(room_Request);
+		staff_request_service.add(staff_Request);
+		
+//		redisUtilityRoot.deleteList(HASH_KEY_ASSIGNED_COURSES_FOR_TABALE_LIST+assignedCourse.getInstitute_id());
 		redisUtilityRoot.deleteList(HASH_KEY_ASSIGNED_COURSE_LIST+assignedCourse.getInstitute_id());
 		return "Operation performed successfully.";
 	}

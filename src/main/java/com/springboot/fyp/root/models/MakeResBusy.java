@@ -10,6 +10,6 @@ public class MakeResBusy {
 	private AssignedCourse assignedCourse;
 	private Room_Request room_Request;
 	private Staff_Request staff_Request;
-	private ArrayList<String> dates_lst;
+	// private ArrayList<String> dates_lst;
 	
 }
