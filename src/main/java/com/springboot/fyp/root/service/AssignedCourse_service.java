@@ -1,12 +1,12 @@
 package com.springboot.fyp.root.service;
 
-import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
+//import java.text.SimpleDateFormat;
+//import java.time.DayOfWeek;
+//import java.time.LocalDate;
 import java.time.Month;
-import java.time.format.DateTimeFormatter;
+//import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
+//import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,15 +15,17 @@ import org.springframework.stereotype.Service;
 import com.springboot.fyp.root.dao.AssignedCourse_repository;
 import com.springboot.fyp.root.dao.AssignedCoursesForTable_repository;
 import com.springboot.fyp.root.dao.Institute_repository;
+import com.springboot.fyp.root.dao.OfferCourse_repository;
 import com.springboot.fyp.root.dao.Room_request_repository;
 import com.springboot.fyp.root.dao.Staff_request_repository;
 import com.springboot.fyp.root.models.AssignedCourse;
-import com.springboot.fyp.root.models.AssignedCoursesForTable;
-import com.springboot.fyp.root.models.Institute;
+//import com.springboot.fyp.root.models.AssignedCoursesForTable;
+//import com.springboot.fyp.root.models.Institute;
 import com.springboot.fyp.root.models.MakeResBusy;
+import com.springboot.fyp.root.models.OfferCourse;
 import com.springboot.fyp.root.models.Room_Request;
 import com.springboot.fyp.root.models.Staff_Request;
-import com.springboot.fyp.root.models.UpdateAssignedCourse;
+//import com.springboot.fyp.root.models.UpdateAssignedCourse;
 
 @Service
 public class AssignedCourse_service {
@@ -37,6 +39,8 @@ public class AssignedCourse_service {
 	@Autowired
 	Room_request_repository room_request_repository;
 	
+	@Autowired
+	OfferCourse_repository offerCourse_repository;
 
 	@Autowired
 	Room_request_service room_request_service;
@@ -60,19 +64,20 @@ public class AssignedCourse_service {
 //	public static final String HASH_KEY_ASSIGNED_COURSES_FOR_TABALE_LIST = "AssignedCoursesForTableList";
 	public static final String HASH_KEY_ROOM_REQUESTS = "RoomRequests";
 	public static final String HASH_KEY_STAFF_REQUESTS = "StaffRequests";
+	public static final String HASH_KEY_OFFERED_COURSES_LIST = "OfferedCourses";
 	
-	public static List<LocalDate> fetchDatesForDayOfMonth(int year, int startMonth, int endMonth, DayOfWeek dayOfWeek) {
-        LocalDate start = LocalDate.of(year, startMonth, 1);
-        LocalDate end = LocalDate.of(year, endMonth, 1).plusMonths(1).withDayOfMonth(1).minusDays(1);
-        List<LocalDate> dates = new ArrayList<>();
-        while (start.isBefore(end) || start.equals(end)) {
-            if (start.getDayOfWeek() == dayOfWeek) {
-                dates.add(start);
-            }
-            start = start.plusDays(1);
-        }
-        return dates;
-    }
+//	public static List<LocalDate> fetchDatesForDayOfMonth(int year, int startMonth, int endMonth, DayOfWeek dayOfWeek) {
+//        LocalDate start = LocalDate.of(year, startMonth, 1);
+//        LocalDate end = LocalDate.of(year, endMonth, 1).plusMonths(1).withDayOfMonth(1).minusDays(1);
+//        List<LocalDate> dates = new ArrayList<>();
+//        while (start.isBefore(end) || start.equals(end)) {
+//            if (start.getDayOfWeek() == dayOfWeek) {
+//                dates.add(start);
+//            }
+//            start = start.plusDays(1);
+//        }
+//        return dates;
+//    }
 	
 	public static int fetchMonthNumber(String monthName) {
         return Month.valueOf(monthName.toUpperCase()).getValue();
@@ -141,14 +146,23 @@ public class AssignedCourse_service {
 		Room_Request room_Request = makeResBusy.getRoom_Request();
 		Staff_Request staff_Request = makeResBusy.getStaff_Request();
 		
-		room_Request.setDate(assignedCourse.getDate());
-		staff_Request.setDate(assignedCourse.getDate());
+//		room_Request.setDate(assignedCourse.getDate());
+//		staff_Request.setDate(assignedCourse.getDate());
 		
 		room_request_service.add(room_Request);
 		staff_request_service.add(staff_Request);
 		
+		for(OfferCourse offerCourse : offerCourse_repository.findAll()) {
+			if(offerCourse.getOfferCourseId() == makeResBusy.getOfferCourseId()) {
+				offerCourse.setAddedInTimetable(true);
+				offerCourse_repository.save(offerCourse);
+				break;
+			}
+		}
+		
 //		redisUtilityRoot.deleteList(HASH_KEY_ASSIGNED_COURSES_FOR_TABALE_LIST+assignedCourse.getInstitute_id());
 		redisUtilityRoot.deleteList(HASH_KEY_ASSIGNED_COURSE_LIST+assignedCourse.getInstitute_id());
+		redisUtilityRoot.deleteList(HASH_KEY_OFFERED_COURSES_LIST+assignedCourse.getInstitute_id());
 		return "Operation performed successfully.";
 	}
 	

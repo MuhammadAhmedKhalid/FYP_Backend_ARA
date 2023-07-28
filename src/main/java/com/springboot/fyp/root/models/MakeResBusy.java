@@ -1,6 +1,6 @@
 package com.springboot.fyp.root.models;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 
 import lombok.Data;
 
@@ -11,5 +11,6 @@ public class MakeResBusy {
 	private Room_Request room_Request;
 	private Staff_Request staff_Request;
 	// private ArrayList<String> dates_lst;
+	private int offerCourseId;
 	
 }
