@@ -15,9 +15,9 @@ public class RedisConfig {
     @Bean
     JedisConnectionFactory connectionFactory() {
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
-        configuration.setHostName("containers-us-west-46.railway.app");
-        configuration.setPort(7890);
-        configuration.setPassword("NhUz4LHYEoWK77gk7wK1");
+        configuration.setHostName("containers-us-west-145.railway.app");
+        configuration.setPort(6625);
+        configuration.setPassword("jsO0HaxW880EZAaJ5e8w");
         return new JedisConnectionFactory(configuration);
     }
 	
