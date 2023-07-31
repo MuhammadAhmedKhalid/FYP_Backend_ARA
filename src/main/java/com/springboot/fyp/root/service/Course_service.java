@@ -28,7 +28,8 @@ public class Course_service {
 		for(Course crs: course_repository.findAll()) {
 			if(crs.getCourse_name().equalsIgnoreCase(course.getCourse_name())
 					&& crs.getDepartment_id() == course.getDepartment_id()
-					&& crs.getInstitute_id() == course.getInstitute_id()) {
+					&& crs.getInstitute_id() == course.getInstitute_id()
+					&& crs.getType().equalsIgnoreCase(course.getType())) {
 				return null;
 			}
 		}
