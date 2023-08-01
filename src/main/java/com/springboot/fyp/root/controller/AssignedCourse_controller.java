@@ -39,20 +39,20 @@ public class AssignedCourse_controller {
 		return ResponseEntity.ok(assignedCourses);
 	}
 	
-//	@PutMapping("/updateAssignedCourse/{faculty_id}")
-//	public ResponseEntity<String> updateAssignedCourse(
-//			@RequestBody UpdateAssignedCourse updateAssignedCourse, @PathVariable("faculty_id") int faculty_id){
-//		
-//		String response = assignedCourse_service.update(updateAssignedCourse, faculty_id);
-//		return ResponseEntity.ok(response);
-//	}
-//	
-//	@DeleteMapping("/deleteAssignedCourse/{assignedCourseId}")
-//	public ResponseEntity<String> deleteAssignedCourse(@PathVariable("assignedCourseId") int assignedCourseId){
-//		String response = assignedCourse_service.deleteCourse(assignedCourseId);
-//		return ResponseEntity.ok(response);
-//	}
-//	
+	@PutMapping("/updateAssignedCourse/{faculty_id}")
+	public ResponseEntity<String> updateAssignedCourse(
+			@RequestBody UpdateAssignedCourse updateAssignedCourse, @PathVariable("faculty_id") int faculty_id){
+		
+		String response = assignedCourse_service.update(updateAssignedCourse, faculty_id);
+		return ResponseEntity.ok(response);
+	}
+	
+	@DeleteMapping("/deleteAssignedCourse/{assignedCourseId}")
+	public ResponseEntity<String> deleteAssignedCourse(@PathVariable("assignedCourseId") int assignedCourseId){
+		String response = assignedCourse_service.deleteCourse(assignedCourseId);
+		return ResponseEntity.ok(response);
+	}
+	
 //	@DeleteMapping("/deleteAssignedCourses/{assignedCoursesId}")
 //	public ResponseEntity<String> deleteAssignedCourses(@PathVariable("assignedCoursesId") int assignedCoursesId){
 //		String response = assignedCourse_service.delete(assignedCoursesId);

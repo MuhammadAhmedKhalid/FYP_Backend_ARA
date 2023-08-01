@@ -1,12 +1,12 @@
 package com.springboot.fyp.root.service;
 
-//import java.text.SimpleDateFormat;
+import java.text.SimpleDateFormat;
 //import java.time.DayOfWeek;
 //import java.time.LocalDate;
 import java.time.Month;
 //import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-//import java.util.Date;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ import com.springboot.fyp.root.models.MakeResBusy;
 import com.springboot.fyp.root.models.OfferCourse;
 import com.springboot.fyp.root.models.Room_Request;
 import com.springboot.fyp.root.models.Staff_Request;
-//import com.springboot.fyp.root.models.UpdateAssignedCourse;
+import com.springboot.fyp.root.models.UpdateAssignedCourse;
 
 @Service
 public class AssignedCourse_service {
@@ -182,54 +182,54 @@ public class AssignedCourse_service {
 		}
 	}
 	
-//	@SuppressWarnings("deprecation")
-//	public String update(UpdateAssignedCourse updateAssignedCourse, int faculty_id) {
-//		
-//		AssignedCourse assignedCourse = updateAssignedCourse.getAssignedCourse();
-//		
-//		int institute_id= 0;
-//		for(AssignedCourse course : assignCourse_repository.findAll()) {
-//			if(course.getAssignedCourseId() == assignedCourse.getAssignedCourseId()) {
-//				course.setFaculty_id(faculty_id);
-//				institute_id = course.getInstitute_id();
-//				assignCourse_repository.save(course);
-//				break;
-//			}
-//		}
-//		
-//		if(updateAssignedCourse.isAddRoomRequest()) {
-//			Room_Request room_Request = new Room_Request();
-//			room_Request.setRoom_req_id(sequenceGeneratorService.getSequenceNumber(room_Request.SEQUENCE_NAME));
-//			room_Request.setDepartment_id(assignedCourse.getDepartment_id());
-//			room_Request.setInstitute_id(assignedCourse.getInstitute_id());
-//			room_Request.setRoom_id(assignedCourse.getRoom_id());
-//			room_Request.setStartTime(assignedCourse.getStartTime());
-//			room_Request.setEndTime(assignedCourse.getEndTime());
-//			
-//			String pattern = "MM/dd/yyyy";
-//			SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-//			
-//			room_Request.setDate(simpleDateFormat.format(new Date(assignedCourse.getDate())));
-//			room_request_repository.insert(room_Request);
-//			redisUtilityRoot.deleteList(HASH_KEY_ROOM_REQUESTS+room_Request.getInstitute_id());
-//		}
-//		
-//		redisUtilityRoot.deleteList(HASH_KEY_ASSIGNED_COURSE_LIST+institute_id);
-//		return "Operation performed successfully.";
-//	}
+	@SuppressWarnings("deprecation")
+	public String update(UpdateAssignedCourse updateAssignedCourse, int faculty_id) {
+		
+		AssignedCourse assignedCourse = updateAssignedCourse.getAssignedCourse();
+		
+		int institute_id= 0;
+		for(AssignedCourse course : assignCourse_repository.findAll()) {
+			if(course.getAssignedCourseId() == assignedCourse.getAssignedCourseId()) {
+				course.setFaculty_id(faculty_id);
+				institute_id = course.getInstitute_id();
+				assignCourse_repository.save(course);
+				break;
+			}
+		}
+		
+		if(updateAssignedCourse.isAddRoomRequest()) {
+			Room_Request room_Request = new Room_Request();
+			room_Request.setRoom_req_id(sequenceGeneratorService.getSequenceNumber(room_Request.SEQUENCE_NAME));
+			room_Request.setDepartment_id(assignedCourse.getDepartment_id());
+			room_Request.setInstitute_id(assignedCourse.getInstitute_id());
+			room_Request.setRoom_id(assignedCourse.getRoom_id());
+			room_Request.setStartTime(assignedCourse.getStartTime());
+			room_Request.setEndTime(assignedCourse.getEndTime());
+			
+			String pattern = "MM/dd/yyyy";
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+			
+			room_Request.setDate(simpleDateFormat.format(new Date(assignedCourse.getDate())));
+			room_request_repository.insert(room_Request);
+			redisUtilityRoot.deleteList(HASH_KEY_ROOM_REQUESTS+room_Request.getInstitute_id());
+		}
+		
+		redisUtilityRoot.deleteList(HASH_KEY_ASSIGNED_COURSE_LIST+institute_id);
+		return "Operation performed successfully.";
+	}
 	
-//	public String deleteCourse(int assignedCourseId) {
-//		int institute_id= 0;
-//		for(AssignedCourse course : assignCourse_repository.findAll()) {
-//			if(course.getAssignedCourseId() == assignedCourseId) {
-//				institute_id = course.getInstitute_id();
-//				assignCourse_repository.deleteById(assignedCourseId);
-//				break;
-//			}
-//		}
-//		redisUtilityRoot.deleteList(HASH_KEY_ASSIGNED_COURSE_LIST+institute_id);
-//		return "Operation performed successfully.";
-//	}
+	public String deleteCourse(int assignedCourseId) {
+		int institute_id= 0;
+		for(AssignedCourse course : assignCourse_repository.findAll()) {
+			if(course.getAssignedCourseId() == assignedCourseId) {
+				institute_id = course.getInstitute_id();
+				assignCourse_repository.deleteById(assignedCourseId);
+				break;
+			}
+		}
+		redisUtilityRoot.deleteList(HASH_KEY_ASSIGNED_COURSE_LIST+institute_id);
+		return "Operation performed successfully.";
+	}
 	
 //	public String delete(int assignedCoursesId) {
 //		int institute_id= 0;
